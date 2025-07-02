@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.zerock.life_fit.user.domain.User;
 
 import java.time.LocalDateTime;
 
@@ -17,8 +18,9 @@ public class Favorites {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id", updatable=false)
     private int num;
-    @Column(name="userId", nullable = false)
-    private String userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
     @Column(name="address", nullable = false)
     private String address;
     @Column(name="description")
