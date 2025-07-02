@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.zerock.life_fit.board.domain.Board;
+import org.zerock.life_fit.user.domain.User;
 
 import java.time.LocalDateTime;
 
@@ -20,15 +22,15 @@ public class Comment {
     @Column(name = "comment", nullable = false, length = 255)
     private String comment;
 
-    // 일단 주석
-   /* @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;*/
 
-    // 일단주석
- /*   @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+
+  @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bno", nullable = false)
-    private Board board;*/
+    private Board board;
 
     @Column(name = "regdate")
     private LocalDateTime regdate;
