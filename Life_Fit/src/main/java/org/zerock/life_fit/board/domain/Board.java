@@ -1,4 +1,4 @@
-package org.zerock.life_fit.domain;
+package org.zerock.life_fit.board.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
