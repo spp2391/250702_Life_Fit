@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.zerock.life_fit.user.domain.User;
 
 import java.time.LocalDateTime;
 
@@ -25,8 +26,9 @@ public class Board {
     private String title;
     @Column(name="content", nullable = false)
     private String content;
-    @Column(name="writer", nullable = false)
-    private String writer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
     @CreatedDate
     @Column(name="regdate")
     private LocalDateTime regdate;
@@ -40,7 +42,7 @@ public class Board {
     @Column(name = "url")
     private String url;
 
-    @Builder
+   /* @Builder
     public Board(String title, String content, String writer,  LocalDateTime regdate, LocalDateTime moddate, int visitcount, int likes, String url) {
         this.title = title;
         this.content = content;
@@ -50,7 +52,7 @@ public class Board {
         this.visitcount = visitcount;
         this.likes = likes;
         this.url = url;
-    }
+    }*/
 
     public void update(String title, String content){
         this.title = title;
