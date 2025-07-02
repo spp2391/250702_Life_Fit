@@ -20,8 +20,9 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bno", updatable = false)
     private int bno;
-    @Column(name = "cateno", nullable = false)
-    private int cateno;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cateno", nullable = false)
+    private BoardCate cateno;
     @Column(name="title", nullable = false)
     private String title;
     @Column(name="content", nullable = false)
