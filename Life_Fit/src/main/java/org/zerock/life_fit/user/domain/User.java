@@ -44,4 +44,7 @@ import java.time.LocalDateTime;
 
         @Column(name = "moddate")
         private LocalDateTime moddate; // 수정일
+
+        @Column(name = "nickname", length = 15)
+        private String nickname; // 닉네임
 }

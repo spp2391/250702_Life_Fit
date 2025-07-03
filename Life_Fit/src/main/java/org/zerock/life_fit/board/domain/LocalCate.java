@@ -6,18 +6,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Table(name = "BOARDCATE")
+@Table(name = "LOCALCATE")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class BoardCate {
+public class LocalCate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "cateno", updatable = false)
-    private int cateno;
-    @Column(name = "filename", nullable = false)
-    private String filename;
-    @Column(name = "cate", nullable = false)
-    private boolean cate;
+    @Column(name = "localnum", updatable = false)
+    private int localnum;
+    @Column(name = "localname", nullable = false)
+    private String localname;
 }

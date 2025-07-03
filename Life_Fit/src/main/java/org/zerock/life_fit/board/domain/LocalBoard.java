@@ -9,20 +9,20 @@ import org.zerock.life_fit.user.domain.User;
 
 import java.time.LocalDateTime;
 
-@Table(name = "BOARD")
+@Table(name = "LOCALBOARD")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 @Getter
 @Entity
-public class Board {
+public class LocalBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bno", updatable = false)
     private int bno;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cateno", nullable = false)
-    private BoardCate cateno;
+    @JoinColumn(name = "localnum", nullable = false)
+    private LocalCate localnum;
     @Column(name="title", nullable = false)
     private String title;
     @Column(name="content", nullable = false)
@@ -40,8 +40,6 @@ public class Board {
     private int visitcount;
     @Column(name = "likes")
     private int likes;
-    @Column(name = "url")
-    private String url;
 
    /* @Builder
     public Board(String title, String content, String writer,  LocalDateTime regdate, LocalDateTime moddate, int visitcount, int likes, String url) {

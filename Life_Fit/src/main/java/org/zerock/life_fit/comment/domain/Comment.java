@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.zerock.life_fit.board.domain.Board;
+import org.zerock.life_fit.board.domain.LocalBoard;
 import org.zerock.life_fit.user.domain.User;
 
 import java.time.LocalDateTime;
@@ -30,7 +30,7 @@ public class Comment {
 
   @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bno", nullable = false)
-    private Board board;
+    private LocalBoard localBoard;
 
     @Column(name = "regdate")
     private LocalDateTime regdate;
