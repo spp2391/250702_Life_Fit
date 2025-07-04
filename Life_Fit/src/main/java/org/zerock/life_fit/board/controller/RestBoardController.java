@@ -1,5 +1,6 @@
 package org.zerock.life_fit.board.controller;
 
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,4 +26,5 @@ public class RestBoardController {
             model.addAttribute("boards", topicBoards);
             return "topicList"; // templates/topicList.html
         }
+
 }
