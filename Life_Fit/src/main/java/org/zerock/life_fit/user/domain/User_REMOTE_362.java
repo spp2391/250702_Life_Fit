@@ -6,12 +6,6 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
-<<<<<<< HEAD
-    @Table(name = "user")
-    @Getter
-    @Setter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-=======
     @Table(
             name = "user",
             uniqueConstraints = {
@@ -22,20 +16,13 @@ import java.time.LocalDateTime;
     @Getter
     @Setter
     @NoArgsConstructor
->>>>>>> main
     @AllArgsConstructor
     @Builder
     public class User {
 
         @Id
-<<<<<<< HEAD
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "user_id", length = 100, nullable = false)
-        private Long userId; // 사용자 ID (PK)
-=======
         @Column(name = "user_id", length = 100, nullable = false)
         private String userId; // 사용자 ID (PK)
->>>>>>> main
 
         @Column(name = "username", length = 100, nullable = false, unique = true)
         private String username; // 사용자 이름
@@ -60,15 +47,4 @@ import java.time.LocalDateTime;
 
         @Column(name = "nickname", length = 15)
         private String nickname; // 닉네임
-<<<<<<< HEAD
-
-        // 회원 탈퇴 여부
-        private boolean deleted = false;
-
-        @PrePersist
-        public void prePersist() {
-            this.regdate = LocalDateTime.now();
-        }
-=======
->>>>>>> main
 }

@@ -1,32 +1,35 @@
-package org.zerock.life_fit.domain;
+package org.zerock.life_fit.board.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.zerock.life_fit.user.domain.User;
 
 import java.time.LocalDateTime;
 
-@Table(name = "BOARD")
+@Table(name = "LOCALBOARD")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 @Getter
 @Entity
-public class Board {
+public class LocalBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bno", updatable = false)
     private int bno;
-    @Column(name = "cateno", nullable = false)
-    private int cateno;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "localnum", nullable = false)
+    private LocalCate localnum;
     @Column(name="title", nullable = false)
     private String title;
     @Column(name="content", nullable = false)
     private String content;
-    @Column(name="writer", nullable = false)
-    private String writer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
     @CreatedDate
     @Column(name="regdate")
     private LocalDateTime regdate;
@@ -37,10 +40,8 @@ public class Board {
     private int visitcount;
     @Column(name = "likes")
     private int likes;
-    @Column(name = "url")
-    private String url;
 
-    @Builder
+   /* @Builder
     public Board(String title, String content, String writer,  LocalDateTime regdate, LocalDateTime moddate, int visitcount, int likes, String url) {
         this.title = title;
         this.content = content;
@@ -50,7 +51,7 @@ public class Board {
         this.visitcount = visitcount;
         this.likes = likes;
         this.url = url;
-    }
+    }*/
 
     public void update(String title, String content){
         this.title = title;
