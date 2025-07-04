@@ -15,7 +15,7 @@ public class LocalCate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "localnum", updatable = false)
-    private int localnum;
+    private Long localnum;
     @Column(name = "localname", nullable = false)
     private String localname;
 }

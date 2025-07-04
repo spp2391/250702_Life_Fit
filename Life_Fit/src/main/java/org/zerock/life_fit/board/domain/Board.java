@@ -9,20 +9,27 @@ import org.zerock.life_fit.user.domain.User;
 
 import java.time.LocalDateTime;
 
-@Table(name = "LOCALBOARD")
+/*@Table(name = "FREEBOARD")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 @Getter
 @Entity
-public class LocalBoard {
+@Builder*/
+@Table(name = "FREEBOARD")
+@EntityListeners(AuditingEntityListener.class)
+@Getter
+@Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+
+public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bno", updatable = false)
-    private int bno;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "localnum", nullable = false)
-    private LocalCate localnum;
+    private Long bno;
     @Column(name="title", nullable = false)
     private String title;
     @Column(name="content", nullable = false)
@@ -30,6 +37,11 @@ public class LocalBoard {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "local_id", nullable = true)
+    private LocalCate localCate;
+    @Column(nullable = false)
+    private String boardType;
     @CreatedDate
     @Column(name="regdate")
     private LocalDateTime regdate;
@@ -41,20 +53,18 @@ public class LocalBoard {
     @Column(name = "likes")
     private int likes;
 
-   /* @Builder
-    public Board(String title, String content, String writer,  LocalDateTime regdate, LocalDateTime moddate, int visitcount, int likes, String url) {
+    public void setTitle(String title) {
         this.title = title;
-        this.content = content;
-        this.writer = writer;
-        this.regdate = regdate;
-        this.moddate = moddate;
-        this.visitcount = visitcount;
-        this.likes = likes;
-        this.url = url;
-    }*/
-
-    public void update(String title, String content){
-        this.title = title;
+    }
+    public void setContent(String content) {
         this.content = content;
     }
+    public void setLikes(int likes) {
+        this.likes = likes;
+    }
+    public void setVisitcount(int visitcount) {
+        this.visitcount = visitcount;
+    }
+
 }
+
