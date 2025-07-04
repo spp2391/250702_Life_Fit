@@ -9,4 +9,8 @@ import java.util.List;
 public interface FavoritesRepository extends JpaRepository<Favorites, Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM Favorites WHERE userId=:userId ORDER BY num ASC")
     List<Favorites> findByUserId(String userId);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM Favorites WHERE userId=:userId AND address=:address")
+    Favorites findByUserIdAndAddress(String userId, String address);
+
 }

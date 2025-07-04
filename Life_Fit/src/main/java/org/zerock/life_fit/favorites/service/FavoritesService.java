@@ -26,6 +26,9 @@ public class FavoritesService {
         favorite.update(updateFavoriteRequest.getAddress(), updateFavoriteRequest.getDescription());
         return favorite;
     }
+
+    public long findNum(String userId, String address) {return favoritesRepository.findByUserIdAndAddress(userId,address).getNum();}
+
     public void unsaveFavorite(Long num) {favoritesRepository.deleteById(num);}
 
 
