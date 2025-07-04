@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class BoardDTO {
-    private int bno;
+    private Long bno;
     private String boardType;
     private Long localCateId; // nullable
     private String title;
@@ -25,4 +25,16 @@ public class BoardDTO {
     private int visitcount;
     private int likes;
 
+    public BoardDTO(Board board) {
+        this.bno = board.getBno();
+        this.boardType = board.getBoardType();
+        this.localCateId = board.getLocalCate() != null ? board.getLocalCate().getLocalnum() : null;
+        this.title = board.getTitle();
+        this.content = board.getContent();
+       /* this.userId = board.getUser() != null ? board.getUser().getUserId() : null;*/
+        this.regdate = board.getRegdate();
+        this.moddate = board.getModdate();
+        this.visitcount = board.getVisitcount();
+        this.likes = board.getLikes();
+    }
 }

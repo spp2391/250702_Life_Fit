@@ -34,13 +34,13 @@ public class Board {
     private String title;
     @Column(name="content", nullable = false)
     private String content;
-    @ManyToOne(fetch = FetchType.LAZY)
+   /* @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User user;*/
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id", nullable = true)
     private LocalCate localCate;
-    @Column(nullable = false)
+    @Column(name = "board_type", nullable = false)
     private String boardType;
     @CreatedDate
     @Column(name="regdate")

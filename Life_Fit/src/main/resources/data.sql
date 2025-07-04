@@ -1,0 +1,16 @@
+INSERT INTO localcate(localnum, localname) VALUES (1, '중구');
+INSERT INTO localcate(localnum, localname) VALUES (2, '서구');
+INSERT INTO localcate(localnum, localname) VALUES (3, '동구');
+INSERT INTO localcate(localnum, localname) VALUES (4, '영도구');
+INSERT INTO localcate(localnum, localname) VALUES (5, '부산진구');
+INSERT INTO localcate(localnum, localname) VALUES (6, '동래구');
+INSERT INTO localcate(localnum, localname) VALUES (7, '남구');
+INSERT INTO localcate(localnum, localname) VALUES (8, '북구');
+INSERT INTO localcate(localnum, localname) VALUES (9, '해운대구');
+INSERT INTO localcate(localnum, localname) VALUES (10, '사하구');
+INSERT INTO localcate(localnum, localname) VALUES (11, '금정구');
+INSERT INTO localcate(localnum, localname) VALUES (12, '강서구');
+INSERT INTO localcate(localnum, localname) VALUES (13, '연제구');
+INSERT INTO localcate(localnum, localname) VALUES (14, '수영구');
+INSERT INTO localcate(localnum, localname) VALUES (15, '사상구');
+INSERT INTO localcate(localnum, localname) VALUES (16, '기장군');
