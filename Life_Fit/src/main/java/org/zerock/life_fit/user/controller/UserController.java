@@ -3,15 +3,19 @@ package org.zerock.life_fit.user.controller;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.life_fit.user.domain.User;
+import org.zerock.life_fit.user.dto.FavoriteDTO;
 import org.zerock.life_fit.user.dto.UserLoginRequest;
 import org.zerock.life_fit.user.dto.UserProfileResponse;
 import org.zerock.life_fit.user.dto.UserRegisterRequest;
+import org.zerock.life_fit.user.service.FavoriteService;
 import org.zerock.life_fit.user.service.UserService;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -19,6 +23,7 @@ import java.util.List;
 @RequestMapping("/member")
 public class UserController {
     private final UserService userService;
+    private final FavoriteService favoriteService;
 
     // 회원가입, 로그인, 로그아웃 기능
     /*@PostMapping("/join")
@@ -42,6 +47,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String login() {
+
         return "member/login";
     }
 
@@ -51,12 +57,23 @@ public class UserController {
         return "/";
     }
 
-    // 마이페이지 관련
     @GetMapping("/profile")
-    public String Profile(HttpSession session, Model model) {
-        Long userId = (Long) session.getAttribute("userId");
+    public String profilePage(Principal principal, Model model) {
+        String userId = principal.getName();
+
         model.addAttribute("user", userService.getProfile(userId));
+        List<FavoriteDTO> favoriteList = favoriteService.getFavoritesByUserId(String.valueOf(userId));
+        model.addAttribute("favoriteList", favoriteList);
+
         return "member/profile";
+    }
+
+    @DeleteMapping("/favorite/{num}")
+    @ResponseBody
+    public ResponseEntity<?> removeFavorite(@PathVariable int num, HttpSession session) {
+        String userId = (String) session.getAttribute("userId");
+        favoriteService.removeFavorite(num, userId);
+        return ResponseEntity.ok().build();
     }
 
     // 회원정보 수정

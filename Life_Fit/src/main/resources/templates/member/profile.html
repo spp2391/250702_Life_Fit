@@ -1,10 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>profile</title>
+  <meta charset="UTF-8">
+  <title>마이페이지</title>
+  <link rel="stylesheet" href="/css/mypage.css">
 </head>
 <body>
-profile
+
+<div class="mypage-container">
+  <h1>마이페이지</h1>
+
+  <!-- 📌 즐겨찾기 목록 -->
+  <section class="favorites-section">
+    <h2>즐겨찾기 목록</h2>
+    <ul>
+      <li th:each="item : ${favoriteList}">
+        <a th:href="@{'/program/detail/' + ${item.programId}}"
+           th:text="${item.programName}">프로그램명</a>
+        <button type="button" th:onclick="'removeFavorite(' + ${item.id} + ')'" >삭제</button>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 🙍 개인정보 수정 -->
+  <section class="profile-section">
+    <h2>개인정보 수정</h2>
+    <form id="updateForm"
+          th:action="@{/update}"
+          th:object="${user}"
+          method="post">
+      <!-- Spring Security CSRF 토큰 -->
+      <!--<input type="hidden"
+             th:name="${_csrf.parameterName}"
+             th:value="${_csrf.token}" />
+-->
+      <label>
+        이름:
+        <input type="text" th:field="${user.username}" placeholder="이름을 입력하세요"/>
+      </label>
+      <p class="error" th:if="${#fields.hasErrors('name')}"
+         th:errors="${user.username}"></p>
+
+      <label>
+        이메일:
+        <input type="email" th:field="${user.email}" readonly/>
+      </label>
+
+      <label>
+        비밀번호 변경:
+        <input type="password" placeholder="새 비밀번호 입력"/>
+      </label>
+      <p class="error" th:if="${#fields.hasErrors('password')}"
+         ></p>
+
+      <button type="submit">수정하기</button>
+    </form>
+  </section>
+</div>
+
+<script>
+  // 즐겨찾기 삭제
+  function removeFavorite(id) {
+    if (confirm("즐겨찾기에서 삭제하시겠습니까?")) {
+      fetch(`/favorite/remove/${id}`, {
+        method: 'DELETE',
+        headers: { 'X-CSRF-TOKEN': /*[[${_csrf.token}]]*/ '' }
+      })
+              .then(() => location.reload());
+    }
+  }
+</script>
+
 </body>
 </html>

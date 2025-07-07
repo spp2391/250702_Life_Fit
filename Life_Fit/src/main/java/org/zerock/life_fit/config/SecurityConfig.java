@@ -3,6 +3,8 @@ package org.zerock.life_fit.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -23,18 +25,16 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/member/login", "/member/join", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/","/member/login", "/member/join", "/member/profile", "/member/article","/css/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/member/login")
-                        /*.loginProcessingUrl("/login")*/
-                        .defaultSuccessUrl("/member/profile", true)
+                        .defaultSuccessUrl("/member/profile")
                         .failureUrl("/member/login?error")
-                        .permitAll()
+                        /*.permitAll()*/
                 )
                 .logout(logout -> logout
-/*                        .logoutUrl("/logout")*/
                         .logoutSuccessUrl("/member/login?logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
@@ -44,13 +44,27 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
         return userDetailsService;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            HttpSecurity http,
+            BCryptPasswordEncoder passwordEncoder,
+            UserDetailsService userDetailsService
+    ) throws Exception {
+        AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
+        authBuilder
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
+
+        return authBuilder.build();
     }
 
 }
