@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Life Fit</title>
+	<link rel="stylesheet" href="/mainscreen/main.css" />
+	<style>
+	</style>
+</head>
+<body>
+<div id="container">
+    <div id="header">
+		<!-- TODO: 왼쪽 기준으로 로고 삽입. 오른쪽 기준으로 메뉴 삽입. -->
+		<div id="logo" class="header-menu header-menu-1">
+			Life Fit
+		</div>
+		<div id="login" class="header-menu header-menu-2">
+			<a href="#">로그인</a>
+		</div>
+		<div id="join" class="header-menu header-menu-3">
+			<a href="#">회원가입</a>
+		</div>
+    </div>
+
+	<div id="content">
+		<div id="sidebar">
+			<!-- TODO: 사이드바 메뉴에 대신 아이콘 이미지를 제작해 삽입한다. 규격: 80px*80px -->
+			<div id="main-sidebar-1" class="sidebar-menu" onclick="sidebarPopup(1)">
+				카테고리
+			</div>
+			<div id="main-sidebar-2" class="sidebar-menu" onclick="sidebarPopup(2)">
+				검색
+			</div>
+			<div id="main-sidebar-3" class="sidebar-menu">
+				<a href="#">커뮤니티</a>
+			</div>
+		</div>
+
+		<div id="popup-category" class="popup-search">
+			<form method="post" action="#">
+				<div id="popup-category-area">
+					<label for="popup-category-area-dropdown">지역 선택</label>
+					<select name="area" id="popup-category-area-dropdown">
+						<option value="부산" selected>부산</option>
+						<option value="부산진구">부산진구</option>
+					</select>
+				</div>
+				<div id="popup-category-category">
+					<input type="radio" id="popup-category-category-option1" name="category" value="교통">
+					<label for="popup-category-category-option1">교통</label>
+					<input type="radio" id="popup-category-category-option2" name="category" value="의료">
+					<label for="popup-category-category-option2">의료</label>
+					<input type="radio" id="popup-category-category-option3" name="category" value="교육">
+					<label for="popup-category-category-option3">교육</label>
+					<input type="radio" id="popup-category-category-option4" name="category" value="편의">
+					<label for="popup-category-category-option4">편의</label>
+					<input type="radio" id="popup-category-category-option5" name="category" value="문화">
+					<label for="popup-category-category-option5">문화</label>
+					<input type="radio" id="popup-category-category-option6" name="category" value="치안">
+					<label for="popup-category-category-option6">치안</label>
+				</div>
+				<div id="popup-category-button">
+					<input type="reset" value="리셋">
+					<input type="submit" value="검색">
+				</div>
+			</form>
+		</div>
+		<div id="popup-keyword" class="popup-search">
+			<form method="post" action="#">
+				<div id="popup-keyword-keyword">
+					<label for="popup-keyword-keyword-search">키워드 검색</label>
+					<input type="search" name="keyword" id="popup-keyword-keyword-search">
+				</div>
+				<div id="popup-keyword-category">
+					<input type="radio" id="popup-keyword-category-option1" name="category" value="교통">
+					<label for="popup-keyword-category-option1">교통</label>
+					<input type="radio" id="popup-keyword-category-option2" name="category" value="의료">
+					<label for="popup-keyword-category-option2">의료</label>
+					<input type="radio" id="popup-keyword-category-option3" name="category" value="교육">
+					<label for="popup-keyword-category-option3">교육</label>
+					<input type="radio" id="popup-keyword-category-option4" name="category" value="편의">
+					<label for="popup-keyword-category-option4">편의</label>
+					<input type="radio" id="popup-keyword-category-option5" name="category" value="문화">
+					<label for="popup-keyword-category-option5">문화</label>
+					<input type="radio" id="popup-keyword-category-option6" name="category" value="치안">
+					<label for="popup-keyword-category-option6">치안</label>
+				</div>
+				<div id="popup-keyword-button">
+					<input type="reset" value="리셋">
+					<input type="submit" value="검색">
+				</div>
+			</form>
+		</div>
+
+		<div id="map"></div>
+	</div>
+</div>
+
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e262bfbb1608191632ecc076189ec9cc"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e262bfbb1608191632ecc076189ec9cc&libraries=services"></script>
+<script>
+	var sidebarStatus = 0;
+	function sidebarPopup(status) {
+		if (status === sidebarStatus) {
+			sidebarStatus = 0;
+		} else {
+			if (sidebarStatus === 1) {
+				var popup = document.getElementById('popup-category');
+				popup.classList.toggle('popup-show');
+			} else if (sidebarStatus === 2) {
+				var popup = document.getElementById('popup-keyword');
+				popup.classList.toggle('popup-show');
+			}
+			sidebarStatus = status;
+		}
+		if (status === 1) {
+			var popup = document.getElementById('popup-category');
+			popup.classList.toggle('popup-show');
+		} else if (status === 2) {
+			var popup = document.getElementById('popup-keyword');
+			popup.classList.toggle('popup-show');
+		}
+	}
+
+	function categorySearch() {
+
+	}
+	function keywordSearch() {
+
+	}
+	var container = document.getElementById('map');
+	var options = {
+		center: new kakao.maps.LatLng(33.450701, 126.570667),
+		level: 3
+	};
+
+	var map = new kakao.maps.Map(container, options);
+</script>
+</body>
+</html>
