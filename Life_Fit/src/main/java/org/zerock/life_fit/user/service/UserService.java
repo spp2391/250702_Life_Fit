@@ -20,27 +20,21 @@ public class UserService {
 
     // 회원가입, 로그인, 마이페이지
     @Transactional
-    public User register(UserRegisterRequest dto) {
+    public User register(UserRegisterRequest dto) throws Exception {
         if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
         User user = User.builder()
                 .email(dto.getEmail())
-                .username(dto.getUsername())
+                .name(dto.getName())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .nickname(dto.getNickname())
                 .build();
         return userRepository.save(user);
     }
 
-    public User login(UserLoginRequest dto) {
-        return userRepository.findByEmail(dto.getEmail())
-                .filter(u -> passwordEncoder.matches(dto.getPassword(), u.getPassword()))
-                .orElseThrow(() -> new IllegalArgumentException("이메일 또는 비밀번호가 올바르지 않습니다."));
-    }
-
     public UserProfileResponse getProfile(String userId) {
-        return userRepository.findByUsername(userId)
+        return userRepository.findByEmail(userId)
                 .map(UserProfileResponse::fromEntity)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
     }

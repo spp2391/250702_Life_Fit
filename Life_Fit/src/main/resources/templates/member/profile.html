@@ -32,14 +32,13 @@
       <!-- Spring Security CSRF 토큰 -->
       <!--<input type="hidden"
              th:name="${_csrf.parameterName}"
-             th:value="${_csrf.token}" />
--->
+             th:value="${_csrf.token}" />-->
       <label>
         이름:
-        <input type="text" th:field="${user.username}" placeholder="이름을 입력하세요"/>
+        <input type="text" th:field="${user.nickname}" placeholder="이름을 입력하세요"/>
       </label>
-      <p class="error" th:if="${#fields.hasErrors('name')}"
-         th:errors="${user.username}"></p>
+      <p class="error" th:if="${#fields.hasErrors('nickname')}"
+         th:errors="${user.nickname}"></p>
 
       <label>
         이메일:
@@ -50,8 +49,7 @@
         비밀번호 변경:
         <input type="password" placeholder="새 비밀번호 입력"/>
       </label>
-      <p class="error" th:if="${#fields.hasErrors('password')}"
-         ></p>
+      <!--<p class="error" th:if="${#fields.hasErrors('password')}"></p>-->
 
       <button type="submit">수정하기</button>
     </form>
@@ -64,7 +62,7 @@
     if (confirm("즐겨찾기에서 삭제하시겠습니까?")) {
       fetch(`/favorite/remove/${id}`, {
         method: 'DELETE',
-        headers: { 'X-CSRF-TOKEN': /*[[${_csrf.token}]]*/ '' }
+        // <!--/*headers: { 'X-CSRF-TOKEN': /*[[${_csrf.token}]]*/ '' } */-->
       })
               .then(() => location.reload());
     }

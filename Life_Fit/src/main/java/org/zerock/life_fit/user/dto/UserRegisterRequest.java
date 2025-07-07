@@ -17,5 +17,5 @@ public class UserRegisterRequest {
     @NotBlank
     private String nickname;
     @NotBlank
-    private String username;
+    private String name;
 }

@@ -31,8 +31,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/member/login")
                         .defaultSuccessUrl("/member/profile")
-                        .failureUrl("/member/login?error")
-                        /*.permitAll()*/
+                        .failureUrl("/member/login?error=true")
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/member/login?logout")
@@ -48,10 +47,10 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return userDetailsService;
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return userDetailsService;
+//    }
 
     @Bean
     public AuthenticationManager authenticationManager(

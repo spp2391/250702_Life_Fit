@@ -3,6 +3,9 @@ package org.zerock.life_fit.user.controller;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +23,19 @@ public class UserRestController {
 
     // 회원가입, 로그인, 로그아웃 기능
     @PostMapping("/join")
-    public User register(@Valid @RequestBody UserRegisterRequest dto, HttpSession session) {
-        User newUser = userService.register(dto);
-        session.setAttribute("userId", newUser.getUserId());
-        return newUser;
+    public ResponseEntity<String> register(@Valid @RequestBody UserRegisterRequest dto,
+                                         BindingResult bindingResult, HttpSession session ) {
+        if (bindingResult.hasErrors()) {
+            bindingResult.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
+            return ResponseEntity.badRequest().body("fail");
+        }
+        try{
+            User newUser = userService.register(dto);
+            session.setAttribute("userId", newUser.getUserId());
+            return ResponseEntity.ok("success");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("fail");
+        }
+
     }
 }

@@ -41,25 +41,32 @@
 <script>
     const baseUrl = '/member';
 
-    async function register() {
+    function register() {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const nickname = document.getElementById('nickname').value;
-        const username = document.getElementById('username').value;
+        const name = document.getElementById('username').value;
 
-        const res = await fetch(`${baseUrl}/join`, {
+        fetch(`/member/join`, {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({email, password, nickname, username})
-        });
+            body: JSON.stringify({
+                email,
+                password,
+                nickname,
+                name})
+        }).then((result)=>{
+            console.log(result)
+            if(result.ok){
+                alert('회원가입 성공! 자동 로그인 되었습니다.');
+                location.href = "/member/profile";
+            }else{
+                alert('이메일이 중복됩니다.');
+            }
 
-        if(res.ok) {
-            alert('회원가입 성공! 자동 로그인 되었습니다.');
-            location.href = "/member/profile";
-        } else {
-            const text = await res.text();
+        }).catch(()=>{
             alert('회원가입 실패: ' + text);
-        }
+        });
     }
 
     async function login() {
