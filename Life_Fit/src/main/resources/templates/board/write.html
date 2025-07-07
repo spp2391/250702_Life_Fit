@@ -1,0 +1,23 @@
+<!--
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>글쓰기</title>
+</head>
+<body>
+<h1>글쓰기</h1>
+<form th:action="@{/boards/write}" method="post" th:object="${boardDTO}">
+    <p>제목: <input type="text" th:field="*{title}" /></p>
+    <p>내용: <textarea th:field="*{content}"></textarea></p>
+    <p>게시판 유형:
+        <select th:field="*{boardType}">
+            <option value="FREE">자유게시판</option>
+            <option value="TOPIC">주제게시판</option>
+        </select>
+    </p>
+    <p>지역카테고리ID: <input type="number" th:field="*{localCateId}" /></p>
+    <button type="submit">등록</button>
+</form>
+</body>
+</html>
+-->

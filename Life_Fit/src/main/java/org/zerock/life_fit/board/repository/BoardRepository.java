@@ -9,4 +9,6 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     List<Board> findByBoardType(String boardType);
     List<Board> findByBoardTypeAndLocalCate_Localnum(String boardType, Long localnum);
     List<Board> findByLocalCate_Localnum(Long localnum);
+    List<Board> findByLocalCate_LocalnumAndBoardType(Long localCateId, String boardType);
+
 }

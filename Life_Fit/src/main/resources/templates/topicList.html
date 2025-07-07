@@ -10,20 +10,64 @@
 <!-- 자유게시판으로 이동 버튼 -->
 <button onclick="location.href='/free'">자유게시판으로 이동</button>
 
+<!-- 지역 선택 드롭다운 -->
+<!--<form id="writeForm" method="get" action="/topic/write">
+    <label for="localSelect">지역 선택:</label>
+    <select name="localId" id="localSelect" required>
+        <option value="" disabled selected>지역을 선택하세요</option>
+        <option th:each="local : ${localList}"
+                th:value="${local.localnum}"
+                th:text="${local.localname}">
+        </option>
+    </select>
+    <button type="submit">글쓰기</button>
+</form>-->
+
+<h2>지역별 게시글 보기</h2>
+<ul>
+    <li>
+        <a th:href="@{/topic}" th:text="'모든 지역'"
+           th:classappend="${selectedLocalId == null} ? 'selected' : ''"></a>
+    </li>
+    <li th:each="local : ${localList}">
+        <a th:href="@{/topic(localId=${local.localnum})}"
+           th:text="${local.localname}">중구</a>
+    </li>
+</ul>
+<form id="writeForm" method="get" action="/topic">
+    <label for="localSelect">지역 선택:</label>
+    <select name="localId" id="localSelect" onchange="this.form.submit()">
+        <option th:selected="${selectedLocalId == null}" value="">모든 지역</option>
+        <option value="" disabled th:selected="${selectedLocalId == null}">지역을 선택하세요</option>
+        <option th:each="local : ${localList}"
+                th:value="${local.localnum}"
+                th:text="${local.localname}"
+                th:selected="${selectedLocalId != null and selectedLocalId == local.localnum}">
+        </option>
+    </select>
+    <!-- 글쓰기 버튼은 따로 동작하도록 설정 -->
+    <button type="submit" formaction="/topic/write" formmethod="get">글쓰기</button>
+</form>
+
+<hr/>
+
+<!-- 게시글 목록 테이블 -->
 <table border="1">
     <thead>
     <tr>
         <th>번호</th>
         <th>제목</th>
         <th>내용</th>
-        <th>지역</th> <!-- 지역 추가 -->
+        <th>지역</th>
         <th>작성일</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="board : ${boards}">
         <td th:text="${board.bno}">1</td>
-        <td th:text="${board.title}">제목</td>
+        <td>
+            <a th:href="@{/board/{bno}(bno=${board.bno})}" th:text="${board.title}">제목</a>
+        </td>
         <td th:text="${board.content}">내용</td>
         <td th:text="${board.localCate != null ? board.localCate.localname : '지역없음'}">중구</td>
         <td th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm')}">2025-07-04</td>
@@ -31,4 +75,17 @@
     </tbody>
 </table>
 </body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const writeButton = document.querySelector("button[formaction='/topic/write']");
+        const select = document.getElementById("localSelect");
+
+        writeButton.addEventListener("click", function (e) {
+            if (!select.value) {
+                e.preventDefault();
+                alert("지역을 선택해주세요!");
+            }
+        });
+    });
+</script>
 </html>

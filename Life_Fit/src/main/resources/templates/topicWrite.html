@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>주제 게시판 글쓰기</title>
+</head>
+<body>
+<h1>주제 게시판 글쓰기</h1>
+
+<form th:action="@{/topic/write}" method="post" th:object="${boardDTO}">
+    <label>제목:</label>
+    <input type="text" th:field="*{title}" required/><br/><br/>
+
+    <label>내용:</label><br/>
+    <textarea th:field="*{content}" rows="10" cols="50" required></textarea><br/><br/>
+
+    <!-- 숨겨진 필드: boardType 고정 -->
+    <input type="hidden" th:field="*{boardType}" th:value="'TOPIC'"/>
+
+    <!-- 숨겨진 필드: localCateId -->
+    <input type="hidden" th:field="*{localCateId}"/>
+
+    <button type="submit">글쓰기</button>
+</form>
+
+
+
+
+</body>
+</html>

@@ -19,11 +19,11 @@ public class BoardDTO {
     private Long localCateId; // nullable
     private String title;
     private String content;
-    private String userId;
     private LocalDateTime regdate;
     private LocalDateTime moddate;
     private int visitcount;
     private int likes;
+    private String userId;
 
     public BoardDTO(Board board) {
         this.bno = board.getBno();
@@ -36,5 +36,6 @@ public class BoardDTO {
         this.moddate = board.getModdate();
         this.visitcount = board.getVisitcount();
         this.likes = board.getLikes();
+        /*this.userId = board.getUser() != null ? board.getUser().getUserId() : null;*/
     }
 }

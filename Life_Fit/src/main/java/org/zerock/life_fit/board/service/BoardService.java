@@ -100,6 +100,10 @@ public class BoardService {
         return boardRepository.findByBoardType(boardType);
     }
 
+    public List<Board> findByLocalAndBoardType(Long localCateId, String boardType) {
+        return boardRepository.findByLocalCate_LocalnumAndBoardType(localCateId, boardType);
+    }
+
 
     public List<Board> findlocal(Long localnum) {
         return boardRepository.findByLocalCate_Localnum(localnum);
@@ -119,6 +123,7 @@ public class BoardService {
         // 필요한 필드만 수정
         entity.setTitle(board.getTitle());
         entity.setContent(board.getContent());
+        entity.setLocalCate(board.getLocalCate());
         return entity; //
     }
 
