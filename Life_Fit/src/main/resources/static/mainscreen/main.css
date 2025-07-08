@@ -27,6 +27,15 @@ body {
     border: #aaa solid 1px;
     user-select: none;
 }
+#popup-info {
+    position: absolute;
+    visibility: hidden;
+    width: 200px;
+    height: 200px;
+    border: #aaa solid 1px;
+    background-color: #fff;
+    z-index: 10;
+}
 #map {
     position: absolute;
     left: 80px;
@@ -63,7 +72,7 @@ body {
     left: 80px;
     height: 400px;
     max-height: calc(100vh - 200px);
-    width: 300px;
+    width: auto;
     background-color: #fff;
     border: #aaa solid 1px;
 }

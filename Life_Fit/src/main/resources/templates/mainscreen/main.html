@@ -25,64 +25,36 @@
 	<div id="content">
 		<div id="sidebar">
 			<!-- TODO: 사이드바 메뉴에 대신 아이콘 이미지를 제작해 삽입한다. 규격: 80px*80px -->
-			<div id="main-sidebar-1" class="sidebar-menu" onclick="sidebarPopup(1)">
-				카테고리
-			</div>
-			<div id="main-sidebar-2" class="sidebar-menu" onclick="sidebarPopup(2)">
+<!--			<div id="main-sidebar-1" class="sidebar-menu" onclick="sidebarPopup(1)">-->
+<!--				카테고리-->
+<!--			</div>-->
+			<div id="main-sidebar-1" class="sidebar-menu" onclick="sidebarPopup(2)">
 				검색
 			</div>
-			<div id="main-sidebar-3" class="sidebar-menu">
+			<div id="main-sidebar-2" class="sidebar-menu">
 				<a href="#">커뮤니티</a>
 			</div>
 		</div>
 
-		<div id="popup-category" class="popup-search">
-			<form method="get">
-				<div id="popup-category-area">
-					<label for="popup-category-area-dropdown">지역 선택</label>
-					<select name="area" id="popup-category-area-dropdown">
-						<option value="부산" selected>부산</option>
-						<option value="부산진구">부산진구</option>
-					</select>
-				</div>
-				<div id="popup-category-category">
-					<table id="popup-category-table">
-						<tr>
-							<td>
-								<input type="radio" id="popup-category-category-option1" name="category" value="교통">
-								<label for="popup-category-category-option1">교통</label>
-							</td>
-							<td>
-								<input type="radio" id="popup-category-category-option2" name="category" value="의료">
-								<label for="popup-category-category-option2">의료</label>
-							</td>
-							<td>
-								<input type="radio" id="popup-category-category-option3" name="category" value="교육">
-								<label for="popup-category-category-option3">교육</label>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<input type="radio" id="popup-category-category-option4" name="category" value="편의">
-								<label for="popup-category-category-option4">편의</label>
-							</td>
-							<td>
-								<input type="radio" id="popup-category-category-option5" name="category" value="문화">
-								<label for="popup-category-category-option5">문화</label>
-							</td>
-							<td>
-								<input type="radio" id="popup-category-category-option6" name="category" value="치안">
-								<label for="popup-category-category-option6">치안</label>
-							</td>
-						</tr>
-					</table>
-				</div>
-				<div id="popup-category-button">
-					<input type="reset" value="리셋">
-					<input type="button"  onclick="categorySearch()" value="검색">
-				</div>
-			</form>
-		</div>
+<!--		<div id="popup-category" class="popup-search">-->
+<!--			<form method="get">-->
+<!--				<div id="popup-category-area">-->
+<!--					<label for="popup-category-area-dropdown">지역 선택</label>-->
+<!--					<select name="area" id="popup-category-area-dropdown">-->
+<!--						<option value="부산" selected>부산</option>-->
+<!--						<option value="부산진구">부산진구</option>-->
+<!--					</select>-->
+<!--				</div>-->
+<!--				<div id="popup-category-category">-->
+<!--					<table id="popup-category-table">-->
+<!--					</table>-->
+<!--				</div>-->
+<!--				<div id="popup-category-button">-->
+<!--					<input type="reset" value="리셋">-->
+<!--					<input type="button"  onclick="search()" value="검색">-->
+<!--				</div>-->
+<!--			</form>-->
+<!--		</div>-->
 		<div id="popup-keyword" class="popup-search">
 			<form method="get" >
 				<div id="popup-keyword-keyword">
@@ -93,102 +65,83 @@
 					<table id="popup-keyword-table">
 						<tr>
 							<td>
-								<input type="radio" id="popup-keyword-category-option1" name="category" value="교통">
-								<label for="popup-keyword-category-option1">교통</label>
+								<input type="radio" id="popup-keyword-category-option1" name="category" value="지하철">
+								<label for="popup-keyword-category-option1">지하철</label>
 							</td>
 							<td>
-								<input type="radio" id="popup-keyword-category-option2" name="category" value="의료">
-								<label for="popup-keyword-category-option2">의료</label>
+								<input type="radio" id="popup-keyword-category-option2" name="category" value="버스">
+								<label for="popup-keyword-category-option2">버스</label>
 							</td>
 							<td>
-								<input type="radio" id="popup-keyword-category-option3" name="category" value="교육">
-								<label for="popup-keyword-category-option3">교육</label>
+								<input type="radio" id="popup-keyword-category-option3" name="category" value="병원/약국">
+								<label for="popup-keyword-category-option3">병원/약국</label>
+							</td>
+							<td>
+								<input type="radio" id="popup-keyword-category-option4" name="category" value="어린이집">
+								<label for="popup-keyword-category-option4">어린이집</label>
 							</td>
 						</tr>
 						<tr>
 							<td>
-								<input type="radio" id="popup-keyword-category-option4" name="category" value="편의">
-								<label for="popup-keyword-category-option4">편의</label>
+								<input type="radio" id="popup-keyword-category-option5" name="category" value="초등학교">
+								<label for="popup-keyword-category-option5">초등학교</label>
 							</td>
 							<td>
-								<input type="radio" id="popup-keyword-category-option5" name="category" value="문화">
-								<label for="popup-keyword-category-option5">문화</label>
+								<input type="radio" id="popup-keyword-category-option6" name="category" value="중학교">
+								<label for="popup-keyword-category-option6">중학교</label>
 							</td>
 							<td>
-								<input type="radio" id="popup-keyword-category-option6" name="category" value="치안">
-								<label for="popup-keyword-category-option6">치안</label>
+								<input type="radio" id="popup-keyword-category-option7" name="category" value="고등학교">
+								<label for="popup-keyword-category-option7">고등학교</label>
+							</td>
+							<td>
+								<input type="radio" id="popup-keyword-category-option8" name="category" value="학원">
+								<label for="popup-keyword-category-option8">학원</label>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="radio" id="popup-keyword-category-option9" name="category" value="치안시설">
+								<label for="popup-keyword-category-option9">치안시설</label>
+							</td>
+							<td>
+								<input type="radio" id="popup-keyword-category-option10" name="category" value="CCTV">
+								<label for="popup-keyword-category-option10">CCTV</label>
+							</td>
+							<td>
+<!--								<input type="radio" id="popup-category-category-option11" name="category" value="치안">-->
+<!--								<label for="popup-category-category-option11">치안</label>-->
+							</td>
+							<td>
+<!--								<input type="radio" id="popup-category-category-option12" name="category" value="치안">-->
+<!--								<label for="popup-category-category-option12">치안</label>-->
 							</td>
 						</tr>
 					</table>
 				</div>
 				<div id="popup-keyword-button">
 					<input type="reset" value="리셋">
-					<input type="button" onclick="keywordSearch()" value="검색">
+					<input type="button" onclick="search()" value="검색">
 				</div>
 			</form>
 		</div>
-
 		<div id="map"></div>
+	</div>
+	<div id="popup-info" class="popup-info">
+		<h6 id="popup-info-title"></h6>
+		<div id="popup-info-location"></div>
+		<a href="#" target="_blank" id="popup-info-url">상세보기</a>
 	</div>
 </div>
 
 
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e262bfbb1608191632ecc076189ec9cc&libraries=services"></script>
+<script type="text/javascript" src="/mainscreen/main.js"></script>
 <script>
-	var sidebarStatus = 0;
-	function sidebarPopup(status) {
-		if (status === sidebarStatus) {
-			sidebarStatus = 0;
-		} else {
-			if (sidebarStatus === 1) {
-				var popup = document.getElementById('popup-category');
-				popup.classList.toggle('popup-show');
-			} else if (sidebarStatus === 2) {
-				var popup = document.getElementById('popup-keyword');
-				popup.classList.toggle('popup-show');
-			}
-			sidebarStatus = status;
-		}
-		if (status === 1) {
-			var popup = document.getElementById('popup-category');
-			popup.classList.toggle('popup-show');
-		} else if (status === 2) {
-			var popup = document.getElementById('popup-keyword');
-			popup.classList.toggle('popup-show');
-		}
-	}
-
-	function categorySearch() {
-		var area = document.getElementById('popup-category-area-dropdown').value
-		var category = document.querySelector('#popup-category input[type="radio"][name="category"]:checked').value;
-		console.log('area: '+area);
-		console.log('category: '+category);
-		return false;
-	}
-	function keywordSearch() {
-		var keyword = document.getElementById('popup-keyword-keyword-search').value;
-		var category = document.querySelector('#popup-keyword input[type="radio"][name="category"]').value;
-		console.log('keyword: '+keyword);
-		console.log('category: '+category);
-
-		var places = new kakao.maps.services.Places();
-		var callback = function(result, status) {
-			if (status === kakao.maps.services.Status.OK) {
-				console.log(result);
-			}
-		};
-
-
-
-		places.keywordSearch(keyword, callback, {location : map.getCenter()});
-
-		return false;
-	}
-
 	var container = document.getElementById('map');
 	var options = {
-		center: new kakao.maps.LatLng(33.450701, 126.570667),
-		level: 3
+		center: new kakao.maps.LatLng(34.9, 129.08),
+		level: 9
 	};
 
 	var map = new kakao.maps.Map(container, options);
