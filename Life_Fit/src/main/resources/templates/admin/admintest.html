@@ -11,7 +11,7 @@
 <!-- 🔍 검색 필터 -->
 <form th:action="@{/api/admin/search}" method="get" class="row g-2 mb-4">
     <div class="col-md-3">
-        <input type="text" name="userId" class="form-control" placeholder="회원 ID">
+        <input type="text" name="email" class="form-control" placeholder="이메일" th:value="${param.email}">
     </div>
     <div class="col-md-3">
         <input type="text" name="username" class="form-control" placeholder="이름">
@@ -42,8 +42,9 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="user : ${users}">
+    <tr th:each="user : ${userPage.content}">
         <td th:text="${user.userId}"></td>
+
 
         <!-- 회원 정보 수정 폼 -->
         <td>
@@ -94,5 +95,33 @@
     </tr>
     </tbody>
 </table>
+
+<div class="d-flex justify-content-center mt-4">
+    <nav>
+        <ul class="pagination">
+            <!-- 이전 페이지 -->
+            <li class="page-item" th:classappend="${userPage.first} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/api/admin/test(page=${userPage.number - 1}, size=${userPage.size})}">이전</a>
+            </li>
+
+            <!-- 페이지 번호 반복 -->
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(0, userPage.totalPages - 1)}"
+                th:classappend="${userPage.number == i} ? 'active'">
+                <a class="page-link"
+                   th:href="@{/api/admin/test(page=${i}, size=${userPage.size})}"
+                   th:text="${i + 1}">1</a>
+            </li>
+
+            <!-- 다음 페이지 -->
+            <li class="page-item" th:classappend="${userPage.last} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/api/admin/test(page=${userPage.number + 1}, size=${userPage.size})}">다음</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
 </body>
 </html>

@@ -1,6 +1,9 @@
 package org.zerock.life_fit.admin.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.zerock.life_fit.admin.dto.UserDTO;
 import org.zerock.life_fit.admin.repository.UserRepository;
@@ -28,7 +31,7 @@ public class AdminServiceImpl implements AdminService {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            user.setUsername(dto.getUsername());
+            user.setName(dto.getName());
             user.setEmail(dto.getEmail());
             user.setPhoneNumber(dto.getPhoneNumber());
             user.setNickname(dto.getNickname());
@@ -60,9 +63,22 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<UserDTO> searchUsers(String userId, String username, String role) {
-        return userRepository.searchUsers(userId, username, role).stream()
+    public List<UserDTO> searchUsers(String email, String username, String role) {
+        return userRepository.searchUsers(email, username, role).stream()
                 .map(UserDTO::fromEntity)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Page<UserDTO> getUsersWithPaging(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable).map(UserDTO::fromEntity);
+    }
+
+    @Override
+    public Page<UserDTO> searchUsersWithPaging(String email, String username, String role, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.searchUsersWithPaging(email, username, role, pageable)
+                .map(UserDTO::fromEntity);
     }
 }

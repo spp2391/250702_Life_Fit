@@ -1,13 +1,12 @@
 package org.zerock.life_fit.admin.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.life_fit.admin.dto.UserDTO;
 import org.zerock.life_fit.admin.service.AdminService;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/api/admin")
@@ -16,23 +15,31 @@ public class AdminController {
 
     private final AdminService adminService;
 
-    // 🔹 전체 목록 출력
     @GetMapping("/test")
-    public String adminTestPage(Model model) {
-        model.addAttribute("users", adminService.getAllUsers());
+    public String adminTestPage(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            Model model) {
+
+        Page<UserDTO> userPage = adminService.getUsersWithPaging(page, size);
+        model.addAttribute("userPage", userPage);
+        return "admin/admintest";
+    }
+
+
+    @GetMapping("/search")
+    public String searchUsers(@RequestParam(required = false) String email,
+                              @RequestParam(required = false) String username,
+                              @RequestParam(required = false) String role,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "10") int size,
+                              Model model) {
+
+        Page<UserDTO> filteredUsers = adminService.searchUsersWithPaging(email, username, role, page, size);
+        model.addAttribute("userPage", filteredUsers);
         return "admintest";
     }
 
-    // 🔍 회원 검색
-    @GetMapping("/search")
-    public String searchUsers(@RequestParam(required = false) String userId,
-                              @RequestParam(required = false) String username,
-                              @RequestParam(required = false) String role,
-                              Model model) {
-        List<UserDTO> filteredUsers = adminService.searchUsers(userId, username, role);
-        model.addAttribute("users", filteredUsers);
-        return "admintest";
-    }
 
     // ✏️ 회원 정보 수정
     @PostMapping("/users/{userId}")

@@ -9,8 +9,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
+
     private String userId;
-    private String username;
+    private String name;         // username → name으로 변경
     private String nickname;
     private String email;
     private String phoneNumber;
@@ -21,7 +22,7 @@ public class UserDTO {
     public static UserDTO fromEntity(User user) {
         return new UserDTO(
                 user.getUserId(),
-                user.getUsername(),
+                user.getName(),              // username → name
                 user.getNickname(),
                 user.getEmail(),
                 user.getPhoneNumber(),
