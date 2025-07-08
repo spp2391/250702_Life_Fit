@@ -1,6 +1,7 @@
 package org.zerock.life_fit.board.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,8 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import org.zerock.life_fit.board.domain.Board;
 import org.zerock.life_fit.board.domain.LocalCate;
 import org.zerock.life_fit.board.dto.BoardDTO;
+import org.zerock.life_fit.board.dto.PageRequestDTO;
+import org.zerock.life_fit.board.dto.PageResponseDTO;
 import org.zerock.life_fit.board.service.BoardService;
 import org.zerock.life_fit.board.service.LocalCateService;
+import org.zerock.life_fit.board.service.PageService;
 import org.zerock.life_fit.user.domain.User;
 
 import java.util.List;
@@ -19,12 +23,25 @@ import java.util.List;
 public class RestBoardController {
         public final BoardService boardService;
         public final LocalCateService localCateService;
-    @GetMapping("/free")
-    public String listFreeBoards(Model model) {
-        List<Board> freeBoards = boardService.findByBoardType("FREE");  // 자유게시판 글만 조회
-        model.addAttribute("boards", freeBoards);
-        return "boardList";
-    }
+        public final PageService pageService;
+
+   @GetMapping("/free")
+   public String listFreeBoards(
+           @RequestParam(required = false, defaultValue = "all") String searchType,
+           Model model,
+           PageRequestDTO pageRequestDTO,
+           HttpServletRequest request) {
+
+       PageResponseDTO<BoardDTO> responseDTO = pageService.getFreeBoardList(pageRequestDTO, searchType);
+
+       model.addAttribute("requestURI", request.getRequestURI());
+       model.addAttribute("responseDTO", responseDTO);
+       model.addAttribute("keyword", pageRequestDTO.getKeyword());
+       model.addAttribute("searchType", searchType);
+
+       return "boardList";
+   }
+
 
         /*@GetMapping("/topic")
         public String listTopicBoards(Model model) {
@@ -37,7 +54,7 @@ public class RestBoardController {
             return "topicList"; // templates/topicList.html
         }*/
 
-        @GetMapping("/topic")
+        /*@GetMapping("/topic")
         public String listTopicBoards(
                 @RequestParam(value = "localId", required = false) Long localId,
                 Model model
@@ -56,7 +73,44 @@ public class RestBoardController {
             model.addAttribute("boards", topicBoards);
             model.addAttribute("localList", localList);
             return "topicList";
+        }*/
+        /*@GetMapping("/topic")
+        public String listTopicBoards(@RequestParam(required = false) Long localId,
+                                      @RequestParam(required = false) String keyword,
+                                      PageRequestDTO pageRequestDTO,
+                                      Model model, HttpServletRequest request) {
+            pageRequestDTO.setKeyword(keyword);
+
+            PageResponseDTO<BoardDTO> responseDTO = pageService.getTopicBoardList(pageRequestDTO, localId ,keyword);
+            model.addAttribute("responseDTO", responseDTO);
+            model.addAttribute("localList", localCateService.getAllLocalCates());
+            model.addAttribute("selectedLocalId", localId);
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("requestURI", request.getRequestURI());
+
+            return "topicList"; // 주제게시판 뷰
+        }*/
+        @GetMapping("/topic")
+        public String listTopicBoards(@RequestParam(required = false) Long localId,
+                                      @RequestParam(required = false) String keyword,
+                                      @RequestParam(required = false, defaultValue = "all") String searchType,
+                                      PageRequestDTO pageRequestDTO,
+                                      Model model, HttpServletRequest request) {
+
+            pageRequestDTO.setKeyword(keyword);
+
+            PageResponseDTO<BoardDTO> responseDTO = pageService.getTopicBoardList(pageRequestDTO, localId, keyword, searchType);
+
+            model.addAttribute("responseDTO", responseDTO);
+            model.addAttribute("localList", localCateService.getAllLocalCates());
+            model.addAttribute("selectedLocalId", localId);
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("searchType", searchType);
+            model.addAttribute("requestURI", request.getRequestURI());
+
+            return "topicList"; // 주제게시판 뷰
         }
+
 
         @GetMapping("/write")
         public String showWriteForm(Model model) {
@@ -77,22 +131,7 @@ public class RestBoardController {
         }
 
 
-       /* @GetMapping("/topic/write")
-        public String writeForm(@RequestParam(required = false) Long localCateId, Model model) {
-            BoardDTO boardDTO = new BoardDTO();
 
-            if (localCateId != null) {
-                boardDTO.setLocalCateId(localCateId);
-            }
-
-            model.addAttribute("boardDTO", boardDTO);
-
-            // 지역 목록도 전달 (필요하다면 선택 UI용)
-            List<LocalCate> localList = localCateService.getAllLocalCates();
-            model.addAttribute("localList", localList);
-
-            return "topicWrite";  // 글쓰기 폼 뷰 이름
-        }*/
        @GetMapping("/topic/write")
        public String writeForm(@RequestParam(value = "localId", required = false) Long localId, Model model) {
            BoardDTO boardDTO = new BoardDTO();
@@ -129,7 +168,8 @@ public class RestBoardController {
 
         @GetMapping("/board/{bno}")
         public String viewBoardDetail(@PathVariable Long bno, Model model) {
-            Board board = boardService.findById(bno); // 예외 처리 포함됨
+            /*Board board = boardService.findById(bno);*/ // 예외 처리 포함됨
+            Board board = boardService.increaseVisitCount(bno);
             model.addAttribute("board", board);
             model.addAttribute("comments", board.getComments());
             return "boardDetail"; // 하나의 통합 뷰
@@ -173,6 +213,16 @@ public class RestBoardController {
             boardService.update(existing);
 
             return "redirect:/board/" + bno;
+        }
+    @GetMapping("/notice")
+        public String viewNotice() {
+            return "notice";
+        }
+        @ResponseBody
+        @PostMapping("/board/{bno}/like")
+        public int likeBoard(@PathVariable Long bno) {
+            Board board = boardService.increaseLikes(bno);
+            return board.getLikes();
         }
 
     }

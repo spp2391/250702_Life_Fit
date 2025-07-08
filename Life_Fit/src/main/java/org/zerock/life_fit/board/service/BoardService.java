@@ -35,40 +35,6 @@ public class BoardService {
     }//게시글 저장
 
 
-
-        /*@Transactional
-        public Board save(BoardDTO dto, User user) {
-            LocalCate localCate = null;
-            Board.BoardType boardType = Board.BoardType.valueOf(dto.getBoardType());
-
-            if (boardType == Board.BoardType.TOPIC) {
-                localCate = localCateRepository.findById(dto.getLocalCateId())
-                        .orElseThrow(() -> new IllegalArgumentException("해당 지역이 존재하지 않습니다."));
-            }
-
-            Board board = Board.builder()
-                    .title(dto.getTitle())
-                    .content(dto.getContent())
-                    .boardType(boardType)
-
-                    .localCate(localCate)
-                    .visitcount(0)
-                    .likes(0)
-                    .regdate(LocalDateTime.now())
-                    .moddate(LocalDateTime.now())
-                    .build();
-
-        return boardRepository.save(board);
-    }
-
-   *//* public List<Board> findByBoardType(String boardType) {
-        return boardRepository.findByBoardType(boardType);
-    }//자유게시판인지,주제게시판인지*//*
-    public List<Board> findByBoardType(String boardType) {
-        Board.BoardType boardTypeEnum = Board.BoardType.valueOf(boardType);
-        return boardRepository.findByBoardType(boardTypeEnum);
-    }
-*/
         @Transactional
         public Board save(BoardDTO dto, User user) {
             LocalCate localCate = null;

@@ -15,7 +15,13 @@
 </p>
 
 <p><strong>조회수:</strong> <span th:text="${board.visitcount}">0</span></p>
-<p><strong>좋아요:</strong> <span th:text="${board.likes}">0</span></p>
+<!-- 좋아요 버튼과 카운터 -->
+<p>
+    <strong>좋아요:</strong>
+    <span id="like-count" th:text="${board.likes}">0</span>
+    <button type="button" th:onclick="'likeBoard(' + ${board.bno} + ')'">❤️ 좋아요</button>
+</p>
+
 
 <!-- 주제 게시판일 경우에만 지역 출력 -->
 <div th:if="${board.boardType == 'TOPIC'}">
@@ -81,6 +87,17 @@
         document.getElementById('commentWriteForm').style.display = 'block'; // 댓글 작성 폼 다시 보임
     }
 </script>
-
+<script>
+    function likeBoard(bno) {
+        fetch(`/board/${bno}/like`, {
+            method: 'POST'
+        })
+            .then(response => response.text())
+            .then(count => {
+                document.getElementById('like-count').textContent = count;
+            })
+            .catch(error => console.error("좋아요 처리 중 오류:", error));
+    }
+</script>
 </body>
 </html>

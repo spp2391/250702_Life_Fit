@@ -43,6 +43,7 @@ public class Board {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;*/
 
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id", nullable = true)
     private LocalCate localCate;

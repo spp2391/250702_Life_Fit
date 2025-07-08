@@ -24,11 +24,19 @@ public class BoardDTO {
     private int visitcount;
     private int likes;
     private String userId;
+    private String localCateName;
+    private String keyword;
 
     public BoardDTO(Board board) {
         this.bno = board.getBno();
         this.boardType = board.getBoardType();
-        this.localCateId = board.getLocalCate() != null ? board.getLocalCate().getLocalnum() : null;
+        if(board.getLocalCate() != null){
+            this.localCateId = board.getLocalCate().getLocalnum();
+            this.localCateName = board.getLocalCate().getLocalname();  // 추가
+        } else {
+            this.localCateId = null;
+            this.localCateName = null;
+        }
         this.title = board.getTitle();
         this.content = board.getContent();
        /* this.userId = board.getUser() != null ? board.getUser().getUserId() : null;*/
