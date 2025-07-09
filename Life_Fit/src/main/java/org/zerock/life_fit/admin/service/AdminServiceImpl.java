@@ -76,9 +76,10 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public Page<UserDTO> searchUsersWithPaging(String email, String username, String role, int page, int size) {
+    public Page<UserDTO> searchUsersWithPaging(String email, String name, String role, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return userRepository.searchUsersWithPaging(email, username, role, pageable)
+        return userRepository.searchUsersWithPaging(name, role, pageable)
                 .map(UserDTO::fromEntity);
     }
+
 }

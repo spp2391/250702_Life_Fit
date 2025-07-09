@@ -14,14 +14,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // ✅ CSRF 비활성화 (람다 방식)
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/admin/**").permitAll() // 관리자 페이지 전체 허용
+                        .requestMatchers("/api/admin/**").permitAll()
                         .anyRequest().permitAll()
                 )
-                .formLogin(Customizer.withDefaults())  // ✅ 로그인 기본 설정 허용
-                .logout(logout -> logout.logoutSuccessUrl("/login?logout")); // ✅ 로그아웃 설정
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.sameOrigin())  // ← 이 부분 중요
+                )
+                .formLogin(Customizer.withDefaults())
+                .logout(logout -> logout.logoutSuccessUrl("/login?logout"));
 
         return http.build();
     }
 }
+
+

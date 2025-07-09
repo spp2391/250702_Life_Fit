@@ -12,20 +12,18 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, String> {
 
     @Query(value = "SELECT * FROM user " +
-            "WHERE (:email IS NULL OR :email = '' OR email LIKE %:email%) " +
-            "AND (:username IS NULL OR :username = '' OR username LIKE %:username%) " +
+            "WHERE (:name IS NULL OR :name = '' OR name LIKE %:name%) " +
             "AND (:role IS NULL OR :role = '' OR role = :role)",
             countQuery = "SELECT COUNT(*) FROM user " +
-                    "WHERE (:email IS NULL OR :email = '' OR email LIKE %:email%) " +
-                    "AND (:username IS NULL OR :username = '' OR username LIKE %:username%) " +
+                    "WHERE (:name IS NULL OR :name = '' OR name LIKE %:name%) " +
                     "AND (:role IS NULL OR :role = '' OR role = :role)",
             nativeQuery = true)
     Page<User> searchUsersWithPaging(
-            @Param("email") String email,
-            @Param("username") String username,
+            @Param("name") String name,
             @Param("role") String role,
             Pageable pageable
     );
+
 
     @Query(value = "SELECT * FROM user " +
             "WHERE (:email IS NULL OR :email = '' OR email LIKE %:email%) " +

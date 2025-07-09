@@ -46,7 +46,8 @@
         <th>번호</th>
         <th>제목</th>
         <th>내용</th>
-        <th>작성자</th>
+        <th>닉네임</th>
+        <th>회원ID</th>
         <th>작성일</th>
         <th>수정</th>
         <th>삭제</th>
@@ -58,11 +59,13 @@
         <td th:text="${post.bno}">1</td>
         <td th:text="${post.title}">제목</td>
         <td th:text="${post.content}">내용</td>
-        <td th:text="${post.nickname}">작성자</td>
+        <td th:text="${post.nickname}">닉네임</td>
+        <td th:text="${post.userId}">회원ID</td>
         <td th:text="${#temporals.format(post.regdate, 'yyyy-MM-dd HH:mm')}">작성일</td>
         <td>
             <button type="button"
-                    th:onclick="'openPostEditModal(' + ${post.bno} + ', \'' + ${post.title} + '\', \'' + ${post.content} + '\')'">
+                    class="edit-post-btn"
+                    th:attr="data-bno=${post.bno}, data-title=${post.title}, data-content=${post.content}">
                 수정
             </button>
         </td>
@@ -109,6 +112,17 @@
 </div>
 
 <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".edit-post-btn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const bno = this.dataset.bno;
+                const title = this.dataset.title;
+                const content = this.dataset.content;
+                openPostEditModal(bno, title, content);
+            });
+        });
+    });
+
     function loadComments(bno) {
         fetch(`/api/admin/posts/${bno}/comments`)
             .then(res => res.json())
@@ -116,7 +130,7 @@
                 const section = document.getElementById("comments-section");
                 section.innerHTML = "";
                 if (!data || data.length === 0) {
-                    section.innerHTML = "<p>📭 댓글이 없습니다.</p>";
+                    section.innerHTML = "<p>📬 댓글이 없습니다.</p>";
                     return;
                 }
 

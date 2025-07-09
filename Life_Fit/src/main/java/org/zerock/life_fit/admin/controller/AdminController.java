@@ -15,54 +15,56 @@ public class AdminController {
 
     private final AdminService adminService;
 
+    // 관리자 메인 패널 (사이드바 포함)
+    @GetMapping("/panel")
+    public String adminPanel() {
+        return "admin/adminpanel";
+    }
+
+    // 회원관리 iframe 로딩용
     @GetMapping("/test")
-    public String adminTestPage(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            Model model) {
+    public String adminTestPage(@RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "10") int size,
+                                Model model) {
 
         Page<UserDTO> userPage = adminService.getUsersWithPaging(page, size);
         model.addAttribute("userPage", userPage);
-        return "admin/admintest";
+        return "admin/admintest"; // 회원관리 템플릿
     }
 
-
     @GetMapping("/search")
-    public String searchUsers(@RequestParam(required = false) String email,
-                              @RequestParam(required = false) String username,
+    public String searchUsers(@RequestParam(required = false) String name,
                               @RequestParam(required = false) String role,
                               @RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "10") int size,
                               Model model) {
-
-        Page<UserDTO> filteredUsers = adminService.searchUsersWithPaging(email, username, role, page, size);
+        Page<UserDTO> filteredUsers = adminService.searchUsersWithPaging(null, name, role, page, size);
         model.addAttribute("userPage", filteredUsers);
-        return "admintest";
+        return "admin/admintest";
     }
 
-
-    // ✏️ 회원 정보 수정
+    //회원 정보 수정
     @PostMapping("/users/{userId}")
     public String updateUser(@PathVariable String userId, @ModelAttribute UserDTO dto) {
         adminService.updateUser(userId, dto);
         return "redirect:/api/admin/test";
     }
 
-    // 🗑 회원 삭제
+    // 회원 삭제
     @PostMapping("/users/{userId}/delete")
     public String deleteUser(@PathVariable String userId) {
         adminService.deleteUser(userId);
         return "redirect:/api/admin/test";
     }
 
-    // 🔁 권한 변경
+    // 권한 변경
     @PostMapping("/users/{userId}/role")
     public String changeRole(@PathVariable String userId, @RequestParam String role) {
         adminService.changeUserRole(userId, role);
         return "redirect:/api/admin/test";
     }
 
-    // 🔐 비밀번호 초기화
+    //  비밀번호 초기화
     @PostMapping("/users/{userId}/reset-password")
     public String resetPassword(@PathVariable String userId) {
         adminService.resetPassword(userId);
