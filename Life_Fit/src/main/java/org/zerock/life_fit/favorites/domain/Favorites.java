@@ -22,10 +22,14 @@ public class Favorites {
     private Long num;
     @Column(name="userId", nullable = false)
     private String userId;
+    @Column(name="name", nullable = false)
+    private String name;
     @Column(name="address", nullable = false)
     private String address;
     @Column(name="description")
     private String description;
+    @Column(name="url", nullable = false)
+    private String url;
     @CreatedDate
     @Column(name="regdate")
     private LocalDateTime regdate;
@@ -34,15 +38,20 @@ public class Favorites {
     private LocalDateTime moddate;
 
     @Builder
-    public Favorites(String userId, String address, String description) {
+    public Favorites(String userId, String name, String address, String description, String url) {
         this.userId = userId;
         this.address = address;
+        if(name.isEmpty()) {
+            this.name = address;
+        } else {
+            this.name = name;
+        }
         if(!description.isEmpty()) {
             this.description = description;
         }
+        this.url = url;
     }
-    public void update(String address, String description) {
-        this.address = address;
+    public void update(String description) {
         this.description = description;
     }
 }

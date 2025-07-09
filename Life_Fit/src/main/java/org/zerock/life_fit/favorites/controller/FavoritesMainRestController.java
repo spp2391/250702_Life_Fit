@@ -14,7 +14,11 @@ public class FavoritesMainRestController {
 
     @PostMapping("/favorite/add")
     public void addFavorite(@RequestBody SaveFavoriteRequest saveFavoriteRequest) {
-        favoritesService.saveFavorite(saveFavoriteRequest);
+        if (favoritesService.checkFavorites(saveFavoriteRequest.getUserId(), saveFavoriteRequest.getAddress())) {
+            System.out.println("favorite already exists");
+        } else {
+            favoritesService.saveFavorite(saveFavoriteRequest);
+        }
     }
 
     @PostMapping("/favorite/remove")
