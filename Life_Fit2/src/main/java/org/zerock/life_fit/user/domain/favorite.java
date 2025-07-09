@@ -20,8 +20,6 @@ public class favorite {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id", updatable=false)
     private int num;
-    /*@Column(name="num", updatable=false)
-    private Long num;*/
     @Column(name="userId", nullable = false)
     private String userId;
     @Column(name="address", nullable = false)
@@ -34,25 +32,17 @@ public class favorite {
     @LastModifiedDate
     @Column(name="moddate")
     private LocalDateTime moddate;
-    @Column(name = "url")
-    private String url;
-    @Column(name = "title")
-    private String title;
 
-    @Builder
-    public favorite(String userId, String address, String description,String url, String title) {
+    /*@Builder
+    public Favorites(String userId, String address, String description) {
         this.userId = userId;
         this.address = address;
         if(!description.isEmpty()) {
             this.description = description;
         }
-        this.regdate = LocalDateTime.now();
-        this.url = url;
-        this.title = title;
-    }
+    }*/
     public void update(String address, String description) {
         this.address = address;
         this.description = description;
-        this.moddate = LocalDateTime.now();
     }
 }

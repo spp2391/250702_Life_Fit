@@ -2,7 +2,6 @@ package org.zerock.life_fit.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.zerock.life_fit.user.domain.favorite;
 import org.zerock.life_fit.user.dto.FavoriteDTO;
 import org.zerock.life_fit.user.repository.FavoriteRepository;
 
@@ -13,22 +12,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class FavoriteService {
+
     private final FavoriteRepository favoriteRepository;
-
-    public List<favorite> findall() {
-        return favoriteRepository.findAll();
-    }
-
-    public favorite findById(int id) {
-        return favoriteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not Found" + id));
-    }
-
-    public void delete(int id, String userId) {
-        favorite favorite = favoriteRepository.findById(id).get();
-        if(favorite.getUserId().equals(userId)) {
-            favoriteRepository.deleteById(id);
-        }
-    }
 
     public List<FavoriteDTO> getFavoritesByUserId(String userId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

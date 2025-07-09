@@ -25,12 +25,12 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/member/login","/member/update", "/member/join", "/member/profile", "/member/favorite","/member/favorites","/member/favorites/{num}","/css/**", "/js/**").permitAll()
+                        .requestMatchers("/","/member/login", "/member/join", "/member/profile", "/member/article","/css/**", "/js/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/member/login")
-                        .defaultSuccessUrl("/member/favorites")
+                        .defaultSuccessUrl("/member/profile")
                         .failureUrl("/member/login?error=true")
                 )
                 .logout(logout -> logout
@@ -53,11 +53,15 @@ public class SecurityConfig {
 //    }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    public AuthenticationManager authenticationManager(
+            HttpSecurity http,
+            BCryptPasswordEncoder passwordEncoder,
+            UserDetailsService userDetailsService
+    ) throws Exception {
         AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authBuilder
                 .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
+                .passwordEncoder(passwordEncoder);
 
         return authBuilder.build();
     }

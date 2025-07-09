@@ -9,14 +9,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserRegisterRequest {
-    private Long userId;
+public class UserLoginRequest {
     @Email @NotBlank
-    private String email;
+    private String username;
     @NotBlank
     private String password;
-    @NotBlank
-    private String nickname;
-    @NotBlank
-    private String name;
 }

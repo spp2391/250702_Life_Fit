@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -69,29 +68,23 @@ public class UserController {
         return "member/profile";
     }
 
-    /*@DeleteMapping("/favorite/{num}")
+    @DeleteMapping("/favorite/{num}")
     @ResponseBody
     public ResponseEntity<?> removeFavorite(@PathVariable int num, HttpSession session) {
         String userId = (String) session.getAttribute("userId");
         favoriteService.removeFavorite(num, userId);
         return ResponseEntity.ok().build();
-    }*/
+    }
 
     // 회원정보 수정
-    /*@PostMapping("/update")
+    @PutMapping("/update")
     public UserProfileResponse updateProfile(@Valid @RequestBody UserRegisterRequest dto, HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");
         return userService.updateUser(userId, dto);
-    }*/
-
-    @PostMapping("/update")
-    public String updateProfile(@Valid UserRegisterRequest dto, Principal principal) {
-        userService.updateUser(principal.getName(), dto);
-        return "redirect:/member/profile";
     }
 
     // 회원 탈퇴
-    @PostMapping("/withdraw")
+    @DeleteMapping("/withdraw")
     public String deleteUser(HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");
         userService.deleteUser(userId);
@@ -99,12 +92,12 @@ public class UserController {
         return "회원 탈퇴가 완료되었습니다.";
     }
 
-    /*// 즐겨찾기 목록 조회 (예시)
+    // 즐겨찾기 목록 조회 (예시)
     @GetMapping("/favorites")
     public List<String> getFavorites(HttpSession session) {
         Long userId = (Long) session.getAttribute("userId");
         return userService.getFavorites(userId);
-    }*/
+    }
 
     // 관리자 여부 확인
     @GetMapping("/admin")

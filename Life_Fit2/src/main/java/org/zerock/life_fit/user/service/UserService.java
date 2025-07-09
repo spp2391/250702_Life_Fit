@@ -41,11 +41,8 @@ public class UserService {
 
     // 회원정보 수정
     @Transactional
-    public UserProfileResponse updateUser(String loginId, UserRegisterRequest dto) {
-        User user = userRepository.findById(dto.getUserId()).orElseThrow();
-        if (!user.getEmail().equals(loginId)) {
-            throw new IllegalArgumentException("권한이 없습니다.");
-        }
+    public UserProfileResponse updateUser(Long userId, UserRegisterRequest dto) {
+        User user = userRepository.findById(userId).orElseThrow();
         user.setNickname(dto.getNickname());
         if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(dto.getPassword()));

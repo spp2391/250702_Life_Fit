@@ -10,7 +10,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class UserRegisterRequest {
-    private Long userId;
     @Email @NotBlank
     private String email;
     @NotBlank
