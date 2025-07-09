@@ -24,7 +24,7 @@
 
         <!-- 버튼들 -->
         <button onclick="location.href='/topic'">주제게시판으로 이동</button>
-        <button onclick="location.href='/write'">글쓰기</button>
+
 
         <!-- 검색 -->
         <form method="get" action="/free">
@@ -72,6 +72,8 @@
             <a th:if="${responseDTO.next}"
                th:href="@{${requestURI}(page=${responseDTO.end + 1}, size=${responseDTO.size}, keyword=${keyword}, searchType=${searchType})}">Next</a>
         </div>
+        <button onclick="location.href='/write'">글쓰기</button>
+
     </div>
 </div>
 <script src="/js/guide.js"></script>
