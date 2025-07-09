@@ -56,7 +56,7 @@
 <!--			</form>-->
 <!--		</div>-->
 		<div id="popup-keyword" class="popup-search">
-			<form method="get" >
+			<form onsubmit="return search(event)">
 				<div id="popup-keyword-keyword">
 					<label for="popup-keyword-keyword-search">키워드 검색</label>
 					<input type="search" name="keyword" id="popup-keyword-keyword-search">
@@ -121,18 +121,18 @@
 				</div>
 				<div id="popup-keyword-button">
 					<input type="reset" value="리셋">
-					<input type="button" onclick="search()" value="검색">
+					<input type="submit" value="검색">
 				</div>
 			</form>
 		</div>
 
 		<div id="map"></div>
 	</div>
-	<div id="popup-info" class="popup-info">
-		<h6 id="popup-info-title"></h6>
-		<div id="popup-info-location"></div>
-		<a href="#" target="_blank" id="popup-info-url">상세보기</a>
-	</div>
+<!--	<div id="popup-info" class="popup-info">-->
+<!--		<h6 id="popup-info-title"></h6>-->
+<!--		<div id="popup-info-location"></div>-->
+<!--		<a href="#" target="_blank" id="popup-info-url">상세보기</a>-->
+<!--	</div>-->
 </div>
 
 

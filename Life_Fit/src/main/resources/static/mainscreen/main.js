@@ -24,14 +24,24 @@ function sidebarPopup(status) {
 }
 
 // TODO: 상세보기 팝업 작성
-function showMarkerInfo(index) {
-    return new kakao.maps.CustomOverlay({
-        map: map,
-        clickable: true,
-        content: '',
-        position: '',
-        
-    });
+var lastSelectedIndex = -1;
+function showMarkerInfo(i, result) {
+    var markerInfo = result[i];
+    var content =
+        '<div id="popup-info" class="popup-info">'
+            +'<div class="place-name">'
+                +markerInfo.place_name
+                +'<div class="close" onclick="closeOverlay()" title="닫기">X</div>'
+            +'</div>'
+            +'<div class="address-name">'
+                +markerInfo.address_name
+            +'</div>'
+            +'<div class="category-name">'
+                +markerInfo.category_name
+            +'</div>'
+            +'<div class="place-url"><a href="'+markerInfo.place_url+'">'+markerInfo.place_url+'</a></div>'
+        +'</div>';
+    return content;
 }
 
 /*
@@ -73,7 +83,9 @@ var places = new kakao.maps.services.Places();
 var infowindow = new kakao.maps.InfoWindow({zIndex:10});
 
 // 메인 검색 함수.
-function search() {
+function search(e) {
+    e.preventDefault();
+    e.stopPropagation();
     // 키워드와 카테고리를 읽는다.
     var keyword = document.getElementById('popup-keyword-keyword-search').value;
     var category = document.querySelector('#popup-keyword input[type="radio"][name="category"]:checked')?.value;
@@ -172,7 +184,10 @@ function displayInfowindow(marker, title) {
     infowindow.setContent(content);
     infowindow.open(map, marker);
 }
-
+function closeOverlay() {
+    let popup = document.getElementById('popup-info');
+    popup.remove();
+}
 // 마커 설정.
 function setMarker(result) {
     var bounds = new kakao.maps.LatLngBounds();
@@ -189,7 +204,7 @@ function setMarker(result) {
             title: title,
             zIndex: 1
         });
-        (function (marker, title) {
+        (function (marker, title, i, result) {
             // 마커의 호버 이벤트 설정.
             kakao.maps.event.addListener(marker, 'mouseover', function() {
                 displayInfowindow(marker, title);
@@ -199,9 +214,35 @@ function setMarker(result) {
             });
             // 마커를 클릭할 시 상세보기 페이지가 보이도록 설정.
             kakao.maps.event.addListener(marker, 'click', function () {
-                showMarkerInfo(i);
+                console.log('clicked', i, title);
+                // lastSelectedIndex의 기본값은 -1. -1일 경우에 팝업이 닫혀있으며, 다른 경우에 열림.
+                if (lastSelectedIndex === i) {
+                    // 현재 열려 있는 팝업의 인덱스랑 클릭한 마커가 같으면 팝업을 닫음.
+                    closeOverlay();
+                    lastSelectedIndex = -1;
+                } else {
+                    if (lastSelectedIndex !== -1) {
+                        // 만약 마커의 값이 -1이 아니라면 팝업을 닫음.
+                        closeOverlay();
+                    }
+                    // 다를 경우 클릭한 마커의 값으로 팝업을 세팅함
+                    // var content = '<div style="background-color: white; z-index: 10;">Hello World</div>';
+                    var content = showMarkerInfo(i, result);
+                    var position = new kakao.maps.LatLng(result[i].y, result[i].x);
+                    var markerInfo = new kakao.maps.CustomOverlay({
+                        clickable: true,
+                        content: content,
+                        position: position,
+                        xAnchor: 0.3,
+                        yAnchor: 0.9,
+                    });
+                    console.log('markerInfo', markerInfo);
+                    console.log('marker', marker);
+                    markerInfo.setMap(map);
+                    lastSelectedIndex = i;
+                }
             })
-        })(marker, title);
+        })(marker, title, i, result);
         // 마커 리스트에 마커 추가.
         markers.push(marker);
     }
