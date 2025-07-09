@@ -214,7 +214,7 @@ public class RestBoardController {
 
             return "redirect:/board/" + bno;
         }
-    @GetMapping("/notice")
+    /*@GetMapping("/notice")
         public String viewNotice() {
             return "notice";
         }
@@ -223,6 +223,6 @@ public class RestBoardController {
         public int likeBoard(@PathVariable Long bno) {
             Board board = boardService.increaseLikes(bno);
             return board.getLikes();
-        }
+        }*/
 
     }
