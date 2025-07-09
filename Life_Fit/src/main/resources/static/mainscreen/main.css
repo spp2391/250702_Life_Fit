@@ -39,8 +39,8 @@ body {
 #map {
     position: absolute;
     left: 80px;
-    width: calc(100vw - 80px);
-    height: calc(100vw - 60px);
+    width: calc(1800px);
+    height: calc(850px);
     border: #aaa solid 1px;
 }
 
@@ -66,7 +66,7 @@ body {
 
 .popup-search {
     position: absolute;
-    z-index: 3;
+    z-index: 5;
     visibility: hidden;
     top: 0;
     left: 80px;
