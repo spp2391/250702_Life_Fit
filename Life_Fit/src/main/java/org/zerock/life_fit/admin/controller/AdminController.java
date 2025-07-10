@@ -6,14 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.life_fit.admin.dto.UserDTO;
-import org.zerock.life_fit.admin.service.UserService;
+import org.zerock.life_fit.admin.service.AdminUserService;
 
 @Controller
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final UserService userService;
+    private final AdminUserService adminUserService;
 
     // 관리자 메인 패널
     @GetMapping("/panel")
@@ -27,7 +27,7 @@ public class AdminController {
                                 @RequestParam(defaultValue = "10") int size,
                                 Model model) {
 
-        Page<UserDTO> userPage = userService.getUsersWithPaging(page, size);
+        Page<UserDTO> userPage = adminUserService.getUsersWithPaging(page, size);
         model.addAttribute("userPage", userPage);
         return "admin/admintest";
     }
@@ -38,32 +38,32 @@ public class AdminController {
                               @RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "10") int size,
                               Model model) {
-        Page<UserDTO> filteredUsers = userService.searchUsersWithPaging(name, role, page, size);
+        Page<UserDTO> filteredUsers = adminUserService.searchUsersWithPaging(name, role, page, size);
         model.addAttribute("userPage", filteredUsers);
         return "admin/admintest";
     }
 
     @PostMapping("/users/{userId}")
     public String updateUser(@PathVariable Long userId, @ModelAttribute UserDTO dto) {
-        userService.updateUser(userId, dto);
+        adminUserService.updateUser(userId, dto);
         return "redirect:/api/admin/test";
     }
 
     @PostMapping("/users/{userId}/delete")
     public String deleteUser(@PathVariable Long userId) {
-        userService.deleteUser(userId);
+        adminUserService.deleteUser(userId);
         return "redirect:/api/admin/test";
     }
 
     @PostMapping("/users/{userId}/role")
     public String changeRole(@PathVariable Long userId, @RequestParam String role) {
-        userService.changeUserRole(userId, role);
+        adminUserService.changeUserRole(userId, role);
         return "redirect:/api/admin/test";
     }
 
     @PostMapping("/users/{userId}/reset-password")
     public String resetPassword(@PathVariable Long userId) {
-        userService.resetPassword(userId);
+        adminUserService.resetPassword(userId);
         return "redirect:/api/admin/test";
     }
 }

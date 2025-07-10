@@ -7,11 +7,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.zerock.life_fit.user.service.CustomUserDetailsService;
+import org.zerock.life_fit.admin.service.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -21,17 +19,20 @@ public class SecurityConfig {
     private final CustomUserDetailsService userDetailsService;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/","/member/login","/member/update", "/member/join", "/member/profile", "/member/favorite","/member/favorites","/member/favorites/{num}","/css/**", "/js/**").permitAll()
+                        .requestMatchers("/", "/css/**", "/js/**").permitAll()
+                        .requestMatchers("/member/login", "/member/join", "/member/favorites", "/member/favorites/{num}").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/member/login")
-                        .defaultSuccessUrl("/member/favorites")
+                        .defaultSuccessUrl("/member/favorites", true)
                         .failureUrl("/member/login?error=true")
+                        .permitAll()
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/member/login?logout")
@@ -47,19 +48,12 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return userDetailsService;
-//    }
-
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authBuilder
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
-
         return authBuilder.build();
     }
-
 }

@@ -9,7 +9,7 @@ import org.zerock.life_fit.admin.repository.AdminPostRepository;
 
 @Service
 @RequiredArgsConstructor
-public class PostService {
+public class AdminPostService {
 
     private final AdminPostRepository adminPostRepository;
 
