@@ -1,4 +1,4 @@
-package org.zerock.life_fit.favorites.domain;
+package org.zerock.life_fit.user.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -10,16 +10,18 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
-@Table(name="favorites")
+@Table(name="favorite")
 @NoArgsConstructor
 @Getter
 @ToString
 @Entity
-public class Favorites {
+public class favorite {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="num", updatable=false)
-    private Long num;
+    @Column(name="id", updatable=false)
+    private int num;
+    /*@Column(name="num", updatable=false)
+    private Long num;*/
     @Column(name="userId", nullable = false)
     private String userId;
     @Column(name="address", nullable = false)
@@ -32,17 +34,25 @@ public class Favorites {
     @LastModifiedDate
     @Column(name="moddate")
     private LocalDateTime moddate;
+    @Column(name = "url")
+    private String url;
+    @Column(name = "title")
+    private String title;
 
     @Builder
-    public Favorites(String userId, String address, String description) {
+    public favorite(String userId, String address, String description,String url, String title) {
         this.userId = userId;
         this.address = address;
         if(!description.isEmpty()) {
             this.description = description;
         }
+        this.regdate = LocalDateTime.now();
+        this.url = url;
+        this.title = title;
     }
     public void update(String address, String description) {
         this.address = address;
         this.description = description;
+        this.moddate = LocalDateTime.now();
     }
 }
