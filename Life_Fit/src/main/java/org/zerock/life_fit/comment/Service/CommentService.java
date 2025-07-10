@@ -1,3 +1,4 @@
+
 package org.zerock.life_fit.comment.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -33,9 +34,10 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    /**
-     * 특정 게시글의 댓글 조회 (엔티티 -> DTO 변환)
-     */
+
+
+
+
     public List<CommentResponseDTO> getCommentsByBoard(Long boardId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
@@ -49,9 +51,8 @@ public class CommentService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * 댓글 삭제
-     */
+
+
     public void deleteComment(Long cno) {
         commentRepository.deleteById(cno);
     }
@@ -65,3 +66,4 @@ public class CommentService {
         commentRepository.save(comment);
     }
 }
+

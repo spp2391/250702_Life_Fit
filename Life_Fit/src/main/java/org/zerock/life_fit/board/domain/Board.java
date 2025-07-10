@@ -79,7 +79,7 @@ public class Board {
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
 
-   /* public void addComment(Comment comment) {
+    public void addComment(Comment comment) {
         comments.add(comment);
         comment.setBoard(this);
     }
@@ -87,6 +87,6 @@ public class Board {
     public void removeComment(Comment comment) {
         comments.remove(comment);
         comment.setBoard(null);
-    }*/
+    }
 }
 

@@ -1,3 +1,4 @@
+
 package org.zerock.life_fit.comment.controller;
 
 import lombok.RequiredArgsConstructor;
@@ -32,3 +33,4 @@ public class CommentController {
         return "redirect:/board/" + boardId;
     }
 }
+
