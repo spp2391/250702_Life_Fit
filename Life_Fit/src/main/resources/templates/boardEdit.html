@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 수정</title>
+</head>
+<body>
+
+<h1>게시글 수정</h1>
+
+<form th:action="@{/board/{bno}/edit(bno=${boardDTO.bno})}" method="post" th:object="${boardDTO}">
+    <label>제목:</label><br/>
+    <input type="text" th:field="*{title}" required/><br/><br/>
+
+    <label>내용:</label><br/>
+    <textarea th:field="*{content}" rows="10" cols="50" required></textarea><br/><br/>
+
+    <!-- ✅ 지역 선택: 주제게시판일 경우만 표시 -->
+    <div th:if="${boardDTO.boardType == 'TOPIC'}">
+        <label>지역 선택:</label><br/>
+        <select th:field="*{localCateId}">
+            <option th:each="local : ${localList}"
+                    th:value="${local.localnum}"
+                    th:text="${local.localname}"
+                    th:selected="${local.localnum == boardDTO.localCateId}">
+            </option>
+        </select><br/><br/>
+    </div>
+
+    <!-- 숨겨진 필드 -->
+    <input type="hidden" th:field="*{boardType}"/>
+
+    <button type="submit">수정 완료</button>
+</form>
+
+</body>
+</html>

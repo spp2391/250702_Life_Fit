@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>관리자 페이지</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            height: 100vh;
+        }
+
+        nav {
+            width: 220px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        nav h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #7f8c8d;
+            padding-bottom: 10px;
+        }
+
+        nav a {
+            display: block;
+            color: #ecf0f1;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            background-color: #34495e;
+        }
+
+        nav a:hover {
+            background-color: #1abc9c;
+        }
+
+        iframe {
+            flex-grow: 1;
+            border: none;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <h3> 관리자 메뉴</h3>
+    <a href="/api/admin/test" target="contentFrame"> 회원관리</a>
+    <a href="/api/admin/posts/html" target="contentFrame"> 게시글/댓글 관리</a>
+</nav>
+<iframe name="contentFrame" src="/api/admin/test"></iframe>
+</body>
+</html>
