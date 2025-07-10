@@ -7,29 +7,29 @@ import org.springframework.stereotype.Service;
 import org.zerock.life_fit.admin.dto.PostDTO;
 import org.zerock.life_fit.admin.repository.AdminPostRepository;
 
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
-public class AdminPostServiceImpl implements AdminPostService {
+public class PostService {
 
     private final AdminPostRepository adminPostRepository;
 
-    @Override
-    public Page<PostDTO> getPosts(String userId, Pageable pageable) {
-        Page<Object[]> results = (userId == null || userId.isEmpty())
-                ? adminPostRepository.findAllPosts(pageable)
-                : adminPostRepository.findPostsByUserId(userId, pageable);
+    public Page<PostDTO> getPosts(String userIdText, Pageable pageable) {
+        Page<Object[]> results;
+
+        if (userIdText == null || userIdText.isEmpty()) {
+            results = adminPostRepository.findAllPosts(pageable);
+        } else {
+            Long userId = Long.parseLong(userIdText);
+            results = adminPostRepository.findPostsByUserId(userId, pageable);
+        }
 
         return results.map(this::mapToPostDTO);
     }
 
-    @Override
     public void updatePost(PostDTO dto) {
         adminPostRepository.updatePost(dto.getBno(), dto.getTitle(), dto.getContent());
     }
 
-    @Override
     public void deletePost(Long bno) {
         adminPostRepository.deleteByBno(bno);
     }
@@ -40,7 +40,7 @@ public class AdminPostServiceImpl implements AdminPostService {
                 .title((String) row[1])
                 .content((String) row[2])
                 .boardType((String) row[3])
-                .userId((String) row[4])
+                .userId(((Number) row[4]).longValue())
                 .nickname((String) row[5])
                 .regdate((java.time.LocalDateTime) row[6])
                 .moddate((java.time.LocalDateTime) row[7])

@@ -6,16 +6,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.life_fit.admin.dto.UserDTO;
-import org.zerock.life_fit.admin.service.AdminService;
+import org.zerock.life_fit.admin.service.UserService;
 
 @Controller
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final AdminService adminService;
+    private final UserService userService;
 
-    // 관리자 메인 패널 (사이드바 포함)
+    // 관리자 메인 패널
     @GetMapping("/panel")
     public String adminPanel() {
         return "admin/adminpanel";
@@ -27,9 +27,9 @@ public class AdminController {
                                 @RequestParam(defaultValue = "10") int size,
                                 Model model) {
 
-        Page<UserDTO> userPage = adminService.getUsersWithPaging(page, size);
+        Page<UserDTO> userPage = userService.getUsersWithPaging(page, size);
         model.addAttribute("userPage", userPage);
-        return "admin/admintest"; // 회원관리 템플릿
+        return "admin/admintest";
     }
 
     @GetMapping("/search")
@@ -38,36 +38,32 @@ public class AdminController {
                               @RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "10") int size,
                               Model model) {
-        Page<UserDTO> filteredUsers = adminService.searchUsersWithPaging(null, name, role, page, size);
+        Page<UserDTO> filteredUsers = userService.searchUsersWithPaging(name, role, page, size);
         model.addAttribute("userPage", filteredUsers);
         return "admin/admintest";
     }
 
-    //회원 정보 수정
     @PostMapping("/users/{userId}")
-    public String updateUser(@PathVariable String userId, @ModelAttribute UserDTO dto) {
-        adminService.updateUser(userId, dto);
+    public String updateUser(@PathVariable Long userId, @ModelAttribute UserDTO dto) {
+        userService.updateUser(userId, dto);
         return "redirect:/api/admin/test";
     }
 
-    // 회원 삭제
     @PostMapping("/users/{userId}/delete")
-    public String deleteUser(@PathVariable String userId) {
-        adminService.deleteUser(userId);
+    public String deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
         return "redirect:/api/admin/test";
     }
 
-    // 권한 변경
     @PostMapping("/users/{userId}/role")
-    public String changeRole(@PathVariable String userId, @RequestParam String role) {
-        adminService.changeUserRole(userId, role);
+    public String changeRole(@PathVariable Long userId, @RequestParam String role) {
+        userService.changeUserRole(userId, role);
         return "redirect:/api/admin/test";
     }
 
-    //  비밀번호 초기화
     @PostMapping("/users/{userId}/reset-password")
-    public String resetPassword(@PathVariable String userId) {
-        adminService.resetPassword(userId);
+    public String resetPassword(@PathVariable Long userId) {
+        userService.resetPassword(userId);
         return "redirect:/api/admin/test";
     }
 }

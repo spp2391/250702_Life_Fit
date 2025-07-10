@@ -15,71 +15,59 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class AdminServiceImpl implements AdminService {
+public class UserService {
 
     private final UserRepository userRepository;
 
-    @Override
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(UserDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public void updateUser(String userId, UserDTO dto) {
+    public void updateUser(Long userId, UserDTO dto) {
         Optional<User> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+        optionalUser.ifPresent(user -> {
             user.setName(dto.getName());
             user.setEmail(dto.getEmail());
             user.setPhoneNumber(dto.getPhoneNumber());
             user.setNickname(dto.getNickname());
             userRepository.save(user);
-        }
+        });
     }
 
-    @Override
-    public void deleteUser(String userId) {
+    public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
     }
 
-    @Override
-    public void resetPassword(String userId) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        optionalUser.ifPresent(user -> {
-            user.setPassword("1234"); // 실제로는 암호화 필요
+    public void resetPassword(Long userId) {
+        userRepository.findById(userId).ifPresent(user -> {
+            user.setPassword("1234"); // 암호화 필요
             userRepository.save(user);
         });
     }
 
-    @Override
-    public void changeUserRole(String userId, String role) {
-        Optional<User> optionalUser = userRepository.findById(userId);
-        optionalUser.ifPresent(user -> {
+    public void changeUserRole(Long userId, String role) {
+        userRepository.findById(userId).ifPresent(user -> {
             user.setRole(role);
             userRepository.save(user);
         });
     }
 
-    @Override
-    public List<UserDTO> searchUsers(String email, String username, String role) {
-        return userRepository.searchUsers(email, username, role).stream()
-                .map(UserDTO::fromEntity)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public Page<UserDTO> getUsersWithPaging(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.findAll(pageable).map(UserDTO::fromEntity);
     }
 
-    @Override
-    public Page<UserDTO> searchUsersWithPaging(String email, String name, String role, int page, int size) {
+    public List<UserDTO> searchUsers(String email, String nickname, String role) {
+        return userRepository.searchUsers(email, nickname, role).stream()
+                .map(UserDTO::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    public Page<UserDTO> searchUsersWithPaging(String name, String role, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.searchUsersWithPaging(name, role, pageable)
                 .map(UserDTO::fromEntity);
     }
-
 }

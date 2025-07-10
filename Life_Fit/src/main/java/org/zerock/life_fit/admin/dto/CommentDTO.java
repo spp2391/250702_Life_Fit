@@ -6,10 +6,11 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class CommentDTO {
     private Long cno;
-    private Long bno;
-    private String writer;
-    private String comment;
+    private String content;
     private LocalDateTime regdate;
+    private Long boardId;
 }
+

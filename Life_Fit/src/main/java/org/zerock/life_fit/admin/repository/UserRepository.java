@@ -9,7 +9,18 @@ import org.zerock.life_fit.user.domain.User;
 
 import java.util.List;
 
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    @Query(value = "SELECT * FROM user " +
+            "WHERE (:email IS NULL OR :email = '' OR email LIKE %:email%) " +
+            "AND (:nickname IS NULL OR :nickname = '' OR nickname LIKE %:nickname%) " +
+            "AND (:role IS NULL OR :role = '' OR role = :role)",
+            nativeQuery = true)
+    List<User> searchUsers(
+            @Param("email") String email,
+            @Param("nickname") String nickname,
+            @Param("role") String role
+    );
 
     @Query(value = "SELECT * FROM user " +
             "WHERE (:name IS NULL OR :name = '' OR name LIKE %:name%) " +
@@ -23,18 +34,4 @@ public interface UserRepository extends JpaRepository<User, String> {
             @Param("role") String role,
             Pageable pageable
     );
-
-
-    @Query(value = "SELECT * FROM user " +
-            "WHERE (:email IS NULL OR :email = '' OR email LIKE %:email%) " +
-            "AND (:username IS NULL OR :username = '' OR username LIKE %:username%) " +
-            "AND (:role IS NULL OR :role = '' OR role = :role)",
-            nativeQuery = true)
-    List<User> searchUsers(
-            @Param("email") String email,
-            @Param("username") String username,
-            @Param("role") String role
-    );
-
 }
-

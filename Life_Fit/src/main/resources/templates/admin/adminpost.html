@@ -31,15 +31,15 @@
     </style>
 </head>
 <body>
-<h2>📋 게시글 및 댓글 관리</h2>
+<h2> 게시글 및 댓글 관리</h2>
 
-<!-- 🔍 검색 -->
+<!--  검색 -->
 <form method="get" th:action="@{/api/admin/posts/html}">
-    <input type="text" name="userId" placeholder="회원 아이디로 검색" th:value="${userId}">
+    <input type="text" name="userId" placeholder="회원 ID로 검색" th:value="${userId}">
     <button type="submit">검색</button>
 </form>
 
-<!-- 📄 게시글 목록 -->
+<!--  게시글 목록 -->
 <table>
     <thead>
     <tr>
@@ -56,12 +56,12 @@
     </thead>
     <tbody>
     <tr th:each="post : ${postPage.content}">
-        <td th:text="${post.bno}">1</td>
-        <td th:text="${post.title}">제목</td>
-        <td th:text="${post.content}">내용</td>
-        <td th:text="${post.nickname}">닉네임</td>
-        <td th:text="${post.userId}">회원ID</td>
-        <td th:text="${#temporals.format(post.regdate, 'yyyy-MM-dd HH:mm')}">작성일</td>
+        <td th:text="${post.bno}"></td>
+        <td th:text="${post.title}"></td>
+        <td th:text="${post.content}"></td>
+        <td th:text="${post.nickname}"></td>
+        <td th:text="${post.userId}"></td>
+        <td th:text="${#temporals.format(post.regdate, 'yyyy-MM-dd HH:mm')}"></td>
         <td>
             <button type="button"
                     class="edit-post-btn"
@@ -70,12 +70,13 @@
             </button>
         </td>
         <td>
-            <form th:action="@{/api/admin/posts/delete/{bno}(bno=${post.bno})}" method="post">
-                <button type="submit" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+            <form th:action="@{/api/admin/posts/delete/{bno}(bno=${post.bno})}" method="post"
+                  onsubmit="return confirm('정말 게시글을 삭제하시겠습니까?')">
+                <button type="submit">삭제</button>
             </form>
         </td>
         <td>
-            <button type="button" th:attr="onclick='loadComments(' + ${post.bno} + ')'">💬 댓글 보기</button>
+            <button type="button" th:attr="onclick='loadComments(' + ${post.bno} + ')'">댓글 보기</button>
         </td>
     </tr>
     </tbody>
@@ -104,8 +105,7 @@
         <input type="text" id="editPostTitle" required><br><br>
         <label>내용:</label><br>
         <textarea id="editPostContent" required></textarea>
-        <input type="hidden" id="editPostBno">
-        <br>
+        <input type="hidden" id="editPostBno"><br>
         <button type="submit">저장</button>
         <button type="button" onclick="closePostEditModal()">취소</button>
     </form>
@@ -130,25 +130,25 @@
                 const section = document.getElementById("comments-section");
                 section.innerHTML = "";
                 if (!data || data.length === 0) {
-                    section.innerHTML = "<p>📬 댓글이 없습니다.</p>";
+                    section.innerHTML = "<p> 댓글이 없습니다.</p>";
                     return;
                 }
 
                 const table = document.createElement("table");
                 table.innerHTML = `
-                    <thead>
-                        <tr><th>작성자</th><th>내용</th><th>작성일</th><th>삭제</th><th>수정</th></tr>
-                    </thead>
-                    <tbody>
-                        ${data.map(comment => `
-                        <tr>
-                            <td>${comment.writer}</td>
-                            <td style="white-space:pre-line;">${comment.comment}</td>
-                            <td>${new Date(comment.regdate).toLocaleString()}</td>
-                            <td><button onclick="deleteComment(${comment.cno}, ${bno})">삭제</button></td>
-                            <td><button onclick="openEditModal(${comment.cno}, \`${comment.comment}\`, ${bno})">수정</button></td>
-                        </tr>`).join('')}
-                    </tbody>`;
+          <thead>
+            <tr><th>작성자</th><th>내용</th><th>작성일</th><th>삭제</th><th>수정</th></tr>
+          </thead>
+          <tbody>
+            ${data.map(comment => `
+              <tr>
+                <td>${comment.writer}</td>
+                <td style="white-space:pre-line;">${comment.content}</td>
+                <td>${new Date(comment.regdate).toLocaleString()}</td>
+                <td><button onclick="deleteComment(${comment.cno}, ${bno})">삭제</button></td>
+                <td><button onclick="openEditModal(${comment.cno}, \`${comment.content}\`, ${bno})">수정</button></td>
+              </tr>`).join('')}
+          </tbody>`;
                 section.appendChild(table);
             });
     }
@@ -157,15 +157,15 @@
         if (!confirm("정말 댓글을 삭제하시겠습니까?")) return;
         fetch(`/api/admin/posts/comments/${cno}`, { method: "DELETE" })
             .then(() => {
-                alert("✅ 댓글 삭제 완료");
+                alert("댓글 삭제 완료");
                 loadComments(bno);
             });
     }
 
-    function openEditModal(cno, comment, bno) {
+    function openEditModal(cno, content, bno) {
         document.getElementById("editCno").value = cno;
         document.getElementById("editBno").value = bno;
-        document.getElementById("editCommentContent").value = comment;
+        document.getElementById("editCommentContent").value = content;
         document.getElementById("editModal").style.display = "block";
     }
 
@@ -182,9 +182,9 @@
         fetch(`/api/admin/posts/comments/${cno}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ comment: content })
+            body: JSON.stringify({ content })
         }).then(() => {
-            alert("✏️ 댓글 수정 완료");
+            alert(" 댓글 수정 완료");
             closeEditModal();
             loadComments(bno);
         });
@@ -213,11 +213,11 @@
             body: JSON.stringify({ title, content })
         }).then(response => {
             if (response.ok) {
-                alert("✅ 게시글 수정 완료");
+                alert(" 게시글 수정 완료");
                 closePostEditModal();
                 location.reload();
             } else {
-                alert("❌ 게시글 수정 실패");
+                alert(" 게시글 수정 실패");
             }
         });
     }

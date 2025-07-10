@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UserDTO {
 
-    private String userId;
-    private String username;
+    private Long userId;
     private String name;
     private String nickname;
     private String email;
@@ -21,16 +21,15 @@ public class UserDTO {
     private LocalDateTime moddate;
 
     public static UserDTO fromEntity(User user) {
-        return new UserDTO(
-                user.getUserId(),
-                user.getUsername(),
-                user.getName(),
-                user.getNickname(),
-                user.getEmail(),
-                user.getPhoneNumber(),
-                user.getRole(),
-                user.getRegdate(),
-                user.getModdate()
-        );
+        return UserDTO.builder()
+                .userId(user.getUserId())
+                .name(user.getName())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .phoneNumber(user.getPhoneNumber())
+                .role(user.getRole())
+                .regdate(user.getRegdate())
+                .moddate(user.getModdate())
+                .build();
     }
 }
