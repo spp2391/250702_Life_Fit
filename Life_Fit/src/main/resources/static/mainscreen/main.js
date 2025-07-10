@@ -25,10 +25,11 @@ function sidebarPopup(status) {
     }
 }
 
-// TODO: 상세보기 팝업 작성
+// 상세보기 팝업 작성
 var lastSelectedIndex = -1;
-function showMarkerInfo(i, result) {
-    var markerInfo = result[i];
+function showMarkerInfo(result) {
+    var markerInfo = result;
+    console.log('result', result);
     var content =
         '<div id="popup-info" class="popup-info">'
             +'<div class="place-name"><div class="title">'
@@ -83,7 +84,11 @@ function showMarkerInfo(i, result) {
 var searchHistory = [];
 var markers = [];
 var places = new kakao.maps.services.Places();
+var bounds = new kakao.maps.LatLngBounds();
 var infowindow = new kakao.maps.InfoWindow({zIndex:10,disableAutoPan:true});
+
+// TODO: 행정지역별로 중심좌표와 대략적 반지름 파악.
+var areaCoordinates = {};
 
 // 메인 검색 함수.
 function search(e) {
@@ -121,7 +126,7 @@ function search(e) {
                 searchHistory.push(result);
                 console.log('조정 후 검색 결과:',searchHistory)
                 removeMarker();
-                setMarker(result.result);
+                setMarkers(result.result);
                 return false;
             }
         }
@@ -152,7 +157,7 @@ function keywordSearch(keyword) {
             // 모든 마커 제거.
             removeMarker();
             // 검색 결과에 맞춰 마커 세팅.
-            setMarker(result);
+            setMarkers(result);
         } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
             alert('검색 결과가 없습니다.');
         } else if (status === kakao.maps.services.Status.ERROR) {
@@ -165,9 +170,30 @@ function keywordSearch(keyword) {
 // TODO: 카테고리 일람 작성
 function categorySearch(keyword, category, area) {
     // TODO: 카테고리에 따라 알맞은 API를 호출, "장소명"/"주소 or 좌표"를 저장.
+    var searchResult = [];
+    var filteredResult = [];
+    var addressType = "address";
+    if (category) {}
     // TODO: 장소명을 기반으로 결과를 필터.
-    // TODO: 좌표를 사용하는 데이터(CCTV)의 경우 대략적인 거리로만 필터링하며, 주소로 변환하지 않음.
-    // TODO: 주소를 사용하는 결과의 경우 각 결과를 검색해
+    if (keyword) {
+        for (var i = 0; i < searchResult.length; i++) {
+            if (searchResult[i].title.includes(keyword)) {
+                filteredResult.push(searchResult[i]);
+            }
+        }
+        searchResult = filteredResult;
+    }
+    // TODO: 좌표를 사용하는 데이터(CCTV)의 경우 대략적인 거리로만 필터링하며, 주소로 변환하지 않음. 그 후 마커 표기 작업을 진행.
+    if (addressType === "latLng") {}
+    // TODO: 주소를 사용하는 결과의 경우 각 결과를 주소로 필터링, 그 후 각 결과를 검색하여 푸시 및 마커 표기.
+    else if (addressType === "address") {
+        for (var i = 0; i < searchResult.length; i++) {
+            if (searchResult[i].address.includes(area)) {
+                filteredResult.push(searchResult[i]);
+                // 마커 표기하는 함수로 이동.
+            }
+        }
+    }
     return false;
 }
 
@@ -178,27 +204,9 @@ function saveResult(result) {
     searchHistory[searchHistory.length-1].result = result;
 }
 
-// 모든 마커 삭제.
-function removeMarker() {
-    for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
-    }
-}
-
-// 마커 위 호버 시 마커 정보를 보여줌.
-function displayInfowindow(marker, title) {
-    var content = '<div class="info-window">' + title + '</div>';
-    infowindow.setContent(content);
-    infowindow.open(map, marker);
-}
-function closeOverlay() {
-    let popup = document.getElementById('popup-info');
-    popup.remove();
-    lastSelectedIndex = -1;
-}
-// 마커 설정.
-function setMarker(result) {
-    var bounds = new kakao.maps.LatLngBounds();
+// 마커 설정. (다수)
+function setMarkers(result) {
+    resetBounds();
     for (var i = 0; i < result.length; i++) {
         // 각 검색 결과에 대해 좌표와 장소명을 불러온다.
         let position = new kakao.maps.LatLng(result[i].y, result[i].x);
@@ -212,134 +220,104 @@ function setMarker(result) {
             title: title,
             zIndex: 1
         });
-        (function (marker, title, i, result) {
-            // 마커의 호버 이벤트 설정.
-            kakao.maps.event.addListener(marker, 'mouseover', function() {
-                displayInfowindow(marker, title);
-            });
-            kakao.maps.event.addListener(marker, 'mouseout', function() {
-                infowindow.close();
-            });
+        (function (marker, title, result) {
+            setMarkerHover(marker, title);
             // 마커를 클릭할 시 상세보기 페이지가 보이도록 설정.
-            kakao.maps.event.addListener(marker, 'click', function () {
-                console.log('clicked', i, title);
-                // lastSelectedIndex의 기본값은 -1. -1일 경우에 팝업이 닫혀있으며, 다른 경우에 열림.
-                if (lastSelectedIndex === i) {
-                    // 현재 열려 있는 팝업의 인덱스랑 클릭한 마커가 같으면 팝업을 닫음.
-                    closeOverlay();
-                    lastSelectedIndex = -1;
-                } else {
-                    if (lastSelectedIndex !== -1) {
-                        // 만약 마커의 값이 -1이 아니라면 팝업을 닫음.
-                        closeOverlay();
-                    }
-                    // 다를 경우 클릭한 마커의 값으로 팝업을 세팅함
-                    // var content = '<div style="background-color: white; z-index: 10;">Hello World</div>';
-                    var content = showMarkerInfo(i, result);
-                    var position = new kakao.maps.LatLng(result[i].y, result[i].x);
-                    var markerInfo = new kakao.maps.CustomOverlay({
-                        clickable: true,
-                        content: content,
-                        position: position,
-                        xAnchor: 0.5,
-                        yAnchor: 1,
-                        zIndex: 5
-                    });
-                    console.log('markerInfo', markerInfo);
-                    console.log('marker', marker);
-                    markerInfo.setMap(map);
-                    lastSelectedIndex = i;
-                }
-            })
-        })(marker, title, i, result);
+            if (result.address_name) {
+                setMarkerClick(marker, result)
+            }
+        })(marker, title, result[i]);
         // 마커 리스트에 마커 추가.
         markers.push(marker);
     }
     // TODO: 지도를 검색결과가 보이는 곳으로 이동.
     map.setBounds(bounds);
 }
+// 마커 설정 (단일)
+function setMarker(result) {
+    // 마커의 위치, 이름 설정.
+    let position = new kakao.maps.LatLng(result.y, result.x);
+    let title = result.place_name;
+    // 마커의 바운더리 설정.
+    bounds.extend(position);
+    // 마커 세팅.
+    var marker = new kakao.maps.Marker({
+        map: map,
+        position: position,
+        title: title,
+        zIndex: 1
+    });
+    setMarkerHover(marker, title);
+    if (result.address_name) {
+        setMarkerClick(marker, result)
+    }
+    markers.push(marker);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// TODO: 지역별 중심좌표 + 원형 넓이 구해서 딕셔너리로 저장
-
-
-
-// TODO: 지오코딩 함수 제작
-var geocoder = new kakao.maps.services.Geocoder();
-
-
-
-
-// TODO: 마커 표시
-// var markers = [];
-// function addMarker(position) {
-//     console.log(position);
-//     geocoder.addressSearch(position, function(result, status){
-//         if (status === kakao.maps.services.Status.OK) {
-//             var latLng = new kakao.maps.LatLng(result[0].y, result[0].x);
-//             console.log('latLng: '+latLng);
-//             var marker = new kakao.maps.Marker({
-//                 position: latLng
-//             });
-//             // TODO: addListener vs addEventListener 알아보기
-//             // kakao.maps.event.addListener(marker, 'click', function() {
-//             //     showMarkerInfo(position);
-//             // });
-//             // marker.addEventListener('click', function () {
-//             //     showMarkerInfo(position);
-//             // })
-//             marker.setMap(map);
-//             markers.push(marker);
-//         }
-//     })
-// }
-
-function removeMarkers() {
+// 모든 마커 삭제.
+function removeMarker() {
     for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
     }
-    markers = [];
 }
-
-
-
-// 카카오맵 API 주소별로 지역 구분하는 함수
-function filterByState(mapJson, area) {
-    var result = [];
-    for (key of mapJson) {
-        if (key.address_name.includes(area)) {
-            result.push(key);
+// 바운더리 리셋.
+function resetBounds() {
+    bounds = new kakao.maps.LatLngBounds();
+}
+// 마커의 호버 이벤트 설정
+function setMarkerHover(marker, title) {
+    kakao.maps.event.addListener(marker, 'mouseover', function() {
+        displayInfowindow(marker, title);
+    });
+    kakao.maps.event.addListener(marker, 'mouseout', function() {
+        infowindow.close();
+    });
+}
+function setMarkerClick(marker, result) {
+    kakao.maps.event.addListener(marker, 'click', function () {
+        console.log('clicked', result.place_name);
+        // lastSelectedIndex의 기본값은 -1. -1일 경우에 팝업이 닫혀있으며, 다른 경우에 열림.
+        if (lastSelectedIndex === result.address_name) {
+            // 현재 열려 있는 팝업의 인덱스랑 클릭한 마커가 같으면 팝업을 닫음.
+            closeOverlay();
+            lastSelectedIndex = -1;
+        } else {
+            if (lastSelectedIndex !== -1) {
+                // 만약 마커의 값이 -1이 아니라면 팝업을 닫음.
+                closeOverlay();
+            }
+            // 다를 경우 클릭한 마커의 값으로 팝업을 세팅함
+            // var content = '<div style="background-color: white; z-index: 10;">Hello World</div>';
+            var content = showMarkerInfo(result);
+            var position = new kakao.maps.LatLng(result.y, result.x);
+            var markerInfo = new kakao.maps.CustomOverlay({
+                clickable: true,
+                content: content,
+                position: position,
+                xAnchor: 0.5,
+                yAnchor: 1,
+                zIndex: 5
+            });
+            console.log('markerInfo', markerInfo);
+            console.log('marker', marker);
+            markerInfo.setMap(map);
+            var element = document.getElementById('popup-info');
+            element.parentNode.style.pointerEvents = 'none';
+            element.style.pointerEvents = 'auto';
+            lastSelectedIndex = result.address_name;
         }
-    }
-    return result;
+    })
 }
 
-
-
-
+// 마커 위 호버 시 마커 정보를 보여줌.
+function displayInfowindow(marker, title) {
+    var content = '<div class="info-window">' + title + '</div>';
+    infowindow.setContent(content);
+    infowindow.open(map, marker);
+}
+// popup-info 오버레이를 닫음.
+function closeOverlay() {
+    let popup = document.getElementById('popup-info');
+    popup.remove();
+    lastSelectedIndex = -1;
+}
