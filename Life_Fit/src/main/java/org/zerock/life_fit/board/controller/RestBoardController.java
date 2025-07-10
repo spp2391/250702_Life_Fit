@@ -218,11 +218,12 @@ public class RestBoardController {
         public String viewNotice() {
             return "notice";
         }
+        */
         @ResponseBody
         @PostMapping("/board/{bno}/like")
         public int likeBoard(@PathVariable Long bno) {
             Board board = boardService.increaseLikes(bno);
             return board.getLikes();
-        }*/
+        }
 
     }
