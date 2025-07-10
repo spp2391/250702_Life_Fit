@@ -6,6 +6,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.zerock.life_fit.comment.domain.Comment;
+import org.zerock.life_fit.user.domain.User;
 
 
 import java.time.LocalDateTime;
@@ -39,9 +40,9 @@ public class Board {
     private String content;
 
     //user테이블 완성되면 사용예정
-   /* @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;*/
+    private User writer;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -88,5 +89,6 @@ public class Board {
         comments.remove(comment);
         comment.setBoard(null);
     }
+
 }
 

@@ -3,6 +3,7 @@ package org.zerock.life_fit.board.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import org.zerock.life_fit.board.dto.PageResponseDTO;
 import org.zerock.life_fit.board.service.BoardService;
 import org.zerock.life_fit.board.service.LocalCateService;
 import org.zerock.life_fit.board.service.PageService;
+import org.zerock.life_fit.user.domain.User;
 
 import java.util.List;
 
@@ -111,24 +113,55 @@ public class RestBoardController {
         }
 
 
-        @GetMapping("/write")
+       /* @GetMapping("/write")
         public String showWriteForm(Model model) {
             model.addAttribute("boardDTO", new BoardDTO());
             return "write";  // src/main/resources/templates/write.html
         }
 
-        // 글쓰기 폼 제출 처리
         @PostMapping("/write")
+        public String submitWrite(@ModelAttribute BoardDTO boardDTO,
+                                  @AuthenticationPrincipal User user) {  // User 엔티티 직접 받기
+
+            boardDTO.setBoardType("FREE");
+
+            boardService.save(boardDTO, user);
+
+            return "redirect:/free";
+        }*/
+       @GetMapping("/write")
+       public String showWriteForm(@AuthenticationPrincipal User user, Model model) {
+           if (user == null) {
+               return "redirect:/free"; // 로그인 페이지로 리다이렉트
+           }
+           model.addAttribute("boardDTO", new BoardDTO());
+           return "write";
+       }
+
+        @PostMapping("/write")
+        public String submitWrite(@ModelAttribute BoardDTO boardDTO,
+                                  @AuthenticationPrincipal User user) {
+            if (user == null) {
+                return "redirect:/free";
+            }
+            boardDTO.setBoardType("FREE");
+            boardService.save(boardDTO, user);
+            return "redirect:/free";
+        }
+
+
+        // 글쓰기 폼 제출 처리
+       /* @PostMapping("/write")
         public String submitWrite(@ModelAttribute BoardDTO boardDTO) {
             boardDTO.setBoardType("FREE");
-         /*   // TODO: 실제 로그인 사용자 연동 필요
+         *//*   // TODO: 실제 로그인 사용자 연동 필요
             User dummyUser = User.builder().userId("testUser").build();
 
-            boardService.save(boardDTO, dummyUser);*/
+            boardService.save(boardDTO, dummyUser);*//*
 
             return "redirect:/free"; // 저장 후 게시판 목록 페이지로 이동
         }
-
+*/
 
 
        @GetMapping("/topic/write")
@@ -174,7 +207,7 @@ public class RestBoardController {
             return "boardDetail"; // 하나의 통합 뷰
         }
 
-        @PostMapping("/board/{bno}/delete")
+       /* @PostMapping("/board/{bno}/delete")
         public String deleteBoard(@PathVariable Long bno) {
             Board board = boardService.findById(bno); // 게시글 확인용 (없으면 예외 발생)
             boardService.delete(bno);
@@ -212,6 +245,63 @@ public class RestBoardController {
             boardService.update(existing);
 
             return "redirect:/board/" + bno;
+        }*/
+       @GetMapping("/board/{bno}/edit")
+       public String editBoardForm(@PathVariable Long bno,
+                                   @AuthenticationPrincipal User user,
+                                   Model model) {
+           Board board = boardService.findById(bno);
+
+           if (user == null || !board.getWriter().getUserId().equals(user.getUserId())) {
+               return "redirect:/board/" + bno; // 권한 없으면 상세보기 페이지로
+           }
+
+           BoardDTO dto = new BoardDTO(board);
+           model.addAttribute("boardDTO", dto);
+           model.addAttribute("localList", localCateService.getAllLocalCates());
+           return "boardEdit";
+       }
+
+        @PostMapping("/board/{bno}/edit")
+        public String editBoardSubmit(@PathVariable Long bno,
+                                      @ModelAttribute BoardDTO boardDTO,
+                                      @AuthenticationPrincipal User user) {
+            Board existing = boardService.findById(bno);
+
+            if (user == null || !existing.getWriter().getUserId().equals(user.getUserId())) {
+                return "redirect:/board/" + bno; // 권한 없으면 상세보기 페이지로
+            }
+
+            existing.setTitle(boardDTO.getTitle());
+            existing.setContent(boardDTO.getContent());
+            Long localCateId = boardDTO.getLocalCateId();
+            LocalCate localCate = null;
+            if (localCateId != null) {
+                localCate = localCateService.getLocalCateById(localCateId);
+            }
+            existing.setLocalCate(localCate);
+
+            boardService.update(existing);
+
+            return "redirect:/board/" + bno;
+        }
+
+        @PostMapping("/board/{bno}/delete")
+        public String deleteBoard(@PathVariable Long bno,
+                                  @AuthenticationPrincipal User user) {
+            Board board = boardService.findById(bno);
+
+            if (user == null || !board.getWriter().getUserId().equals(user.getUserId())) {
+                return "redirect:/board/" + bno; // 권한 없으면 상세보기 페이지로
+            }
+
+            boardService.delete(bno);
+
+            if ("TOPIC".equals(board.getBoardType())) {
+                return "redirect:/topic";
+            } else {
+                return "redirect:/free";
+            }
         }
     /*@GetMapping("/notice")
         public String viewNotice() {
