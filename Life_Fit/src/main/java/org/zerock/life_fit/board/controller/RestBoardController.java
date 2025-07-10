@@ -122,10 +122,10 @@ public class RestBoardController {
         @PostMapping("/write")
         public String submitWrite(@ModelAttribute BoardDTO boardDTO) {
             boardDTO.setBoardType("FREE");
-            // TODO: 실제 로그인 사용자 연동 필요
+         /*   // TODO: 실제 로그인 사용자 연동 필요
             User dummyUser = User.builder().userId("testUser").build();
 
-            boardService.save(boardDTO, dummyUser);
+            boardService.save(boardDTO, dummyUser);*/
 
             return "redirect:/free"; // 저장 후 게시판 목록 페이지로 이동
         }
@@ -158,10 +158,10 @@ public class RestBoardController {
             // 고정적으로 TOPIC 타입 설정
             boardDTO.setBoardType("TOPIC");
 
-            // 로그인 기능 없으므로 임시 사용자
+            /*// 로그인 기능 없으므로 임시 사용자
             User dummyUser = User.builder().userId("testUser").build();
 
-            boardService.save(boardDTO, dummyUser);
+            boardService.save(boardDTO, dummyUser);*/
 
             return "redirect:/topic";
         }
