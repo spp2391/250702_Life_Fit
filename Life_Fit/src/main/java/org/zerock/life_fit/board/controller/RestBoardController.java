@@ -14,7 +14,6 @@ import org.zerock.life_fit.board.dto.PageResponseDTO;
 import org.zerock.life_fit.board.service.BoardService;
 import org.zerock.life_fit.board.service.LocalCateService;
 import org.zerock.life_fit.board.service.PageService;
-import org.zerock.life_fit.user.domain.User;
 
 import java.util.List;
 

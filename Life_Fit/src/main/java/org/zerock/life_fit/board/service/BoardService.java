@@ -7,7 +7,7 @@ import org.zerock.life_fit.board.domain.LocalCate;
 import org.zerock.life_fit.board.dto.BoardDTO;
 import org.zerock.life_fit.board.repository.BoardRepository;
 import org.zerock.life_fit.board.repository.LocalCateRepository;
-import org.zerock.life_fit.user.domain.User;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -35,7 +35,7 @@ public class BoardService {
     }//게시글 저장
 
 
-        @Transactional
+       /* @Transactional
         public Board save(BoardDTO dto, User user) {
             LocalCate localCate = null;
 
@@ -59,7 +59,7 @@ public class BoardService {
                     .build();
 
             return boardRepository.save(board);
-        }
+        }*/
 
     public List<Board> findByBoardType(String boardType) {
         // enum 변환 없이 String으로 바로 검색

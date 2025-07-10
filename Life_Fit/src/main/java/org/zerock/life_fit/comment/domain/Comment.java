@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.zerock.life_fit.board.domain.Board;
-import org.zerock.life_fit.user.domain.User;
 
 import java.time.LocalDateTime;
 
