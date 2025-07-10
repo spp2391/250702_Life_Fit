@@ -2,6 +2,8 @@
 var sidebarStatus = 0;
 function sidebarPopup(status) {
     var popup;
+    var sidebar = document.getElementById('main-sidebar-1');
+    sidebar.classList.toggle('active');
     if (status === sidebarStatus) {
         sidebarStatus = 0;
     } else {
@@ -29,8 +31,9 @@ function showMarkerInfo(i, result) {
     var markerInfo = result[i];
     var content =
         '<div id="popup-info" class="popup-info">'
-            +'<div class="place-name">'
+            +'<div class="place-name"><div class="title">'
                 +markerInfo.place_name
+                +'</div>'
                 +'<div class="close" onclick="closeOverlay()" title="닫기">X</div>'
             +'</div>'
             +'<div class="address-name">'
@@ -80,16 +83,16 @@ function showMarkerInfo(i, result) {
 var searchHistory = [];
 var markers = [];
 var places = new kakao.maps.services.Places();
-var infowindow = new kakao.maps.InfoWindow({zIndex:10});
+var infowindow = new kakao.maps.InfoWindow({zIndex:10,disableAutoPan:true});
 
 // 메인 검색 함수.
 function search(e) {
     e.preventDefault();
     e.stopPropagation();
     // 키워드와 카테고리를 읽는다.
-    var keyword = document.getElementById('popup-keyword-keyword-search').value;
+    var keyword = document.querySelector('#popup-keyword-keyword-search').value;
     var category = document.querySelector('#popup-keyword input[type="radio"][name="category"]:checked')?.value;
-    var area= "부산 부산진구";
+    var area= document.querySelector('#popup-keyword-area-dropdown').value;
     console.log('keyword: '+keyword);
     console.log('category: '+category);
     console.log('area: '+area);
@@ -161,6 +164,10 @@ function keywordSearch(keyword) {
 
 // TODO: 카테고리 일람 작성
 function categorySearch(keyword, category, area) {
+    // TODO: 카테고리에 따라 알맞은 API를 호출, "장소명"/"주소 or 좌표"를 저장.
+    // TODO: 장소명을 기반으로 결과를 필터.
+    // TODO: 좌표를 사용하는 데이터(CCTV)의 경우 대략적인 거리로만 필터링하며, 주소로 변환하지 않음.
+    // TODO: 주소를 사용하는 결과의 경우 각 결과를 검색해
     return false;
 }
 
@@ -180,13 +187,14 @@ function removeMarker() {
 
 // 마커 위 호버 시 마커 정보를 보여줌.
 function displayInfowindow(marker, title) {
-    var content = '<div style="padding:5px;z-index:2;">' + title + '</div>';
+    var content = '<div class="info-window">' + title + '</div>';
     infowindow.setContent(content);
     infowindow.open(map, marker);
 }
 function closeOverlay() {
     let popup = document.getElementById('popup-info');
     popup.remove();
+    lastSelectedIndex = -1;
 }
 // 마커 설정.
 function setMarker(result) {
@@ -233,8 +241,9 @@ function setMarker(result) {
                         clickable: true,
                         content: content,
                         position: position,
-                        xAnchor: 0.3,
-                        yAnchor: 0.9,
+                        xAnchor: 0.5,
+                        yAnchor: 1,
+                        zIndex: 5
                     });
                     console.log('markerInfo', markerInfo);
                     console.log('marker', marker);

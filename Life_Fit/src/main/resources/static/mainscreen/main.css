@@ -27,16 +27,37 @@ body {
     border: #aaa solid 1px;
     user-select: none;
 }
+.active {
+    background: #ddd;
+}
+.info-window {
+    padding: 5px;
+    z-index: 2;
+    font-size: 10px;
+    align-content: center;
+}
 #popup-info {
-    /*
-    visibility: hidden;
-    */
-    /*width: 200px;*/
+    box-sizing: border-box;
+    width: 350px;
     /*height: 200px;*/
-    position: absolute;
+    position: relative;
+    bottom: 45px;
     border: #aaa solid 1px;
     background-color: #fff;
-    z-index: 100;
+    padding: 10px;
+}
+#popup-info .place-name {
+    display: flex;
+    flex-direction: row;
+}
+#popup-info .title {
+    width: 304px;
+}
+#popup-info .close {
+    height: 24px;
+    width: 24px;
+    outline: #aaa solid 1px;
+    text-align: center;
 }
 #map {
     position: absolute;
@@ -72,11 +93,15 @@ body {
     visibility: hidden;
     top: 0;
     left: 80px;
-    height: 400px;
+    padding: 15px;
     max-height: calc(100vh - 200px);
     width: auto;
     background-color: #fff;
     border: #aaa solid 1px;
+}
+.popup-search div {
+    margin-top: 0;
+    margin-bottom: 5px;
 }
 
 .popup-show {
