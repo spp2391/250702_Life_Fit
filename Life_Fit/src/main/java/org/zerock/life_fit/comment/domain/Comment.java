@@ -28,7 +28,7 @@ public class Comment {
     // 일단주석
  /*   @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bno", nullable = false)
-    private Board board;*/
+    */
 
     @Column(name = "regdate")
     private LocalDateTime regdate;
