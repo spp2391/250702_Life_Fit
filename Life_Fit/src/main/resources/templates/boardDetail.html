@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="'게시글 상세 - ' + ${board.title}">게시글 상세</title>
+</head>
+<body>
+<h1 th:text="${board.title}">제목</h1>
+
+<p><strong>내용:</strong></p>
+<p th:text="${board.content}">내용</p>
+
+<p><strong>작성일:</strong>
+    <span th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm')}">날짜</span>
+</p>
+
+<p><strong>조회수:</strong> <span th:text="${board.visitcount}">0</span></p>
+<!-- 좋아요 버튼과 카운터 -->
+<p>
+    <strong>좋아요:</strong>
+    <span id="like-count" th:text="${board.likes}">0</span>
+    <button type="button" th:onclick="'likeBoard(' + ${board.bno} + ')'"> 좋아요</button>
+</p>
+
+
+<!-- 주제 게시판일 경우에만 지역 출력 -->
+<div th:if="${board.boardType == 'TOPIC'}">
+    <p><strong>지역:</strong> <span th:text="${board.localCate.localname}">지역명</span></p>
+</div>
+
+<!-- 목록으로 돌아가기: 게시판 종류에 따라 분기 -->
+<a th:href="@{${board.boardType == 'FREE'} ? '/free' : '/topic'}">목록으로</a>
+<form th:action="@{/board/{bno}/delete(bno=${board.bno})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+    <button type="submit">삭제</button>
+</form>
+
+<form th:action="@{/board/{bno}/edit(bno=${board.bno})}" method="get">
+    <button type="submit">수정하기</button>
+</form>
+
+<h2>댓글</h2>
+
+<!-- 댓글 작성 -->
+<form th:action="@{/comment/add}" method="post" id="commentWriteForm">
+    <input type="hidden" name="boardId" th:value="${board.bno}" />
+    <textarea name="content" placeholder="댓글을 입력하세요" required></textarea>
+    <button type="submit">작성</button>
+</form>
+
+<!-- 댓글 목록 -->
+<ul>
+    <li th:each="comment, stat : ${comments}" th:attr="data-id=${comment.cno}">
+        <!-- 평소 상태 -->
+        <div th:id="'viewMode-' + ${comment.cno}">
+            <p th:text="${comment.content}">댓글</p>
+            <small th:text="${#temporals.format(comment.regdate, 'yyyy-MM-dd HH:mm')}">작성일</small>
+
+            <form th:action="@{/comment/{cno}/delete(cno=${comment.cno})}" method="post">
+                <input type="hidden" name="boardId" th:value="${board.bno}" />
+                <button type="submit">삭제</button>
+            </form>
+            <button type="button" th:onclick="'showEditMode(' + ${comment.cno} + ')'">수정</button>
+        </div>
+
+        <!-- 수정 상태 (처음엔 숨김) -->
+        <div th:id="'editMode-' + ${comment.cno}" style="display:none;">
+            <form th:action="@{/comment/{cno}/edit(cno=${comment.cno})}" method="post">
+                <input type="hidden" name="boardId" th:value="${board.bno}" />
+                <input type="text" name="content" th:value="${comment.content}" />
+                <button type="submit">저장</button>
+                <button type="button" th:onclick="'cancelEditMode(' + ${comment.cno} + ')'">취소</button>
+            </form>
+        </div>
+    </li>
+</ul>
+
+<script>
+    function showEditMode(cno) {
+        document.getElementById('viewMode-' + cno).style.display = 'none';
+        document.getElementById('editMode-' + cno).style.display = 'block';
+        document.getElementById('commentWriteForm').style.display = 'none';  // 댓글 작성 폼 숨김
+    }
+
+    function cancelEditMode(cno) {
+        document.getElementById('editMode-' + cno).style.display = 'none';
+        document.getElementById('viewMode-' + cno).style.display = 'block';
+        document.getElementById('commentWriteForm').style.display = 'block'; // 댓글 작성 폼 다시 보임
+    }
+</script>
+<script>
+    function likeBoard(bno) {
+        fetch(`/board/${bno}/like`, {
+            method: 'POST'
+        })
+            .then(response => response.text())
+            .then(count => {
+                document.getElementById('like-count').textContent = count;
+            })
+            .catch(error => console.error("좋아요 처리 중 오류:", error));
+    }
+</script>
+</body>
+</html>

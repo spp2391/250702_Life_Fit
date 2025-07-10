@@ -1,0 +1,116 @@
+<style>
+    .guide-panel {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        width: 420px;
+        max-width: 90vw;
+        background: linear-gradient(135deg, #6a11cb, #2575fc);
+        color: white;
+        border-radius: 14px;
+        box-shadow: 0 10px 30px rgba(38, 0, 105, 0.6);
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+        pointer-events: none;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        transition: all 0.3s ease;
+        z-index: 9999;
+    }
+
+    .guide-panel.open {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    .guide-panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 24px;
+        border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+        font-weight: 700;
+        font-size: 1.6rem;
+        text-shadow: 0 0 8px rgba(0,0,0,0.3);
+    }
+
+    .guide-panel-header button {
+        background: rgba(255, 255, 255, 0.3);
+        border: none;
+        color: white;
+        font-weight: 700;
+        font-size: 1.2rem;
+        border-radius: 10px;
+        padding: 6px 14px;
+        cursor: pointer;
+        transition: background 0.25s ease;
+        box-shadow: 0 0 8px rgba(255,255,255,0.5);
+    }
+
+    .guide-panel-header button:hover {
+        background: rgba(255, 255, 255, 0.55);
+    }
+
+    .guide-panel-body {
+        padding: 24px;
+        font-size: 1.05rem;
+        line-height: 1.7;
+        text-shadow: 0 0 4px rgba(0,0,0,0.15);
+    }
+
+    .guide-panel-body p {
+        margin-bottom: 16px;
+        font-weight: 600;
+        font-size: 1.15rem;
+    }
+
+    .guide-panel-body ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .guide-panel-body ul li {
+        position: relative;
+        margin-bottom: 16px;
+        padding-left: 28px;
+        font-weight: 500;
+    }
+
+    .guide-panel-body ul li::before {
+        content: '✔';
+        position: absolute;
+        left: 0;
+        top: 0;
+        color: #00e676;
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-shadow: 0 0 4px rgba(0, 230, 118, 0.8);
+    }
+</style>
+
+<div id="guidePanel" class="guide-panel" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+    <div class="guide-panel-header">
+        <h2 id="guideTitle">이용 가이드</h2>
+        <button onclick="closeGuidePanel()" aria-label="이용 가이드 닫기">닫기</button>
+    </div>
+    <div class="guide-panel-body">
+        <p>처음 오셨나요? 아래 내용을 참고해 주세요 😊</p>
+        <ul>
+            <li><strong>게시글 작성 방법</strong><br />오른쪽 상단의 '글쓰기' 버튼을 클릭하면 자유롭게 게시글을 작성할 수 있어요.</li>
+            <li><strong>댓글 사용법</strong><br />게시글 하단의 댓글 입력창을 통해 다른 사용자와 소통해보세요.</li>
+            <li><strong>지역 선택 팁</strong><br />원하는 지역을 선택하면 해당 지역과 관련된 정보만 빠르게 확인할 수 있어요.</li>
+            <li><strong>분류별 보기</strong><br />자유게시판, 주제게시판 등 원하는 메뉴를 사이드바에서 선택하세요.</li>
+            <li><strong>검색 기능</strong><br />키워드를 입력하면 관련된 게시글만 쏙쏙! 빠른 정보 탐색이 가능합니다.</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    function closeGuidePanel() {
+        document.getElementById('guidePanel').classList.remove('open');
+    }
+
+    function openGuidePanel() {
+        document.getElementById('guidePanel').classList.add('open');
+    }
+</script>
