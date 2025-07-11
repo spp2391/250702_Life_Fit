@@ -30,22 +30,20 @@ var lastSelectedIndex = -1;
 function showMarkerInfo(result) {
     var markerInfo = result;
     console.log('result', result);
-    var content =
-        '<div id="popup-info" class="popup-info">'
-            +'<div class="place-name"><div class="title">'
-                +markerInfo.place_name
-                +'</div>'
-                +'<div class="close" onclick="closeOverlay()" title="닫기">X</div>'
-            +'</div>'
-            +'<div class="address-name">'
-                +markerInfo.address_name
-            +'</div>'
-            +'<div class="category-name">'
-                +markerInfo.category_name
-            +'</div>'
-            +'<div class="place-url"><a href="'+markerInfo.place_url+'">'+markerInfo.place_url+'</a></div>'
-        +'</div>';
-    return content;
+    return '<div id="popup-info" class="popup-info">'
+        + '<div class="place-name"><div class="title">'
+        + markerInfo.place_name
+        + '</div>'
+        + '<div class="close" onclick="closeOverlay()" title="닫기">X</div>'
+        + '</div>'
+        + '<div class="address-name">'
+        + markerInfo.address_name
+        + '</div>'
+        + '<div class="category-name">'
+        + markerInfo.category_name
+        + '</div>'
+        + '<div class="place-url"><a href="' + markerInfo.place_url + '">' + markerInfo.place_url + '</a></div>'
+        + '</div>';
 }
 
 /*
@@ -88,7 +86,88 @@ var bounds = new kakao.maps.LatLngBounds();
 var infowindow = new kakao.maps.InfoWindow({zIndex:10,disableAutoPan:true});
 
 // TODO: 행정지역별로 중심좌표와 대략적 반지름 파악.
-var areaCoordinates = {};
+var areaCoordinates = {
+    "부산 중구": {
+        x: 129.0345083,
+        y: 35.10321667,
+        r: 0.05
+    },
+    "부산 서구": {
+        x: 129.0263778,
+        y: 35.09483611,
+        r: 0.05
+    },
+    "부산 동구": {
+        x: 129.059175,
+        y: 35.13589444,
+        r: 0.05
+    },
+    "부산 영도구": {
+        x: 129.0701861,
+        y: 35.08811667,
+        r: 0.05
+    },
+    "부산 부산진구": {
+        x: 129.0553194,
+        y: 35.15995278,
+        r: 0.05
+    },
+    "부산 동래구": {
+        x: 129.0858556,
+        y: 35.20187222,
+        r: 0.05
+    },
+    "부산 남구": {
+        x: 129.0865,
+        y: 35.13340833,
+        r: 0.05
+    },
+    "부산 북구": {
+        x: 128.992475,
+        y: 35.19418056,
+        r: 0.05
+    },
+    "부산 해운대구": {
+        x: 129.1658083,
+        y: 35.16001944,
+        r: 0.05
+    },
+    "부산 사하구": {
+        x: 128.9770417,
+        y: 35.10142778,
+        r: 0.05
+    },
+    "부산 금정구": {
+        x: 129.0943194,
+        y: 35.24007778,
+        r: 0.05
+    },
+    "부산 강서구": {
+        x: 128.9829083,
+        y: 35.20916389,
+        r: 0.05
+    },
+    "부산 연제구": {
+        x: 129.082075,
+        y: 35.17318611,
+        r: 0.05
+    },
+    "부산 수영구": {
+        x: 129.115375,
+        y: 35.14246667,
+        r: 0.05
+    },
+    "부산 사상구": {
+        x: 128.9933333,
+        y: 35.14946667,
+        r: 0.05
+    },
+    "부산 기장군": {
+        x: 129.2222873,
+        y: 35.24477541,
+        r: 0.05
+    }
+};
 
 // 메인 검색 함수.
 function search(e) {
@@ -113,7 +192,8 @@ function search(e) {
 
     // 검색 내용이 이전 검색 결과랑 중첩되는지 확인.
     for (var i = 0; i < searchHistory.length; i++) {
-        if (searchHistory[i].keyword == keyword && searchHistory[i].category == category && searchHistory[i].area == area) {
+        if ((searchHistory[i].keyword === keyword && searchHistory[i].category === category && searchHistory[i].area === area)
+                        || (searchHistory[i].keyword === keyword && !searchHistory[i].category && !category)) {
             // 검색 내용이 가장 최근의 검색 결과인지 확인.
             if (i === searchHistory.length - 1) {
                 // 그럴 경우 아무런 행동도 하지 않고 검색 종료.
@@ -170,29 +250,110 @@ function keywordSearch(keyword) {
 // TODO: 카테고리 일람 작성
 function categorySearch(keyword, category, area) {
     // TODO: 카테고리에 따라 알맞은 API를 호출, "장소명"/"주소 or 좌표"를 저장.
+    // 검색 결과 List<Obj>
+    // 형식: place_name, address_name, x, y
     var searchResult = [];
+    // 필터링 후 검색 결과
     var filteredResult = [];
+    // 주소 타입 (카테고리에 따라 변화).
     var addressType = "address";
-    if (category) {}
-    // TODO: 장소명을 기반으로 결과를 필터.
+    // TODO: 카테고리를 기반으로 장소를 검색.
+    if (category === "지하철") {
+
+    } else if (category === "버스") {
+        addressType = "latLng";
+
+    } else if (category === "병원약국") {
+
+    } else if (category === "초등학교") {
+
+    } else if (category === "중학교") {
+
+    } else if (category === "고등학교") {
+
+    } else if (category === "학교") {
+
+    } else if (category === "치안시설") {
+
+    } else if (category === "CCTV") {
+        addressType = "latLng";
+
+    }
+    // 장소명을 기반으로 결과를 필터.
     if (keyword) {
+        // 키워드가 존재할 경우 각 장소명/주소에 대해 키워드를 포함하면 필터링. 그 후 필터링 결과를 원래 변수에 저장.
         for (var i = 0; i < searchResult.length; i++) {
-            if (searchResult[i].title.includes(keyword)) {
+            if (searchResult[i].title.includes(keyword) || searchResult[i].address.includes(keyword)) {
                 filteredResult.push(searchResult[i]);
             }
         }
         searchResult = filteredResult;
     }
     // TODO: 좌표를 사용하는 데이터(CCTV)의 경우 대략적인 거리로만 필터링하며, 주소로 변환하지 않음. 그 후 마커 표기 작업을 진행.
-    if (addressType === "latLng") {}
-    // TODO: 주소를 사용하는 결과의 경우 각 결과를 주소로 필터링, 그 후 각 결과를 검색하여 푸시 및 마커 표기.
-    else if (addressType === "address") {
+    if (addressType === "latLng") {
         for (var i = 0; i < searchResult.length; i++) {
-            if (searchResult[i].address.includes(area)) {
+            // 피타고라스 정리에 의한 값 정리
+            if ((searchResult[i].x-areaCoordinates[area].x)**2 + (searchResult[i].y-areaCoordinates[area].y)**2 <= areaCoordinates[area].r**2) {
                 filteredResult.push(searchResult[i]);
-                // 마커 표기하는 함수로 이동.
             }
         }
+        searchResult = filteredResult;
+        for (var i = 0; i < searchResult.length; i++) {
+            searchHistory[searchHistory.length - 1].result.push(searchResult[i]);
+            setMarker(searchResult[i]);
+        }
+    }
+    // TODO: 주소를 사용하는 결과의 경우 각 결과를 주소로 필터링, 그 후 각 결과를 검색하여 푸시 및 마커 표기.
+    else if (addressType === "address") {
+        // 주소 기준으로 필터링.
+        for (var i = 0; i < searchResult.length; i++) {
+            if (searchResult[i].address_name.includes(area)) {
+                filteredResult.push(searchResult[i]);
+            }
+        }
+        searchResult = filteredResult;
+        // 마커와 경계 리셋
+        removeMarker();
+        resetBounds();
+        // 완료된 마커 개수 기록
+        var finishedMark = 0;
+        for (var i = 0; i < searchResult.length; i++) {
+            // 검색 결과를 변수로 저장.
+            const searchResultIndexed = searchResult[i];
+            var callback = function (result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    // 검색 요청한 내용 중 주소와 장소명을 기록.
+                    const address = searchResultIndexed.address_name;
+                    const place = searchResultIndexed.place_name;
+                    // 검색 성공시 결과 저장.
+                    console.log(result);
+                    if (result.length > 1) {
+                        for (var j = 0; j < result.length; j++) {
+                            if (place === result[j].place_name || address === result[j].address_name || address === result[j].road_address_name) {
+                                result = result[j];
+                                break;
+                            }
+                        }
+                    } else {
+                        result = result[0];
+                    }
+                    if (result.address_name) {
+                        searchHistory[searchHistory.length - 1].result.push(result);
+                        setMarker(result);
+                    }
+                    finishedMark++;
+                } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
+                    alert('검색 결과가 없습니다.');
+                } else if (status === kakao.maps.services.Status.ERROR) {
+                    alert('오류가 발생했습니다.');
+                }
+            }
+            places.keywordSearch(searchResultIndexed.address_name, callback);
+        }
+        // finishedMark가 전체 개수랑 같아질때까지 대기.
+        while (finishedMark !== searchResult.length) {}
+        // 마커 세팅 후 맵 바운드 설정.
+        map.setBounds(bounds);
     }
     return false;
 }
@@ -273,6 +434,7 @@ function setMarkerHover(marker, title) {
         infowindow.close();
     });
 }
+// 마커의 클릭 이벤트 설정 (상세보기 팝업)
 function setMarkerClick(marker, result) {
     kakao.maps.event.addListener(marker, 'click', function () {
         console.log('clicked', result.place_name);
@@ -309,15 +471,17 @@ function setMarkerClick(marker, result) {
     })
 }
 
-// 마커 위 호버 시 마커 정보를 보여줌.
+// 마커 위 호버 시 보여주는 인포윈도우
 function displayInfowindow(marker, title) {
     var content = '<div class="info-window">' + title + '</div>';
     infowindow.setContent(content);
     infowindow.open(map, marker);
 }
-// popup-info 오버레이를 닫음.
+// 상세보기 팝업 popup-info 오버레이를 닫음.
 function closeOverlay() {
     let popup = document.getElementById('popup-info');
-    popup.remove();
+    if (popup) {
+        popup.remove();
+    }
     lastSelectedIndex = -1;
 }
