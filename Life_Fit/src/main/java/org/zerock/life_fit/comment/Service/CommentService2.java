@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService {
+public class CommentService2 {
 
     private final CommentRepository commentRepository;
     private final BoardRepository boardRepository;

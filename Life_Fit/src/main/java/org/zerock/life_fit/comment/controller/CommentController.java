@@ -43,7 +43,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.life_fit.comment.Service.CommentService;
+import org.zerock.life_fit.comment.Service.CommentService2;
 import org.zerock.life_fit.comment.dto.CommentDTO;
 import org.zerock.life_fit.user.domain.User;
 
@@ -52,7 +52,7 @@ import org.zerock.life_fit.user.domain.User;
 @RequestMapping("/comment")
 public class CommentController {
 
-    private final CommentService commentService;
+    private final CommentService2 commentService;
 
     // ✅ 댓글 작성
     @PostMapping("/add")

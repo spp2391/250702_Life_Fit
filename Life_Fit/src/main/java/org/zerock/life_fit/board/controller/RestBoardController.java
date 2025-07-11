@@ -16,7 +16,7 @@ import org.zerock.life_fit.board.dto.PageResponseDTO;
 import org.zerock.life_fit.board.service.BoardService;
 import org.zerock.life_fit.board.service.LocalCateService;
 import org.zerock.life_fit.board.service.PageService;
-import org.zerock.life_fit.comment.Service.CommentService;
+import org.zerock.life_fit.comment.Service.CommentService2;
 import org.zerock.life_fit.comment.dto.CommentResponseDTO;
 import org.zerock.life_fit.user.domain.User;
 
@@ -28,7 +28,7 @@ public class RestBoardController {
         public final BoardService boardService;
         public final LocalCateService localCateService;
         public final PageService pageService;
-        public final CommentService commentService;
+        public final CommentService2 commentService;
    @GetMapping("/free")
    public String listFreeBoards(
            @RequestParam(required = false, defaultValue = "all") String searchType,
