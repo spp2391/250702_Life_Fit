@@ -1,87 +1,214 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <title>자유게시판 목록</title>
+    <meta charset="UTF-8">
+    <title>자유게시판</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/sidebar.css">
+
     <style>
-        .active {
-            font-weight: bold;
-            color: red;
+        body {
+            font-family: 'Lato', sans-serif;
+        }
+
+        /* 배경 이미지 커버 스타일 완전 유지 */
+        .gtco-cover {
+            background-size: cover !important;
+            background-position: center center !important;
+        }
+
+        /* 네비게이션: 반투명 어두운 오버레이 + 밝은 버튼 */
+        .gtco-nav {
+            background-color: rgba(0,0,0,0.5);
+            border-bottom: none;
+        }
+        .gtco-nav a {
+            color: white !important;
+            font-weight: 500;
+        }
+        .gtco-nav .btn-cta a {
+            background-color: #ffc107;
+            color: #333 !important;
+            padding: 8px 14px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        .gtco-nav .btn-cta a:hover {
+            background-color: #ffb300;
+        }
+
+        /* 'Features' 섹션 느낌 강조 (메뉴 아이콘/제목) */
+        .feature-center h3,
+        .feature-center .icon i {
+            color: #ffb300;
+        }
+
+        /* 검색 버튼 스타일 */
+        .btn.btn-primary {
+            background-color: #ffca28;
+            border-color: #ffca28;
+            color: #333;
+            font-weight: 500;
+        }
+        .btn.btn-primary:hover {
+            background-color: #ffb300;
+            border-color: #ffb300;
+        }
+
+        /* 게시판 제목 강조 */
+        h1.cursive-font {
+            color: #ffb300;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        /* 푸터: 배경 이미지 유지 + 텍스트 가독성 보정 */
+        #gtco-footer {
+            position: relative;
+            min-height: 250px;
+        }
+        #gtco-footer .overlay {
+            position: absolute;
+            top:0; left:0; right:0; bottom:0;
+            background: rgba(0,0,0,0.4);
+        }
+        #gtco-footer .gtco-container {
+            position: relative;
+            z-index: 1;
+            padding-top: 60px;
+            padding-bottom: 60px;
+            color: white;
+        }
+        #gtco-footer a {
+            color: #ffc107;
         }
     </style>
 </head>
 <body>
-<div class="container">
-    <!-- 사이드바 -->
-    <div class="sidebar" th:replace="fragments/sidebar :: aside"></div>
-    <!--<div th:replace="fragments/guidePanel :: #guidePanel"></div>-->
-    <div id="guidePanel" th:replace="fragments/guidePanel :: #guidePanel"></div>
-
-    <!-- 본문 영역 -->
-    <div class="content">
-        <h1>자유게시판</h1>
-
-        <!-- 버튼들 -->
-        <button onclick="location.href='/topic'">주제게시판으로 이동</button>
-
-
-        <!-- 검색 -->
-        <form method="get" action="/free">
-            <input type="text" name="keyword" placeholder="검색어 입력" th:value="${keyword}" />
-            <select name="searchType">
-                <option value="all" th:selected="${searchType == 'all'}">제목+내용</option>
-                <option value="title" th:selected="${searchType == 'title'}">제목</option>
-                <option value="content" th:selected="${searchType == 'content'}">내용</option>
-            </select>
-            <button type="submit">검색</button>
-        </form>
-
-
-
-        <!-- 게시판 목록 -->
-        <table border="1" cellpadding="5" cellspacing="0">
-            <thead>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>내용</th>
-                <th>작성일</th>
-                <th>타입</th>
-                <th>작성자</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="board : ${responseDTO.dtoList}">
-                <td th:text="${board.bno}">1</td>
-                <td><a th:href="@{/board/{bno}(bno=${board.bno})}" th:text="${board.title}">제목</a></td>
-                <td th:text="${board.content}">내용</td>
-                <td th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm')}">날짜</td>
-                <td th:text="${board.boardType}">FREE</td>
-                <td th:text="${board.userNickname}">작성자</td>
-            </tr>
-            </tbody>
-        </table>
-
-        <!-- 페이징 -->
-        <div class="pagination">
-            <a th:if="${responseDTO.prev}"
-               th:href="@{${requestURI}(page=${responseDTO.start - 1}, size=${responseDTO.size}, keyword=${keyword}, searchType=${searchType})}">Prev</a>
-            <span th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
-                <a th:href="@{${requestURI}(page=${i}, size=${responseDTO.size}, keyword=${keyword}, searchType=${searchType})}"
-                   th:classappend="${i == responseDTO.page} ? 'active'">[[${i}]]</a>
-            </span>
-            <a th:if="${responseDTO.next}"
-               th:href="@{${requestURI}(page=${responseDTO.end + 1}, size=${responseDTO.size}, keyword=${keyword}, searchType=${searchType})}">Next</a>
+<div class="gtco-loader"></div>
+<div id="page">
+    <!-- 네비게이션 -->
+    <nav class="gtco-nav" role="navigation">
+        <div class="gtco-container">
+            <div class="row">
+                <div class="col-sm-4 col-xs-12">
+                    <div id="gtco-logo"><a href="/">자유게시판</a></div>
+                </div>
+                <div class="col-xs-8 text-right menu-1">
+                    <ul>
+                        <li><a href="/topic">주제게시판</a></li>
+                        <li class="btn-cta"><a href="/write"><span>글쓰기</span></a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <button onclick="location.href='/write'">글쓰기</button>
+    </nav>
 
+    <!-- 헤더 이미지 배경 -->
+    <header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner"
+            style="background-image: url('/images/img_bg_1.jpg');" data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="gtco-container text-center">
+            <div class="row row-mt-15em">
+                <div class="col-md-12 mt-text animate-box" data-animate-effect="fadeInUp">
+                    <span class="intro-text-small">Hand-crafted by GetTemplates.co</span>
+                    <h1 class="cursive-font">자유게시판에 오신 걸 환영합니다</h1>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 게시판 콘텐츠 영역 -->
+    <div class="gtco-container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="cursive-font text-center">자유게시판</h1>
+
+                <!-- 검색 폼 -->
+                <form method="get" action="/free" class="form-inline text-center">
+                    <input type="text" name="keyword" placeholder="검색어 입력" class="form-control" />
+                    <select name="searchType" class="form-control">
+                        <option value="all">제목+내용</option>
+                        <option value="title">제목</option>
+                        <option value="content">내용</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">검색</button>
+                </form>
+
+                <!-- 게시글 테이블 -->
+                <table class="table table-hover mt-4">
+                    <thead>
+                    <tr>
+                        <th>번호</th><th>제목</th><th>내용</th><th>작성일</th><th>타입</th><th>작성자</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- 동적 렌더링 영역 -->
+                    </tbody>
+                </table>
+
+                <!-- 페이징 -->
+                <div class="text-center">
+                    <!-- 페이지 링크 영역 -->
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<script src="/js/guide.js"></script>
-<script th:if="${alertMessage != null}">
-    alert([[${alertMessage}]]);
-</script>
-</body>
 
+    <!-- 푸터: 이미지 배경 + 어두운 오버레이 -->
+    <footer id="gtco-footer" role="contentinfo" style="background-color: #fff3cd; color: #333;">
+        <div class="gtco-container">
+            <div class="row row-pb-md">
+
+                <div class="col-md-12 text-center">
+                    <div class="gtco-widget">
+                        <h3 style="color:#ff9800;">Get In Touch</h3>
+                        <ul class="gtco-quick-contact" style="list-style: none; padding: 0;">
+                            <li><i class="icon-phone"></i> +82 10-1234-5678</li>
+                            <li><i class="icon-mail2"></i> email@example.com</li>
+                            <li><i class="icon-chat"></i> Live Chat</li>
+                        </ul>
+                    </div>
+                    <div class="gtco-widget">
+                        <h3 style="color:#ff9800;">Get Social</h3>
+                        <ul class="gtco-social-icons" style="list-style: none; padding: 0;">
+                            <li style="display: inline-block; margin: 0 5px;"><a href="#"><i class="icon-twitter" style="color:#ff9800;"></i></a></li>
+                            <li style="display: inline-block; margin: 0 5px;"><a href="#"><i class="icon-facebook" style="color:#ff9800;"></i></a></li>
+                            <li style="display: inline-block; margin: 0 5px;"><a href="#"><i class="icon-linkedin" style="color:#ff9800;"></i></a></li>
+                        </ul>
+                    </div>
+                    <p class="copyright" style="margin-top: 20px;">
+                        <small class="block">&copy; 2025 자유게시판 All Rights Reserved.</small>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- JS 라이브러리 -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.easing.1.3.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.waypoints.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/jquery.countTo.js"></script>
+<script src="/js/jquery.stellar.min.js"></script>
+<script src="/js/jquery.magnific-popup.min.js"></script>
+<script src="/js/magnific-popup-options.js"></script>
+<script src="/js/moment.min.js"></script>
+<script src="/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/js/main.js"></script>
+</body>
 </html>

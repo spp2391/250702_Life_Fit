@@ -1,6 +1,7 @@
 package org.zerock.life_fit.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +27,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/","free","/topic","/member/login","/board/**","/member/update", "/member/join", "/member/profile", "/member/favorite","/member/favorites","/member/favorites/{num}","/css/**", "/js/**").permitAll()
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
