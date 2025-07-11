@@ -30,7 +30,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/member/login")
-                        .defaultSuccessUrl("/member/favorites")
+                        .defaultSuccessUrl("/member/profile")
                         .failureUrl("/member/login?error=true")
                 )
                 .logout(logout -> logout

@@ -12,41 +12,42 @@
 
   <!-- 📌 즐겨찾기 목록 -->
   <section class="favorites-section">
-    <a href="favorites">즐겨찾기 목록</a>
+    <h2>즐겨찾기 목록</h2>
+    <ul>
+      <li th:each="item : ${favoriteList}">
+        <a th:href="@{'/program/detail/' + ${item.programId}}"
+           th:text="${item.programName}">프로그램명</a>
+        <button type="button" th:onclick="'removeFavorite(' + ${item.id} + ')'" >삭제</button>
+      </li>
+    </ul>
   </section>
 
   <!-- 🙍 개인정보 수정 -->
   <section class="profile-section">
     <h2>개인정보 수정</h2>
     <form id="updateForm"
-          th:action="@{/member/update}"
+          th:action="@{/update}"
           th:object="${user}"
           method="post">
-      <input type="hidden" name="userId" th:value="${user.userId}">
       <!-- Spring Security CSRF 토큰 -->
       <!--<input type="hidden"
              th:name="${_csrf.parameterName}"
              th:value="${_csrf.token}" />-->
       <label>
-        닉네임:
-        <input type="text" name="nickname" th:field="${user.nickname}" placeholder="닉네임을 입력하세요"/>
+        이름:
+        <input type="text" th:field="${user.nickname}" placeholder="이름을 입력하세요"/>
       </label>
       <p class="error" th:if="${#fields.hasErrors('nickname')}"
          th:errors="${user.nickname}"></p>
 
       <label>
-        이름:
-        <input type="text" name="name" th:field="${user.name}" placeholder="이름을 입력하세요"/>
-      </label>
-
-      <label>
         이메일:
-        <input type="email" name="email" th:field="${user.email}" readonly/>
+        <input type="email" th:field="${user.email}" readonly/>
       </label>
 
       <label>
         비밀번호 변경:
-        <input type="password" name="password" placeholder="새 비밀번호 입력"/>
+        <input type="password" placeholder="새 비밀번호 입력"/>
       </label>
       <!--<p class="error" th:if="${#fields.hasErrors('password')}"></p>-->
 
@@ -54,6 +55,19 @@
     </form>
   </section>
 </div>
+
+<script>
+  // 즐겨찾기 삭제
+  function removeFavorite(id) {
+    if (confirm("즐겨찾기에서 삭제하시겠습니까?")) {
+      fetch(`/favorite/remove/${id}`, {
+        method: 'DELETE',
+        // <!--/*headers: { 'X-CSRF-TOKEN': /*[[${_csrf.token}]]*/ '' } */-->
+      })
+              .then(() => location.reload());
+    }
+  }
+</script>
 
 </body>
 </html>
