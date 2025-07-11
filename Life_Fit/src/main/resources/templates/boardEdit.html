@@ -32,6 +32,9 @@
 
     <button type="submit">수정 완료</button>
 </form>
+<script th:if="${alertMessage != null}">
+    alert([[${alertMessage}]]);
+</script>
 
 </body>
 </html>

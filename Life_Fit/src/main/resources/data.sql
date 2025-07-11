@@ -14,6 +14,7 @@ INSERT INTO localcate(localnum, localname) VALUES (13, '연제구');
 INSERT INTO localcate(localnum, localname) VALUES (14, '수영구');
 INSERT INTO localcate(localnum, localname) VALUES (15, '사상구');
 INSERT INTO localcate(localnum, localname) VALUES (16, '기장군');
+
 /*INSERT INTO FREEBOARD (bno, title, content, local_id, board_type, regdate, moddate, visitcount, likes) VALUES
                                                                                                            (1, '자유게시판 글 1', '자유게시판 내용입니다.', NULL, 'FREE', NOW(), NOW(), 0, 0),
                                                                                                            (2, '주제게시판 글 2', '주제게시판 내용입니다.', 7, 'TOPIC', NOW(), NOW(), 0, 0),

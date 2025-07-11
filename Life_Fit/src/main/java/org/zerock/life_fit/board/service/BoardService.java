@@ -7,6 +7,8 @@ import org.zerock.life_fit.board.domain.LocalCate;
 import org.zerock.life_fit.board.dto.BoardDTO;
 import org.zerock.life_fit.board.repository.BoardRepository;
 import org.zerock.life_fit.board.repository.LocalCateRepository;
+import org.zerock.life_fit.user.domain.User;
+import org.zerock.life_fit.user.repository.UserRepository;
 
 
 import java.time.LocalDateTime;
@@ -19,10 +21,12 @@ import java.util.Optional;
 public class BoardService {
     private final BoardRepository boardRepository;
     private final LocalCateRepository localCateRepository;
+    private final UserRepository userRepository;
 
-    public BoardService(BoardRepository boardRepository, LocalCateRepository localCateRepository) {
+    public BoardService(BoardRepository boardRepository, LocalCateRepository localCateRepository,UserRepository userRepository) {
         this.boardRepository = boardRepository;
         this.localCateRepository = localCateRepository;
+        this.userRepository = userRepository;
     }
 
     public Board findById(Long bno) {
@@ -34,32 +38,37 @@ public class BoardService {
         return boardRepository.save(board);
     }//게시글 저장
 
+   @Transactional
+   public Board save(BoardDTO dto, User userDetails) {  // userDetails는 @AuthenticationPrincipal로 받은 사용자 정보
+       // 1. UserDetails에서 email 혹은 userId 꺼내기 (user 객체 구조에 따라 조정 필요)
+       String email = userDetails.getEmail();  // getEmail() 메서드가 없다면 userDetails 객체에 맞게 수정
 
-       /* @Transactional
-        public Board save(BoardDTO dto, User user) {
-            LocalCate localCate = null;
+       // 2. DB에서 실제 User 엔티티 재조회
+       User persistedUser = userRepository.findByEmail(email)
+               .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 사용자입니다."));
 
-            // boardType을 문자열 그대로 사용
-            String boardType = dto.getBoardType();
+       LocalCate localCate = null;
+       String boardType = dto.getBoardType();
 
-            if ("TOPIC".equals(boardType)) {
-                localCate = localCateRepository.findById(dto.getLocalCateId())
-                        .orElseThrow(() -> new IllegalArgumentException("해당 지역이 존재하지 않습니다."));
-            }
+       if ("TOPIC".equals(boardType)) {
+           localCate = localCateRepository.findById(dto.getLocalCateId())
+                   .orElseThrow(() -> new IllegalArgumentException("해당 지역이 존재하지 않습니다."));
+       }
 
-            Board board = Board.builder()
-                    .title(dto.getTitle())
-                    .content(dto.getContent())
-                    .boardType(boardType)  // String 필드에 바로 저장
-                    .localCate(localCate)
-                    .visitcount(0)
-                    .likes(0)
-                    .regdate(LocalDateTime.now())
-                    .moddate(LocalDateTime.now())
-                    .build();
+       Board board = Board.builder()
+               .title(dto.getTitle())
+               .content(dto.getContent())
+               .boardType(boardType)
+               .localCate(localCate)
+               .visitcount(0)
+               .likes(0)
+               .regdate(LocalDateTime.now())
+               .moddate(LocalDateTime.now())
+               .writer(persistedUser)  // DB에 영속화된 User 객체 할당
+               .build();
 
-            return boardRepository.save(board);
-        }*/
+       return boardRepository.save(board);
+   }
 
     public List<Board> findByBoardType(String boardType) {
         // enum 변환 없이 String으로 바로 검색

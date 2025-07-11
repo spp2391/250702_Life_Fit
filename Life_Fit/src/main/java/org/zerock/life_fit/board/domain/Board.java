@@ -36,6 +36,11 @@ public class Board {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false) // ✅ User 연관관계
     private User user;
+    //user테이블 완성되면 사용예정
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User writer;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id")
@@ -96,4 +101,5 @@ public class Board {
         comments.remove(comment);
         comment.setBoard(null);
     }
+
 }

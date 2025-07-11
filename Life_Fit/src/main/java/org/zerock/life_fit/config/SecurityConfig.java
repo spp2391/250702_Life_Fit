@@ -23,14 +23,22 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+<<<<<<< HEAD
                         .requestMatchers("/", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/member/login", "/member/join", "/member/favorites", "/member/favorites/{num}").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+=======
+                        .requestMatchers("/","free","/topic","/member/login","/board/**","/member/update", "/member/join", "/member/profile", "/member/favorite","/member/favorites","/member/favorites/{num}","/css/**", "/js/**").permitAll()
+>>>>>>> main
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/member/login")
+<<<<<<< HEAD
                         .defaultSuccessUrl("/member/profile", true)
+=======
+                        .defaultSuccessUrl("/member/profile")
+>>>>>>> main
                         .failureUrl("/member/login?error=true")
                         .permitAll()
                 )
