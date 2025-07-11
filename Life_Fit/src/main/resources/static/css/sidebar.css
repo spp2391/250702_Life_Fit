@@ -353,3 +353,34 @@
     padding: 20px;
     box-sizing: border-box;
 }
+.side-bar {
+    background-color: #333; /* 기존 어두운 배경 */
+    color: #eee; /* 기본 글자색도 밝게 */
+}
+
+.side-bar ul li {
+    margin-bottom: 10px;
+}
+
+.side-bar ul ul {
+    display: none;
+    padding-left: 15px;
+    list-style-type: disc;
+}
+
+.side-bar ul li:hover > ul {
+    display: block;
+}
+
+.side-bar ul li > a {
+    color: #f0f0f0;
+    text-decoration: none;
+    padding: 8px 12px;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.side-bar ul li > a:hover {
+    background-color: #555;
+    color: #fff;
+}

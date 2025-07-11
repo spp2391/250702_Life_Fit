@@ -21,59 +21,6 @@ public class PageServiceImpl implements PageService {
     private final PageRepository pageRepository;
     private final BoardRepository boardRepository;
 
-   /* @Override
-    public PageResponseDTO<BoardDTO> getFreeBoardList(PageRequestDTO requestDTO, String searchType) {
-        PageRequest pageable = PageRequest.of(requestDTO.getPage() - 1, requestDTO.getSize());
-
-       *//* Page<Board> result = pageRepository.findByBoardType("FREE", pageable);*//*
-        Page<Board> result;
-
-        if (requestDTO.getKeyword() != null && !requestDTO.getKeyword().trim().isEmpty()) {
-            result = pageRepository.searchFreeBoard(requestDTO.getKeyword(), pageable);
-        } else {
-            result = pageRepository.findByBoardType("FREE", pageable);
-        }
-
-        List<BoardDTO> dtoList = result.getContent().stream()
-                .map(BoardDTO::new)
-                .collect(Collectors.toList());
-
-        return PageResponseDTO.<BoardDTO>withAll()
-                .pageRequestDTO(requestDTO)
-                .dtoList(dtoList)
-                .total((int) result.getTotalElements())
-                .build();
-    }
-
-    @Override
-    public PageResponseDTO<BoardDTO> getTopicBoardList(PageRequestDTO requestDTO, Long localId,String keyword, String searchType) {
-        PageRequest pageable = PageRequest.of(requestDTO.getPage() - 1, requestDTO.getSize());
-
-        Page<Board> result;
-        if (localId != null && keyword != null && !keyword.isBlank()) {
-            // 지역과 키워드 모두 있을 때 (키워드 검색 메서드가 필요함)
-            result = pageRepository.findByBoardTypeAndLocalCateAndKeyword("TOPIC", localId, keyword, pageable);
-        } else if (localId != null) {
-            // 지역만 있을 때
-            result = pageRepository.findByBoardTypeAndLocalCate("TOPIC", localId, pageable);
-        } else if (keyword != null && !keyword.isBlank()) {
-            // 키워드만 있을 때
-            result = pageRepository.findByBoardTypeAndKeyword("TOPIC", keyword, pageable);
-        } else {
-            // 둘 다 없을 때
-            result = pageRepository.findByBoardType("TOPIC", pageable);
-        }
-
-        List<BoardDTO> dtoList = result.getContent().stream()
-                .map(BoardDTO::new)
-                .collect(Collectors.toList());
-
-        return PageResponseDTO.<BoardDTO>withAll()
-                .pageRequestDTO(requestDTO)
-                .dtoList(dtoList)
-                .total((int) result.getTotalElements())
-                .build();
-    }*/
    @Override
    public PageResponseDTO<BoardDTO> getFreeBoardList(PageRequestDTO requestDTO, String searchType) {
        PageRequest pageable = PageRequest.of(requestDTO.getPage() - 1, requestDTO.getSize());

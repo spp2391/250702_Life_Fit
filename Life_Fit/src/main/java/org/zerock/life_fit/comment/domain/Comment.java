@@ -44,16 +44,5 @@ public class Comment {
     }
 
 
-    // 일단 주석
-   /* @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;*/
-
-    // 일단주석
- /*   @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bno", nullable = false)
-    */
-
-
 }
 
