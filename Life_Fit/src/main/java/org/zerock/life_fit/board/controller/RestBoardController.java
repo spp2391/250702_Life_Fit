@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.life_fit.board.domain.Board;
 import org.zerock.life_fit.board.domain.LocalCate;
 import org.zerock.life_fit.board.dto.BoardDTO;
@@ -15,6 +16,8 @@ import org.zerock.life_fit.board.dto.PageResponseDTO;
 import org.zerock.life_fit.board.service.BoardService;
 import org.zerock.life_fit.board.service.LocalCateService;
 import org.zerock.life_fit.board.service.PageService;
+import org.zerock.life_fit.comment.Service.CommentService;
+import org.zerock.life_fit.comment.dto.CommentResponseDTO;
 import org.zerock.life_fit.user.domain.User;
 
 import java.util.List;
@@ -25,13 +28,15 @@ public class RestBoardController {
         public final BoardService boardService;
         public final LocalCateService localCateService;
         public final PageService pageService;
-
+        public final CommentService commentService;
    @GetMapping("/free")
    public String listFreeBoards(
            @RequestParam(required = false, defaultValue = "all") String searchType,
            Model model,
            PageRequestDTO pageRequestDTO,
-           HttpServletRequest request) {
+           HttpServletRequest request,
+           @AuthenticationPrincipal User user
+           ) {
 
        PageResponseDTO<BoardDTO> responseDTO = pageService.getFreeBoardList(pageRequestDTO, searchType);
 
@@ -164,7 +169,7 @@ public class RestBoardController {
 */
 
 
-       @GetMapping("/topic/write")
+      /* @GetMapping("/topic/write")
        public String writeForm(@RequestParam(value = "localId", required = false) Long localId, Model model) {
            BoardDTO boardDTO = new BoardDTO();
            if (localId != null) {
@@ -175,39 +180,76 @@ public class RestBoardController {
            model.addAttribute("localList", localCateService.getAllLocalCates());
 
            return "topicWrite";
-       }
+       }*/
+      @GetMapping("/topic/write")
+      public String writeForm(@RequestParam(value = "localId", required = false) Long localId,
+                              @AuthenticationPrincipal User user,
+                              RedirectAttributes redirectAttributes,
+                              Model model) {
+
+          if (user == null) {
+              redirectAttributes.addFlashAttribute("alertMessage", "로그인 후 이용 가능합니다.");
+              return "redirect:/topic";
+          }
+
+          BoardDTO boardDTO = new BoardDTO();
+          if (localId != null) {
+              boardDTO.setLocalCateId(localId);
+          }
+
+          model.addAttribute("boardDTO", boardDTO);
+          model.addAttribute("localList", localCateService.getAllLocalCates());
+          return "topicWrite";
+      }
+
 
         // 글쓰기 저장 처리
         @PostMapping("/topic/write")
-        public String submitTopicBoard(@ModelAttribute BoardDTO boardDTO, Model model) {
+        public String submitTopicBoard(@ModelAttribute BoardDTO boardDTO,
+                                       @AuthenticationPrincipal User user,
+                                       RedirectAttributes redirectAttributes,
+                                       Model model) {
+
+            if (user == null) {
+                redirectAttributes.addFlashAttribute("alertMessage", "로그인 후 작성할 수 있습니다.");
+                return "redirect:/topic";
+            }
 
             if (boardDTO.getLocalCateId() == null) {
                 model.addAttribute("errorMessage", "지역을 선택해주세요.");
-                model.addAttribute("boardDTO", boardDTO);  // 사용자가 입력한 내용 유지
-                model.addAttribute("localList", localCateService.getAllLocalCates());  // 지역 목록 다시 전달
+                model.addAttribute("boardDTO", boardDTO);
+                model.addAttribute("localList", localCateService.getAllLocalCates());
                 return "topicWrite";
             }
-            // 고정적으로 TOPIC 타입 설정
+
             boardDTO.setBoardType("TOPIC");
-
-            /*// 로그인 기능 없으므로 임시 사용자
-            User dummyUser = User.builder().userId("testUser").build();
-
-            boardService.save(boardDTO, dummyUser);*/
+            boardService.save(boardDTO, user);
 
             return "redirect:/topic";
         }
 
+        /*
         @GetMapping("/board/{bno}")
         public String viewBoardDetail(@PathVariable Long bno, Model model) {
-            /*Board board = boardService.findById(bno);*/ // 예외 처리 포함됨
+            *//*Board board = boardService.findById(bno);*//* // 예외 처리 포함됨
             Board board = boardService.increaseVisitCount(bno);
             model.addAttribute("board", board);
             model.addAttribute("comments", board.getComments());
             return "boardDetail"; // 하나의 통합 뷰
-        }
+        }*/
+@GetMapping("/board/{bno}")
+public String viewBoard(@PathVariable Long bno, Model model) {
+    Board board = boardService.findById(bno);
+    model.addAttribute("board", board);
 
-       /* @PostMapping("/board/{bno}/delete")
+    List<CommentResponseDTO> comments = commentService.getCommentsByBoard(bno);
+    model.addAttribute("comments", comments); // ✅ DTO 리스트 넘기기
+
+    return "boardDetail";
+}
+
+
+        /* @PostMapping("/board/{bno}/delete")
         public String deleteBoard(@PathVariable Long bno) {
             Board board = boardService.findById(bno); // 게시글 확인용 (없으면 예외 발생)
             boardService.delete(bno);
@@ -249,11 +291,14 @@ public class RestBoardController {
        @GetMapping("/board/{bno}/edit")
        public String editBoardForm(@PathVariable Long bno,
                                    @AuthenticationPrincipal User user,
-                                   Model model) {
+                                   Model model,
+                                   RedirectAttributes redirectAttributes) {
            Board board = boardService.findById(bno);
 
            if (user == null || !board.getWriter().getUserId().equals(user.getUserId())) {
-               return "redirect:/board/" + bno; // 권한 없으면 상세보기 페이지로
+               /*return "redirect:/board/" + bno; // 권한 없으면 상세보기 페이지로*/
+               redirectAttributes.addFlashAttribute("alertMessage", "해당 게시글은 본인만 수정할 수 있습니다.");
+               return "redirect:/board/" + bno;
            }
 
            BoardDTO dto = new BoardDTO(board);
@@ -265,10 +310,13 @@ public class RestBoardController {
         @PostMapping("/board/{bno}/edit")
         public String editBoardSubmit(@PathVariable Long bno,
                                       @ModelAttribute BoardDTO boardDTO,
-                                      @AuthenticationPrincipal User user) {
+                                      @AuthenticationPrincipal User user,
+                                      RedirectAttributes redirectAttributes
+                                      ) {
             Board existing = boardService.findById(bno);
 
             if (user == null || !existing.getWriter().getUserId().equals(user.getUserId())) {
+                redirectAttributes.addFlashAttribute("alertMessage", "작성자 본인만 수정할 수 있습니다.");
                 return "redirect:/board/" + bno; // 권한 없으면 상세보기 페이지로
             }
 
@@ -288,10 +336,13 @@ public class RestBoardController {
 
         @PostMapping("/board/{bno}/delete")
         public String deleteBoard(@PathVariable Long bno,
-                                  @AuthenticationPrincipal User user) {
+                                  @AuthenticationPrincipal User user,
+                                  RedirectAttributes redirectAttributes
+                                  ) {
             Board board = boardService.findById(bno);
 
             if (user == null || !board.getWriter().getUserId().equals(user.getUserId())) {
+                redirectAttributes.addFlashAttribute("alertMessage", "해당 게시글은 본인만 삭제할 수 있습니다.");
                 return "redirect:/board/" + bno; // 권한 없으면 상세보기 페이지로
             }
 

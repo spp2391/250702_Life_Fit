@@ -5,6 +5,13 @@
     <title th:text="'게시글 상세 - ' + ${board.title}">게시글 상세</title>
 </head>
 <body>
+<div th:if="${errorMessage}" class="alert alert-danger" style="color: red; font-weight: bold; margin-bottom: 20px;">
+    <p th:text="${errorMessage}"></p>
+</div>
+<div th:if="${alertMessage}" style="color: red; font-weight: bold; margin-bottom: 10px;">
+    <p th:text="${alertMessage}"></p>
+</div>
+
 <h1 th:text="${board.title}">제목</h1>
 
 <p><strong>내용:</strong></p>
@@ -34,7 +41,7 @@
     <button type="submit">삭제</button>
 </form>
 
-<form th:action="@{/board/{bno}/edit(bno=${board.bno})}" method="get">
+<form th:action="@{/board/{bno}/edit(bno=${board.bno})}" method="get" onsubmit="return confirm('정말 수정하시겠습니까?');" >
     <button type="submit">수정하기</button>
 </form>
 
@@ -53,7 +60,8 @@
         <!-- 평소 상태 -->
         <div th:id="'viewMode-' + ${comment.cno}">
             <p th:text="${comment.content}">댓글</p>
-            <small th:text="${#temporals.format(comment.regdate, 'yyyy-MM-dd HH:mm')}">작성일</small>
+            <small th:text="${comment.regdate}">작성일</small>
+            <strong th:text="${comment.writerNickname}">작성자</strong>
 
             <form th:action="@{/comment/{cno}/delete(cno=${comment.cno})}" method="post">
                 <input type="hidden" name="boardId" th:value="${board.bno}" />

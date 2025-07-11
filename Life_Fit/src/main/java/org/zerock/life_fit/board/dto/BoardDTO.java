@@ -26,6 +26,7 @@ public class BoardDTO {
     private String userId;
     private String localCateName;
     private String keyword;
+    private String userNickname;
 
     public BoardDTO(Board board) {
         this.bno = board.getBno();
@@ -44,6 +45,7 @@ public class BoardDTO {
         this.moddate = board.getModdate();
         this.visitcount = board.getVisitcount();
         this.likes = board.getLikes();
+        this.userNickname = board.getWriter() != null ? board.getWriter().getNickname() : null;
         /*this.userId = board.getUser() != null ? board.getUser().getUserId() : null;*/
     }
 }
