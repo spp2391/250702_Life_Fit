@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/css/guide-panel.css">
+<div id="noticePanel" class="guide-panel">
+    <div class="guide-panel-header">
+        <h2>공지사항</h2>
+        <button onclick="closeNoticePanel()">닫기</button>
+        <button th:if="${isAdmin}" onclick="openAddNoticeForm()">공지사항 추가</button>
+    </div>
+    <div class="guide-panel-body">
+        <ul>
+            <li th:each="notice : ${noticeList}">
+                <span th:text="${notice.date} + ' - ' + ${notice.title}"></span>
+                <button th:if="${isAdmin}" onclick="openEditNoticeForm([[${notice.id}]])">수정</button>
+                <button th:if="${isAdmin}" onclick="deleteNotice([[${notice.id}]])">삭제</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- 공지사항 추가/수정 폼 (사이드패널 또는 모달) -->
+<div id="noticeFormPanel" class="guide-panel" style="display:none;">
+    <div class="guide-panel-header">
+        <h2 th:text="${editMode} ? '공지사항 수정' : '공지사항 추가'"></h2>
+        <button onclick="closeNoticeForm()">닫기</button>
+    </div>
+    <form th:action="@{/admin/notices}" method="post">
+        <input type="hidden" name="id" th:value="${notice.id}" />
+        <label>제목</label>
+        <input type="text" name="title" th:value="${notice.title}" required />
+        <label>내용</label>
+        <textarea name="content" th:text="${notice.content}" required></textarea>
+        <button type="submit">저장</button>
+    </form>
+</div>
+</head>
+</html>

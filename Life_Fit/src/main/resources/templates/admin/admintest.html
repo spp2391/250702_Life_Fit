@@ -2,34 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>관리자 페이지</title>
+    <title>관리자 회원 관리 페이지</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body class="container mt-5">
-<h2 class="mb-4">🔐 관리자 회원 관리 페이지</h2>
+<h2 class="mb-4"> 관리자 회원 관리 페이지</h2>
 
-<!-- 🔍 검색 필터 -->
 <form th:action="@{/api/admin/search}" method="get" class="row g-2 mb-4">
-    <div class="col-md-3">
-        <input type="text" name="userId" class="form-control" placeholder="회원 ID">
+    <div class="col-md-4">
+        <input type="text" name="name" class="form-control" placeholder="이름" th:value="${param.name}">
     </div>
-    <div class="col-md-3">
-        <input type="text" name="username" class="form-control" placeholder="이름">
-    </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <select name="role" class="form-select">
-            <option value="">전체 권한</option>
-            <option value="USER">USER</option>
-            <option value="ADMIN">ADMIN</option>
+            <option value="" th:selected="${param.role == null or param.role == ''}">전체 권한</option>
+            <option value="USER" th:selected="${param.role == 'USER'}">USER</option>
+            <option value="ADMIN" th:selected="${param.role == 'ADMIN'}">ADMIN</option>
         </select>
     </div>
-    <div class="col-md-3 d-flex gap-2">
+    <div class="col-md-4 d-flex gap-2">
         <button type="submit" class="btn btn-primary">검색</button>
         <a th:href="@{/api/admin/test}" class="btn btn-secondary">초기화</a>
     </div>
 </form>
 
-<!-- 👤 회원 목록 테이블 -->
 <table class="table table-bordered table-hover text-center align-middle">
     <thead class="table-light">
     <tr>
@@ -42,15 +37,14 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="user : ${users}">
+    <tr th:each="user : ${userPage.content}">
         <td th:text="${user.userId}"></td>
 
-        <!-- 회원 정보 수정 폼 -->
         <td>
             <form th:action="@{|/api/admin/users/${user.userId}|}" method="post" class="text-start">
                 <div class="mb-1">
                     <label class="form-label small">이름</label>
-                    <input type="text" name="username" class="form-control form-control-sm" th:value="${user.username}">
+                    <input type="text" name="name" class="form-control form-control-sm" th:value="${user.name}">
                 </div>
                 <div class="mb-1">
                     <label class="form-label small">닉네임</label>
@@ -68,7 +62,6 @@
             </form>
         </td>
 
-        <!-- 권한 변경 -->
         <td>
             <form th:action="@{|/api/admin/users/${user.userId}/role|}" method="post">
                 <select name="role" class="form-select form-select-sm mb-2">
@@ -82,9 +75,9 @@
         <td th:text="${#temporals.format(user.regdate, 'yyyy-MM-dd')}"></td>
         <td th:text="${#temporals.format(user.moddate, 'yyyy-MM-dd')}"></td>
 
-        <!-- 삭제 & 비번 초기화 -->
         <td>
-            <form th:action="@{|/api/admin/users/${user.userId}/delete|}" method="post" class="d-grid gap-1">
+            <form th:action="@{|/api/admin/users/${user.userId}/delete|}" method="post" class="d-grid gap-1"
+                  onsubmit="return confirm('정말 이 회원을 삭제하시겠습니까?');">
                 <button type="submit" class="btn btn-sm btn-danger">삭제</button>
             </form>
             <form th:action="@{|/api/admin/users/${user.userId}/reset-password|}" method="post" class="d-grid mt-1">
@@ -94,5 +87,24 @@
     </tr>
     </tbody>
 </table>
+
+<div class="d-flex justify-content-center mt-4">
+    <nav>
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${userPage.first} ? 'disabled'">
+                <a class="page-link" th:href="@{/api/admin/test(page=${userPage.number - 1}, size=${userPage.size})}">이전</a>
+            </li>
+            <li class="page-item" th:each="i : ${#numbers.sequence(0, userPage.totalPages - 1)}"
+                th:classappend="${userPage.number == i} ? 'active'">
+                <a class="page-link" th:href="@{/api/admin/test(page=${i}, size=${userPage.size})}"
+                   th:text="${i + 1}">1</a>
+            </li>
+            <li class="page-item" th:classappend="${userPage.last} ? 'disabled'">
+                <a class="page-link" th:href="@{/api/admin/test(page=${userPage.number + 1}, size=${userPage.size})}">다음</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
 </body>
 </html>

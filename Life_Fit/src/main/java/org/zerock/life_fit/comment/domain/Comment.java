@@ -1,9 +1,12 @@
 package org.zerock.life_fit.comment.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.zerock.life_fit.board.domain.Board;
+import org.zerock.life_fit.comment.Repository.CommentRepository;
+import org.zerock.life_fit.user.domain.User;
 
 import java.time.LocalDateTime;
 
@@ -11,14 +14,35 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
+@Setter
+@AllArgsConstructor
+@Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cno", nullable = false)
     private Long cno;
 
-    @Column(name = "comment", nullable = false, length = 255)
-    private String comment;
+    @Column(nullable = false)
+    private String content;
+
+    @CreatedDate
+    private LocalDateTime regdate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id", nullable = false)
+    private Board board;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User writer;
+
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
 
     // 일단 주석
    /* @ManyToOne(fetch = FetchType.LAZY)
@@ -28,12 +52,8 @@ public class Comment {
     // 일단주석
  /*   @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bno", nullable = false)
-    private Board board;*/
+    */
 
-    @Column(name = "regdate")
-    private LocalDateTime regdate;
 
-    @Column(name = "moddate")
-    private LocalDateTime moddate;
 }
 
