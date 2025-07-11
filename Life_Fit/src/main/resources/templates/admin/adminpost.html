@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:inline="javascript">
+<head>
+    <meta charset="UTF-8">
+    <title>게시글 및 댓글 관리</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        button { cursor: pointer; }
+
+        #editModal, #postEditModal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: #fff;
+            padding: 20px;
+            border: 2px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            width: 400px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+<h2> 게시글 및 댓글 관리</h2>
+
+<!--  검색 -->
+<form method="get" th:action="@{/api/admin/posts/html}">
+    <input type="text" name="userId" placeholder="회원 ID로 검색" th:value="${userId}">
+    <button type="submit">검색</button>
+</form>
+
+<!--  게시글 목록 -->
+<table>
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>제목</th>
+        <th>내용</th>
+        <th>닉네임</th>
+        <th>회원ID</th>
+        <th>작성일</th>
+        <th>수정</th>
+        <th>삭제</th>
+        <th>댓글</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="post : ${postPage.content}">
+        <td th:text="${post.bno}"></td>
+        <td th:text="${post.title}"></td>
+        <td th:text="${post.content}"></td>
+        <td th:text="${post.nickname}"></td>
+        <td th:text="${post.userId}"></td>
+        <td th:text="${#temporals.format(post.regdate, 'yyyy-MM-dd HH:mm')}"></td>
+        <td>
+            <button type="button"
+                    class="edit-post-btn"
+                    th:attr="data-bno=${post.bno}, data-title=${post.title}, data-content=${post.content}">
+                수정
+            </button>
+        </td>
+        <td>
+            <form th:action="@{/api/admin/posts/delete/{bno}(bno=${post.bno})}" method="post"
+                  onsubmit="return confirm('정말 게시글을 삭제하시겠습니까?')">
+                <button type="submit">삭제</button>
+            </form>
+        </td>
+        <td>
+            <button type="button" th:attr="onclick='loadComments(' + ${post.bno} + ')'">댓글 보기</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- 댓글 표시 영역 -->
+<div id="comments-section"></div>
+
+<!-- 댓글 수정 모달 -->
+<div id="editModal">
+    <h3>댓글 수정</h3>
+    <form onsubmit="submitEditComment(event)">
+        <textarea id="editCommentContent"></textarea>
+        <input type="hidden" id="editCno">
+        <input type="hidden" id="editBno">
+        <button type="submit">저장</button>
+        <button type="button" onclick="closeEditModal()">취소</button>
+    </form>
+</div>
+
+<!-- 게시글 수정 모달 -->
+<div id="postEditModal">
+    <h3>게시글 수정</h3>
+    <form onsubmit="submitPostEdit(event)">
+        <label>제목:</label><br>
+        <input type="text" id="editPostTitle" required><br><br>
+        <label>내용:</label><br>
+        <textarea id="editPostContent" required></textarea>
+        <input type="hidden" id="editPostBno"><br>
+        <button type="submit">저장</button>
+        <button type="button" onclick="closePostEditModal()">취소</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".edit-post-btn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const bno = this.dataset.bno;
+                const title = this.dataset.title;
+                const content = this.dataset.content;
+                openPostEditModal(bno, title, content);
+            });
+        });
+    });
+
+    function loadComments(bno) {
+        fetch(`/api/admin/posts/${bno}/comments`)
+            .then(res => res.json())
+            .then(data => {
+                const section = document.getElementById("comments-section");
+                section.innerHTML = "";
+                if (!data || data.length === 0) {
+                    section.innerHTML = "<p> 댓글이 없습니다.</p>";
+                    return;
+                }
+
+                const table = document.createElement("table");
+                table.innerHTML = `
+          <thead>
+            <tr><th>작성자</th><th>내용</th><th>작성일</th><th>삭제</th><th>수정</th></tr>
+          </thead>
+          <tbody>
+            ${data.map(comment => `
+              <tr>
+                <td>${comment.writer}</td>
+                <td style="white-space:pre-line;">${comment.content}</td>
+                <td>${new Date(comment.regdate).toLocaleString()}</td>
+                <td><button onclick="deleteComment(${comment.cno}, ${bno})">삭제</button></td>
+                <td><button onclick="openEditModal(${comment.cno}, \`${comment.content}\`, ${bno})">수정</button></td>
+              </tr>`).join('')}
+          </tbody>`;
+                section.appendChild(table);
+            });
+    }
+
+    function deleteComment(cno, bno) {
+        if (!confirm("정말 댓글을 삭제하시겠습니까?")) return;
+        fetch(`/api/admin/posts/comments/${cno}`, { method: "DELETE" })
+            .then(() => {
+                alert("댓글 삭제 완료");
+                loadComments(bno);
+            });
+    }
+
+    function openEditModal(cno, content, bno) {
+        document.getElementById("editCno").value = cno;
+        document.getElementById("editBno").value = bno;
+        document.getElementById("editCommentContent").value = content;
+        document.getElementById("editModal").style.display = "block";
+    }
+
+    function closeEditModal() {
+        document.getElementById("editModal").style.display = "none";
+    }
+
+    function submitEditComment(event) {
+        event.preventDefault();
+        const cno = document.getElementById("editCno").value;
+        const bno = document.getElementById("editBno").value;
+        const content = document.getElementById("editCommentContent").value;
+
+        fetch(`/api/admin/posts/comments/${cno}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content })
+        }).then(() => {
+            alert(" 댓글 수정 완료");
+            closeEditModal();
+            loadComments(bno);
+        });
+    }
+
+    function openPostEditModal(bno, title, content) {
+        document.getElementById("editPostBno").value = bno;
+        document.getElementById("editPostTitle").value = title;
+        document.getElementById("editPostContent").value = content;
+        document.getElementById("postEditModal").style.display = "block";
+    }
+
+    function closePostEditModal() {
+        document.getElementById("postEditModal").style.display = "none";
+    }
+
+    function submitPostEdit(event) {
+        event.preventDefault();
+        const bno = document.getElementById("editPostBno").value;
+        const title = document.getElementById("editPostTitle").value;
+        const content = document.getElementById("editPostContent").value;
+
+        fetch(`/api/admin/posts/${bno}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title, content })
+        }).then(response => {
+            if (response.ok) {
+                alert(" 게시글 수정 완료");
+                closePostEditModal();
+                location.reload();
+            } else {
+                alert(" 게시글 수정 실패");
+            }
+        });
+    }
+</script>
+</body>
+</html>
