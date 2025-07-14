@@ -3,7 +3,8 @@ package org.zerock.life_fit.admin.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.zerock.life_fit.admin.dto.CommentDTO;
-import org.zerock.life_fit.admin.repository.CommentRepository;
+import org.zerock.life_fit.admin.repository.AdminCommentRepository;
+import org.zerock.life_fit.comment.Repository.CommentRepository;
 import org.zerock.life_fit.comment.domain.Comment;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CommentService {
 
-    private final CommentRepository commentRepository;
+    private final AdminCommentRepository commentRepository;
 
     public List<CommentDTO> getCommentsByPost(Long bno) {
         return commentRepository.findByBno(bno).stream()

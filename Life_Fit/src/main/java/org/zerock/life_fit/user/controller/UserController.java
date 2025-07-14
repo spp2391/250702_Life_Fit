@@ -29,7 +29,6 @@ public class UserController {
     // 회원가입, 로그인, 로그아웃 기능
     /*@PostMapping("/join")
     public UserProfileResponse register(@Valid @RequestBody UserRegisterRequest dto, HttpSession session) {
-        User newUser = userService.register(dto);
         session.setAttribute("UserId", newUser.getUserId());
         return UserProfileResponse.fromEntity(newUser);
     }*/

@@ -6,14 +6,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.life_fit.admin.dto.UserDTO;
-import org.zerock.life_fit.admin.service.UserService;
+import org.zerock.life_fit.admin.service.AdminUserService2;
+import org.zerock.life_fit.admin.service.AdminUserService2;
 
 @Controller
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
 
-    private final UserService userService;
+    private final AdminUserService2 userService;
 
     // 관리자 메인 패널
     @GetMapping("/panel")

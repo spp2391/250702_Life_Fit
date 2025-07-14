@@ -9,7 +9,7 @@ import org.zerock.life_fit.user.domain.User;
 
 import java.util.List;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface AdminUserRepository extends JpaRepository<User, Long> {
 
     @Query(value = "SELECT * FROM user " +
             "WHERE (:email IS NULL OR :email = '' OR email LIKE %:email%) " +

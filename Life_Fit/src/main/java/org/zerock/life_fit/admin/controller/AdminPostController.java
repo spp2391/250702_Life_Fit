@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.life_fit.admin.dto.CommentDTO;
 import org.zerock.life_fit.admin.dto.PostDTO;
-import org.zerock.life_fit.admin.service.PostService;
+import org.zerock.life_fit.admin.service.AdminPostService;
 import org.zerock.life_fit.admin.service.CommentService;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminPostController {
 
-    private final PostService postService;
+    private final AdminPostService postService;
     private final CommentService commentService;
 
     @GetMapping

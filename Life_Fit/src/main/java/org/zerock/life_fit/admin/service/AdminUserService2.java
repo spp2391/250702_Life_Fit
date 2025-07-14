@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.zerock.life_fit.admin.dto.UserDTO;
-import org.zerock.life_fit.admin.repository.UserRepository;
+import org.zerock.life_fit.admin.repository.AdminUserRepository;
 import org.zerock.life_fit.user.domain.User;
 
 import java.util.List;
@@ -15,59 +15,59 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+public class AdminUserService2 {
 
-    private final UserRepository userRepository;
+    private final AdminUserRepository adminUserRepository;
 
     public List<UserDTO> getAllUsers() {
-        return userRepository.findAll().stream()
+        return adminUserRepository.findAll().stream()
                 .map(UserDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
     public void updateUser(Long userId, UserDTO dto) {
-        Optional<User> optionalUser = userRepository.findById(userId);
+        Optional<User> optionalUser = adminUserRepository.findById(userId);
         optionalUser.ifPresent(user -> {
             user.setName(dto.getName());
             user.setEmail(dto.getEmail());
             user.setPhoneNumber(dto.getPhoneNumber());
             user.setNickname(dto.getNickname());
-            userRepository.save(user);
+            adminUserRepository.save(user);
         });
     }
 
     public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
+        adminUserRepository.deleteById(userId);
     }
 
     public void resetPassword(Long userId) {
-        userRepository.findById(userId).ifPresent(user -> {
+        adminUserRepository.findById(userId).ifPresent(user -> {
             user.setPassword("1234"); // 암호화 필요
-            userRepository.save(user);
+            adminUserRepository.save(user);
         });
     }
 
     public void changeUserRole(Long userId, String role) {
-        userRepository.findById(userId).ifPresent(user -> {
+        adminUserRepository.findById(userId).ifPresent(user -> {
             user.setRole(role);
-            userRepository.save(user);
+            adminUserRepository.save(user);
         });
     }
 
     public Page<UserDTO> getUsersWithPaging(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return userRepository.findAll(pageable).map(UserDTO::fromEntity);
+        return adminUserRepository.findAll(pageable).map(UserDTO::fromEntity);
     }
 
     public List<UserDTO> searchUsers(String email, String nickname, String role) {
-        return userRepository.searchUsers(email, nickname, role).stream()
+        return adminUserRepository.searchUsers(email, nickname, role).stream()
                 .map(UserDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
     public Page<UserDTO> searchUsersWithPaging(String name, String role, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
-        return userRepository.searchUsersWithPaging(name, role, pageable)
+        return adminUserRepository.searchUsersWithPaging(name, role, pageable)
                 .map(UserDTO::fromEntity);
     }
 }

@@ -13,13 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/*@Table(name = "FREEBOARD")
-@EntityListeners(AuditingEntityListener.class)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString
-@Getter
-@Entity
-@Builder*/
+
 @Table(name = "FREEBOARD")
 @EntityListeners(AuditingEntityListener.class)
 @Getter
