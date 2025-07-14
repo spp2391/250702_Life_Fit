@@ -238,7 +238,12 @@ h1, h2, h3, h4, h5, h6, figure {
 }
 
 #gtco-header {
-  background: #4d4d4d;
+  background-image: url('/images/mainslide01.jpg') ;
+  background-size: cover;        /* 화면에 꽉 차게 */
+  background-position: center;   /* 가운데 정렬 */
+  background-repeat: no-repeat;  /* 반복 없음 */
+  height: 500px;                 /* 필요시 높이 지정 */
+  position: relative;
 }
 @media screen and (max-width: 992px) {
   #gtco-header.gtco-cover {
@@ -497,7 +502,7 @@ h1, h2, h3, h4, h5, h6, figure {
   }
 }
 .gtco-cover.gtco-cover-sm {
-  height: 600px;
+  height: 500px;
 }
 @media screen and (max-width: 768px) {
   .gtco-cover.gtco-cover-sm {

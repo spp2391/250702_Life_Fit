@@ -31,14 +31,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         System.out.println("✅ DB role 값: " + user.getRole());
         System.out.println("✅ 최종 적용 권한: ROLE_" + user.getRole());
 
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getEmail())
-                .password(user.getPassword())
-                .authorities(List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole())))
-                .accountExpired(false)
-                .accountLocked(false)
-                .credentialsExpired(false)
-                .disabled(user.isDeleted())
-                .build();
+        return user;
     }
 }

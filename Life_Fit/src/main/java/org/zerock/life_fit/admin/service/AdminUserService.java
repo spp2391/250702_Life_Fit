@@ -15,11 +15,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-<<<<<<<< HEAD:Life_Fit/src/main/java/org/zerock/life_fit/admin/service/AdminUserService2.java
-public class AdminUserService2 {
-========
 public class AdminUserService {
->>>>>>>> main:Life_Fit/src/main/java/org/zerock/life_fit/admin/service/AdminUserService.java
 
     private final AdminUserRepository adminUserRepository;
 
