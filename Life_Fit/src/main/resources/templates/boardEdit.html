@@ -1,39 +1,113 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>게시글 수정</title>
+    <meta charset="UTF-8" />
+    <title>게시글 수정 - <span th:text="${boardDTO.title}">게시글 제목</span></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/sidebar.css" />
+
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #fff8e1;
+        }
+        #content-container {
+            max-width: 700px;
+            margin: 40px auto 80px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #ffb300;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        label {
+            font-weight: 600;
+            color: #444;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 8px 12px;
+            margin-top: 5px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        button[type="submit"] {
+            background-color: #ffca28;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 700;
+            color: #333;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #ffb300;
+        }
+        /* alertMessage 스타일 */
+        .alert-message {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
 
-<h1>게시글 수정</h1>
+<div class="sidebar" th:replace="fragments/sidebar :: aside"></div>
 
-<form th:action="@{/board/{bno}/edit(bno=${boardDTO.bno})}" method="post" th:object="${boardDTO}">
-    <label>제목:</label><br/>
-    <input type="text" th:field="*{title}" required/><br/><br/>
+<main id="content-container">
+    <h1>게시글 수정</h1>
 
-    <label>내용:</label><br/>
-    <textarea th:field="*{content}" rows="10" cols="50" required></textarea><br/><br/>
+    <div th:if="${alertMessage != null}" class="alert-message" th:text="${alertMessage}"></div>
 
-    <!-- ✅ 지역 선택: 주제게시판일 경우만 표시 -->
-    <div th:if="${boardDTO.boardType == 'TOPIC'}">
-        <label>지역 선택:</label><br/>
-        <select th:field="*{localCateId}">
-            <option th:each="local : ${localList}"
-                    th:value="${local.localnum}"
-                    th:text="${local.localname}"
-                    th:selected="${local.localnum == boardDTO.localCateId}">
-            </option>
-        </select><br/><br/>
-    </div>
+    <form th:action="@{/board/{bno}/edit(bno=${boardDTO.bno})}" method="post" th:object="${boardDTO}">
+        <label for="title">제목:</label>
+        <input type="text" id="title" th:field="*{title}" required />
 
-    <!-- 숨겨진 필드 -->
-    <input type="hidden" th:field="*{boardType}"/>
+        <label for="content">내용:</label>
+        <textarea id="content" th:field="*{content}" rows="10" required></textarea>
 
-    <button type="submit">수정 완료</button>
-</form>
+        <div th:if="${boardDTO.boardType == 'TOPIC'}">
+            <label for="localCateId">지역 선택:</label>
+            <select id="localCateId" th:field="*{localCateId}">
+                <option th:each="local : ${localList}"
+                        th:value="${local.localnum}"
+                        th:text="${local.localname}"
+                        th:selected="${local.localnum == boardDTO.localCateId}">
+                </option>
+            </select>
+        </div>
+
+        <input type="hidden" th:field="*{boardType}" />
+
+        <button type="submit">수정 완료</button>
+    </form>
+</main>
+
+<footer style="text-align:center; margin-top: 100px; color:#999;">
+    &copy; 2025 주제게시판
+</footer>
+
 <script th:if="${alertMessage != null}">
-    alert([[${alertMessage}]]);
+    alert([[${#strings.escapeJavaScript(alertMessage)}]]);
 </script>
 
 </body>
