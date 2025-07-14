@@ -23,12 +23,17 @@ public class FavoriteService {
         return favoriteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not Found" + id));
     }
 
-    public void delete(int id, String userId) {
+    public String delete(int id, String userId) {
         favorite favorite = favoriteRepository.findById(id).get();
         if(favorite.getUserId().equals(userId)) {
             favoriteRepository.deleteById(id);
+            return "삭제되었습니다.";
+        } else {
+            return "실패하였습니다.";
         }
     }
+
+
 
     public List<FavoriteDTO> getFavoritesByUserId(String userId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -46,7 +51,10 @@ public class FavoriteService {
     }
 
     // 즐겨찾기 삭제
-    public void removeFavorite(int num, String userId) {
-        favoriteRepository.deleteByNumAndUserId(num, userId);
+    public void removeFavorite(int id, String userId) {
+        favorite favorite = favoriteRepository.findById(id).get();
+        if(favorite.getUserId().equals(userId)) {
+            favoriteRepository.deleteById(id);
+        }
     }
 }
