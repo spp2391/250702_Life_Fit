@@ -9,29 +9,39 @@ import org.zerock.life_fit.admin.dto.UserDTO;
 import org.zerock.life_fit.admin.service.AdminUserService;
 
 @Controller
-@RequestMapping("/api/admin")
+@RequestMapping("/api/admin/users")
 @RequiredArgsConstructor
-public class AdminController {
+public class AdminUserController {
 
     private final AdminUserService adminUserService;
 
-    // 관리자 메인 패널
-    @GetMapping("/panel")
-    public String adminPanel() {
-        return "admin/adminpanel";
+    // 관리자 패널 페이지 또는 iframe 본문만 렌더링
+    @GetMapping("/test")
+    public String showAdminPanel(Model model,
+                                 @RequestParam(defaultValue = "0") int page,
+                                 @RequestParam(defaultValue = "10") int size,
+                                 @RequestParam(value = "embed", required = false) Boolean embed) {
+        Page<UserDTO> userPage = adminUserService.getUsersWithPaging(page, size);
+        model.addAttribute("userPage", userPage);
+
+        if (Boolean.TRUE.equals(embed)) {
+            return "admin/admintest"; // 본문만 (iframe)
+        } else {
+            return "admin/adminpanel"; // 전체 페이지 (사이드바 포함)
+        }
     }
 
-    // 회원관리 iframe 로딩용
-    @GetMapping("/test")
-    public String adminTestPage(@RequestParam(defaultValue = "0") int page,
-                                @RequestParam(defaultValue = "10") int size,
-                                Model model) {
-
+    // 유저 전체 리스트 (iframe 내부용)
+    @GetMapping
+    public String listUsers(@RequestParam(defaultValue = "0") int page,
+                            @RequestParam(defaultValue = "10") int size,
+                            Model model) {
         Page<UserDTO> userPage = adminUserService.getUsersWithPaging(page, size);
         model.addAttribute("userPage", userPage);
         return "admin/admintest";
     }
 
+    // 유저 검색
     @GetMapping("/search")
     public String searchUsers(@RequestParam(required = false) String name,
                               @RequestParam(required = false) String role,
@@ -43,27 +53,31 @@ public class AdminController {
         return "admin/admintest";
     }
 
-    @PostMapping("/users/{userId}")
+    // 유저 정보 수정
+    @PostMapping("/{userId}")
     public String updateUser(@PathVariable Long userId, @ModelAttribute UserDTO dto) {
         adminUserService.updateUser(userId, dto);
-        return "redirect:/api/admin/test";
+        return "redirect:/api/admin/users/test?embed=true";
     }
 
-    @PostMapping("/users/{userId}/delete")
+    // 유저 삭제
+    @PostMapping("/{userId}/delete")
     public String deleteUser(@PathVariable Long userId) {
         adminUserService.deleteUser(userId);
-        return "redirect:/api/admin/test";
+        return "redirect:/api/admin/users/test?embed=true";
     }
 
-    @PostMapping("/users/{userId}/role")
+    // 권한 변경
+    @PostMapping("/{userId}/role")
     public String changeRole(@PathVariable Long userId, @RequestParam String role) {
         adminUserService.changeUserRole(userId, role);
-        return "redirect:/api/admin/test";
+        return "redirect:/api/admin/users/test?embed=true";
     }
 
-    @PostMapping("/users/{userId}/reset-password")
+    // 비밀번호 초기화
+    @PostMapping("/{userId}/reset-password")
     public String resetPassword(@PathVariable Long userId) {
         adminUserService.resetPassword(userId);
-        return "redirect:/api/admin/test";
+        return "redirect:/api/admin/users/test?embed=true";
     }
 }

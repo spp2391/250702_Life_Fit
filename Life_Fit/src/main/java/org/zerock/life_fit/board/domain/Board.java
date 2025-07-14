@@ -34,13 +34,8 @@ public class Board {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false) // ✅ User 연관관계
-    private User user;
-    //user테이블 완성되면 사용예정
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false) // 작성자
     private User writer;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "local_id")
@@ -50,7 +45,7 @@ public class Board {
     private String boardType;
 
     @CreatedDate
-    @Column(name = "regdate")
+    @Column(name = "regdate", updatable = false)
     private LocalDateTime regdate;
 
     @LastModifiedDate
@@ -63,11 +58,11 @@ public class Board {
     @Column(name = "likes")
     private int likes;
 
-    // 댓글 리스트
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
     private List<Comment> comments = new ArrayList<>();
 
+    // Setter methods
     public void setTitle(String title) {
         this.title = title;
     }
@@ -88,8 +83,8 @@ public class Board {
         this.localCate = localCate;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setWriter(User writer) {
+        this.writer = writer;
     }
 
     public void addComment(Comment comment) {
@@ -101,5 +96,4 @@ public class Board {
         comments.remove(comment);
         comment.setBoard(null);
     }
-
 }

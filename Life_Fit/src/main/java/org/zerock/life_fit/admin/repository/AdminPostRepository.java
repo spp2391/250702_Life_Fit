@@ -12,11 +12,11 @@ import org.zerock.life_fit.board.domain.Board;
 public interface AdminPostRepository extends JpaRepository<Board, Long> {
 
     @Query("SELECT p.bno, p.title, p.content, p.boardType, u.userId, u.nickname, p.regdate, p.moddate, p.visitcount " +
-            "FROM Board p JOIN p.user u")
+            "FROM Board p JOIN p.writer u")
     Page<Object[]> findAllPosts(Pageable pageable);
 
     @Query("SELECT p.bno, p.title, p.content, p.boardType, u.userId, u.nickname, p.regdate, p.moddate, p.visitcount " +
-            "FROM Board p JOIN p.user u WHERE u.userId = :userId")
+            "FROM Board p JOIN p.writer u WHERE u.userId = :userId")
     Page<Object[]> findPostsByUserId(@Param("userId") Long userId, Pageable pageable);
 
     @Transactional

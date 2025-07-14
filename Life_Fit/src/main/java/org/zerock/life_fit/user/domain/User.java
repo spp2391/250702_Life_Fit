@@ -36,8 +36,8 @@ public class User implements UserDetails {
     @Column(name = "phone_number", length = 15)
     private String phoneNumber;
 
-    @Column(name = "role", length = 10)
-    private String role; // ex: USER, ADMIN
+    @Column(name = "user_role", length = 10)
+    private String role;
 
     @Column(name = "regdate")
     private LocalDateTime regdate;

@@ -22,23 +22,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.sameOrigin())
+                )
                 .authorizeHttpRequests(auth -> auth
-<<<<<<< HEAD
-                        .requestMatchers("/", "/css/**", "/js/**").permitAll()
-                        .requestMatchers("/member/login", "/member/join", "/member/favorites", "/member/favorites/{num}").permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-=======
-                        .requestMatchers("/","free","/topic","/member/login","/board/**","/member/update", "/member/join", "/member/profile", "/member/favorite","/member/favorites","/member/favorites/{num}","/css/**", "/js/**").permitAll()
->>>>>>> main
+                        .requestMatchers(
+                                "/", "/css/**", "/js/**", "/images/**",
+                                "/member/login", "/member/join",
+                                "/free", "/topic", "/board/**"
+                        ).permitAll()
+                        .requestMatchers("/api/admin/**", "/admin/**").hasRole("ADMIN") // ✅ 추가
+                        .requestMatchers("/member/profile", "/member/update", "/member/favorites", "/member/favorites/**")
+                        .authenticated()
                         .anyRequest().authenticated()
                 )
+
                 .formLogin(form -> form
                         .loginPage("/member/login")
-<<<<<<< HEAD
-                        .defaultSuccessUrl("/member/profile", true)
-=======
-                        .defaultSuccessUrl("/member/profile")
->>>>>>> main
+                        .defaultSuccessUrl("/admin/panel", true) // ✅ 수정됨: 로그인 성공 시 관리자 페이지로 이동
                         .failureUrl("/member/login?error=true")
                         .permitAll()
                 )
