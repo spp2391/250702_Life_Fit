@@ -11,7 +11,7 @@ async function searchSchool(gubun) {
         + `&region=100267`
         + `&gubun=${gubun}`
         + `&thisPage=1`
-        + `&perPage=100`;
+        + `&perPage=500`;
 
     try {
         const res = await fetch(url);
@@ -23,9 +23,13 @@ async function searchSchool(gubun) {
     }
     var result = [];
     for (key of allData) {
+        // 주소에 괄호가 있을 경우 괄호 삭제
+        // if (key.adres.indexOf("(") !== -1) {
+        //     key.adres = key.adres.slice(0, key.adres.indexOf('('));
+        // }
         result.push({
-            place: key.schoolName,
-            address: key.adres
+            place_name: key.schoolName,
+            address_name: key.adres
         })
     }
     console.log(result);
