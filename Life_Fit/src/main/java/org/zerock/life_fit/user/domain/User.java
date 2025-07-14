@@ -1,6 +1,5 @@
 package org.zerock.life_fit.user.domain;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,57 +11,90 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-    @Table(name = "user")
-    @Getter
-    @Setter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    @AllArgsConstructor
-    @Builder
-    public class User implements UserDetails {
+@Table(name = "user")
+@Getter
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id", length = 100, nullable = false)
-    private Long userId; // 사용자 ID (PK)
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
     @Column(name = "name", length = 100, nullable = false)
-    private String name; // 사용자 이름
+    private String name;
 
     @Column(name = "email", length = 255, nullable = false, unique = true)
-    private String email; // 이메일 주소
+    private String email;
 
     @Column(name = "password", length = 255)
-    private String password; // 비밀번호
+    private String password;
 
     @Column(name = "phone_number", length = 15)
-    private String phoneNumber; // 전화번호
+    private String phoneNumber;
 
-    @Column(name = "role", length = 10)
-    private String role; // 사용자 역할 (ex: USER, ADMIN)
+    @Column(name = "user_role", length = 10)
+    private String role;
 
     @Column(name = "regdate")
-    private LocalDateTime regdate; // 등록일
+    private LocalDateTime regdate;
 
     @Column(name = "moddate")
-    private LocalDateTime moddate; // 수정일
+    private LocalDateTime moddate;
 
     @Column(name = "nickname", length = 15)
-    private String nickname; // 닉네임
+    private String nickname;
 
-    // 회원 탈퇴 여부
+    @Builder.Default
+    @Column(nullable = false)
     private boolean deleted = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("USER"));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
     }
+
     @Override
     public String getUsername() {
         return email;
     }
 
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !deleted;
+    }
+
     @PrePersist
     public void prePersist() {
-            this.regdate = LocalDateTime.now();
-        }
+        this.regdate = LocalDateTime.now();
+        this.moddate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.moddate = LocalDateTime.now();
+    }
 }

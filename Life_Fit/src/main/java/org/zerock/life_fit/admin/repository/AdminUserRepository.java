@@ -8,10 +8,15 @@ import org.springframework.data.repository.query.Param;
 import org.zerock.life_fit.user.domain.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AdminUserRepository extends JpaRepository<User, Long> {
 
-    @Query(value = "SELECT * FROM user " +
+    // 로그인용
+    Optional<User> findByEmail(String email);
+
+    // 이메일 + 닉네임 + 역할 검색 (native 쿼리)
+    @Query(value = "SELECT * FROM `user` " +
             "WHERE (:email IS NULL OR :email = '' OR email LIKE %:email%) " +
             "AND (:nickname IS NULL OR :nickname = '' OR nickname LIKE %:nickname%) " +
             "AND (:role IS NULL OR :role = '' OR role = :role)",
@@ -22,10 +27,11 @@ public interface AdminUserRepository extends JpaRepository<User, Long> {
             @Param("role") String role
     );
 
-    @Query(value = "SELECT * FROM user " +
+    // 이름 + 역할 검색 (페이징 포함, native 쿼리)
+    @Query(value = "SELECT * FROM `user` " +
             "WHERE (:name IS NULL OR :name = '' OR name LIKE %:name%) " +
             "AND (:role IS NULL OR :role = '' OR role = :role)",
-            countQuery = "SELECT COUNT(*) FROM user " +
+            countQuery = "SELECT COUNT(*) FROM `user` " +
                     "WHERE (:name IS NULL OR :name = '' OR name LIKE %:name%) " +
                     "AND (:role IS NULL OR :role = '' OR role = :role)",
             nativeQuery = true)

@@ -49,53 +49,7 @@ public class RestBoardController {
    }
 
 
-        /*@GetMapping("/topic")
-        public String listTopicBoards(Model model) {
-            List<Board> topicBoards = boardService.findByBoardType("TOPIC");
-            List<LocalCate> localList = localCateService.getAllLocalCates(); // ✅ 지역 목록 추가
 
-            model.addAttribute("boards", topicBoards);
-            model.addAttribute("localList", localList); // ✅ 뷰로 전달
-
-            return "topicList"; // templates/topicList.html
-        }*/
-
-        /*@GetMapping("/topic")
-        public String listTopicBoards(
-                @RequestParam(value = "localId", required = false) Long localId,
-                Model model
-        ) {
-            List<Board> topicBoards;
-
-            if (localId != null) {
-                topicBoards = boardService.findByLocalAndBoardType(localId, "TOPIC");
-                model.addAttribute("selectedLocalId", localId);
-            } else {
-                topicBoards = boardService.findByBoardType("TOPIC");
-            }
-
-            List<LocalCate> localList = localCateService.getAllLocalCates();
-
-            model.addAttribute("boards", topicBoards);
-            model.addAttribute("localList", localList);
-            return "topicList";
-        }*/
-        /*@GetMapping("/topic")
-        public String listTopicBoards(@RequestParam(required = false) Long localId,
-                                      @RequestParam(required = false) String keyword,
-                                      PageRequestDTO pageRequestDTO,
-                                      Model model, HttpServletRequest request) {
-            pageRequestDTO.setKeyword(keyword);
-
-            PageResponseDTO<BoardDTO> responseDTO = pageService.getTopicBoardList(pageRequestDTO, localId ,keyword);
-            model.addAttribute("responseDTO", responseDTO);
-            model.addAttribute("localList", localCateService.getAllLocalCates());
-            model.addAttribute("selectedLocalId", localId);
-            model.addAttribute("keyword", keyword);
-            model.addAttribute("requestURI", request.getRequestURI());
-
-            return "topicList"; // 주제게시판 뷰
-        }*/
         @GetMapping("/topic")
         public String listTopicBoards(@RequestParam(required = false) Long localId,
                                       @RequestParam(required = false) String keyword,
@@ -118,22 +72,6 @@ public class RestBoardController {
         }
 
 
-       /* @GetMapping("/write")
-        public String showWriteForm(Model model) {
-            model.addAttribute("boardDTO", new BoardDTO());
-            return "write";  // src/main/resources/templates/write.html
-        }
-
-        @PostMapping("/write")
-        public String submitWrite(@ModelAttribute BoardDTO boardDTO,
-                                  @AuthenticationPrincipal User user) {  // User 엔티티 직접 받기
-
-            boardDTO.setBoardType("FREE");
-
-            boardService.save(boardDTO, user);
-
-            return "redirect:/free";
-        }*/
        @GetMapping("/write")
        public String showWriteForm(@AuthenticationPrincipal User user, Model model) {
            if (user == null) {
@@ -155,32 +93,7 @@ public class RestBoardController {
         }
 
 
-        // 글쓰기 폼 제출 처리
-       /* @PostMapping("/write")
-        public String submitWrite(@ModelAttribute BoardDTO boardDTO) {
-            boardDTO.setBoardType("FREE");
-         *//*   // TODO: 실제 로그인 사용자 연동 필요
-            User dummyUser = User.builder().userId("testUser").build();
 
-            boardService.save(boardDTO, dummyUser);*//*
-
-            return "redirect:/free"; // 저장 후 게시판 목록 페이지로 이동
-        }
-*/
-
-
-      /* @GetMapping("/topic/write")
-       public String writeForm(@RequestParam(value = "localId", required = false) Long localId, Model model) {
-           BoardDTO boardDTO = new BoardDTO();
-           if (localId != null) {
-               boardDTO.setLocalCateId(localId);
-           }
-
-           model.addAttribute("boardDTO", boardDTO);
-           model.addAttribute("localList", localCateService.getAllLocalCates());
-
-           return "topicWrite";
-       }*/
       @GetMapping("/topic/write")
       public String writeForm(@RequestParam(value = "localId", required = false) Long localId,
                               @AuthenticationPrincipal User user,
@@ -228,15 +141,7 @@ public class RestBoardController {
             return "redirect:/topic";
         }
 
-        /*
-        @GetMapping("/board/{bno}")
-        public String viewBoardDetail(@PathVariable Long bno, Model model) {
-            *//*Board board = boardService.findById(bno);*//* // 예외 처리 포함됨
-            Board board = boardService.increaseVisitCount(bno);
-            model.addAttribute("board", board);
-            model.addAttribute("comments", board.getComments());
-            return "boardDetail"; // 하나의 통합 뷰
-        }*/
+
 @GetMapping("/board/{bno}")
 public String viewBoard(@PathVariable Long bno, Model model) {
     Board board = boardService.findById(bno);
@@ -249,45 +154,7 @@ public String viewBoard(@PathVariable Long bno, Model model) {
 }
 
 
-        /* @PostMapping("/board/{bno}/delete")
-        public String deleteBoard(@PathVariable Long bno) {
-            Board board = boardService.findById(bno); // 게시글 확인용 (없으면 예외 발생)
-            boardService.delete(bno);
 
-            // 게시판 종류에 따라 목록으로 리다이렉트
-            if ("TOPIC".equals(board.getBoardType())) {
-                return "redirect:/topic";
-            } else {
-                return "redirect:/free";
-            }
-        }
-
-        @GetMapping("/board/{bno}/edit")
-        public String editBoardForm(@PathVariable Long bno, Model model) {
-            Board board = boardService.findById(bno);
-            BoardDTO dto = new BoardDTO(board);
-
-            model.addAttribute("boardDTO", dto);
-            model.addAttribute("localList", localCateService.getAllLocalCates()); // 지역 선택용
-            return "boardEdit";
-        }
-        @PostMapping("/board/{bno}/edit")
-        public String editBoardSubmit(@PathVariable Long bno, @ModelAttribute BoardDTO boardDTO) {
-            Board existing = boardService.findById(bno);
-
-            existing.setTitle(boardDTO.getTitle());
-            existing.setContent(boardDTO.getContent());
-            Long localCateId = boardDTO.getLocalCateId();
-            LocalCate localCate = null;
-            if (localCateId != null) {
-                localCate = localCateService.getLocalCateById(localCateId);
-            }
-            existing.setLocalCate(localCate);
-
-            boardService.update(existing);
-
-            return "redirect:/board/" + bno;
-        }*/
        @GetMapping("/board/{bno}/edit")
        public String editBoardForm(@PathVariable Long bno,
                                    @AuthenticationPrincipal User user,
@@ -354,11 +221,7 @@ public String viewBoard(@PathVariable Long bno, Model model) {
                 return "redirect:/free";
             }
         }
-    /*@GetMapping("/notice")
-        public String viewNotice() {
-            return "notice";
-        }
-        */
+
         @ResponseBody
         @PostMapping("/board/{bno}/like")
         public int likeBoard(@PathVariable Long bno) {

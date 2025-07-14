@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>주제게시판</title>
+	<link rel="stylesheet" href="/css/sidebar.css">
+	<style>
+		body {
+			font-family: 'Lato', sans-serif;
+			background-color: #fff8e1;
+			margin: 0;
+			padding: 0;
+		}
+		.container {
+			display: flex;
+		}
+		.content {
+			flex-grow: 1;
+			padding: 40px;
+		}
+		h1 {
+			font-weight: 700;
+			color: #ffb300;
+			margin-bottom: 20px;
+		}
+		table {
+			width: 100%;
+			background: white;
+			border-collapse: collapse;
+			margin-top: 20px;
+		}
+		th, td {
+			border: 1px solid #ddd;
+			padding: 10px;
+			text-align: center;
+		}
+		th {
+			background-color: #fff3cd;
+		}
+		.search-write-wrap {
+			display: flex;
+			justify-content: flex-end;
+			gap: 10px;
+			flex-wrap: wrap;
+			margin-bottom: 20px;
+		}
+		.search-write-wrap input,
+		.search-write-wrap select,
+		.search-write-wrap button,
+		.search-write-wrap a {
+			padding: 6px 12px;
+			font-size: 14px;
+		}
+		.pagination {
+			display: flex;
+			justify-content: center;
+			margin-top: 30px;
+		}
+		.pagination a {
+			margin: 0 5px;
+			text-decoration: none;
+			color: #333;
+		}
+		.pagination .active {
+			font-weight: bold;
+			text-decoration: underline;
+			color: #ff5722;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="sidebar" th:replace="fragments/sidebar :: aside"></div>
+	<div id="guidePanel" th:replace="fragments/guidePanel :: #guidePanel"></div>
+
+	<div class="content">
+		<h1>주제게시판</h1>
+
+		<!-- 검색 및 글쓰기 -->
+		<div class="search-write-wrap">
+			<form method="get" action="/topic" class="form-inline">
+				<input type="text" name="keyword" placeholder="검색어 입력" th:value="${keyword}" />
+				<select name="searchType">
+					<option value="all" th:selected="${searchType == 'all'}">제목 + 내용</option>
+					<option value="title" th:selected="${searchType == 'title'}">제목</option>
+					<option value="content" th:selected="${searchType == 'content'}">내용</option>
+				</select>
+				<button type="submit">검색</button>
+			</form>
+			<form id="writeForm" method="get">
+				<select name="localId" id="localSelect">
+					<option value="" th:selected="${selectedLocalId == null}">모든 지역</option>
+					<option th:each="local : ${localList}"
+							th:value="${local.localnum}"
+							th:text="${local.localname}"
+							th:selected="${selectedLocalId != null and selectedLocalId == local.localnum}">
+					</option>
+				</select>
+				<button type="submit" formaction="/topic/write">글쓰기</button>
+			</form>
+		</div>
+
+		<!-- 게시글 목록 -->
+		<table>
+			<thead>
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>내용</th>
+				<th>지역</th>
+				<th>작성일</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr th:each="board : ${responseDTO.dtoList}">
+				<td th:text="${board.bno}"></td>
+				<td><a th:href="@{/board/{bno}(bno=${board.bno})}" th:text="${board.title}"></a></td>
+				<td th:text="${board.content}"></td>
+				<td>
+					<span th:if="${board.localCateName != null}" th:text="${board.localCateName}"></span>
+					<span th:unless="${board.localCateName != null}">지역없음</span>
+				</td>
+				<td th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm')}"></td>
+			</tr>
+			</tbody>
+		</table>
+
+		<!-- 페이징 -->
+		<div class="pagination">
+			<a th:if="${responseDTO.prev}" th:href="@{/topic(localId=${selectedLocalId}, page=${responseDTO.start - 1}, size=${responseDTO.size})}">Prev</a>
+			<span th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                <a th:href="@{/topic(localId=${selectedLocalId}, page=${i}, size=${responseDTO.size})}"
+				   th:classappend="${i == responseDTO.page} ? 'active'">[[${i}]]</a>
+            </span>
+			<a th:if="${responseDTO.next}" th:href="@{/topic(localId=${selectedLocalId}, page=${responseDTO.end + 1}, size=${responseDTO.size})}">Next</a>
+		</div>
+	</div>
+</div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const writeButton = document.querySelector("button[formaction='/topic/write']");
+		const select = document.getElementById("localSelect");
+		writeButton.addEventListener("click", function (e) {
+			if (!select.value) {
+				e.preventDefault();
+				alert("지역을 선택해주세요!");
+			}
+		});
+	});
+</script>
+<script src="/js/guide.js"></script>
+</body>
+</html>

@@ -1,101 +1,318 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <title th:text="'게시글 상세 - ' + ${board.title}">게시글 상세</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
+    <link rel="stylesheet" href="/css/animate.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/sidebar.css">
+
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #fff8e1;
+        }
+        #content-container {
+            max-width: 900px;
+            margin: 40px auto 80px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #ffb300;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .post-meta {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .btn-like {
+            background-color: #ffca28;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #333;
+            transition: background-color 0.3s;
+        }
+        .btn-like:hover {
+            background-color: #ffb300;
+        }
+        /* 댓글 스타일 */
+        #comments-section {
+            margin-top: 50px;
+        }
+        #comments-section h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        #commentWriteForm textarea {
+            width: 100%;
+            min-height: 80px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            resize: vertical;
+            font-size: 16px;
+        }
+        #commentWriteForm button {
+            margin-top: 10px;
+            background-color: #ffca28;
+            border: none;
+            padding: 10px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 5px;
+            color: #333;
+            transition: background-color 0.3s;
+        }
+        #commentWriteForm button:hover {
+            background-color: #ffb300;
+        }
+        ul.comment-list {
+            list-style: none;
+            padding: 0;
+        }
+        ul.comment-list li {
+            padding: 15px 20px;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+        }
+        ul.comment-list li small {
+            color: #999;
+            font-size: 12px;
+        }
+        ul.comment-list li strong {
+            margin-left: 10px;
+            font-weight: 600;
+        }
+        ul.comment-list form {
+            display: inline-block;
+            margin-left: 10px;
+        }
+        ul.comment-list button {
+            background-color: transparent;
+            border: none;
+            color: #ffb300;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 0 6px;
+            font-size: 14px;
+        }
+        ul.comment-list button:hover {
+            color: #ffca28;
+        }
+        /* 수정 폼 */
+        .edit-form input[type="text"] {
+            width: 70%;
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+        .edit-form button {
+            margin-left: 8px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .edit-form button[type="submit"] {
+            background-color: #ffca28;
+            color: #333;
+        }
+        .edit-form button[type="button"] {
+            background-color: #ccc;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-<div th:if="${errorMessage}" class="alert alert-danger" style="color: red; font-weight: bold; margin-bottom: 20px;">
-    <p th:text="${errorMessage}"></p>
-</div>
-<div th:if="${alertMessage}" style="color: red; font-weight: bold; margin-bottom: 10px;">
-    <p th:text="${alertMessage}"></p>
-</div>
 
-<h1 th:text="${board.title}">제목</h1>
+<div class="gtco-loader"></div>
 
-<p><strong>내용:</strong></p>
-<p th:text="${board.content}">내용</p>
+<div id="page">
+    <!-- 네비게이션 바 -->
+    <nav class="gtco-nav" role="navigation">
+        <div class="sidebar" th:replace="fragments/sidebar :: aside"></div>
+        <div id="guidePanel" th:replace="fragments/guidePanel :: #guidePanel"></div>
+    </nav>
 
-<p><strong>작성일:</strong>
-    <span th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm')}">날짜</span>
-</p>
+    <!-- 헤더 -->
+    <header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner"
+            style="background-image: url('/images/img_bg_1.jpg');" data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="gtco-container text-center">
+            <div class="row row-mt-15em">
+                <div class="col-md-12 mt-text animate-box" data-animate-effect="fadeInUp">
+                    <span class="intro-text-small">Hand-crafted by GetTemplates.co</span>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<p><strong>조회수:</strong> <span th:text="${board.visitcount}">0</span></p>
-<!-- 좋아요 버튼과 카운터 -->
-<p>
-    <strong>좋아요:</strong>
-    <span id="like-count" th:text="${board.likes}">0</span>
-    <button type="button" th:onclick="'likeBoard(' + ${board.bno} + ')'"> 좋아요</button>
-</p>
-
-
-<!-- 주제 게시판일 경우에만 지역 출력 -->
-<div th:if="${board.boardType == 'TOPIC'}">
-    <p><strong>지역:</strong> <span th:text="${board.localCate.localname}">지역명</span></p>
-</div>
-
-<!-- 목록으로 돌아가기: 게시판 종류에 따라 분기 -->
-<a th:href="@{${board.boardType == 'FREE'} ? '/free' : '/topic'}">목록으로</a>
-<form th:action="@{/board/{bno}/delete(bno=${board.bno})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
-    <button type="submit">삭제</button>
-</form>
-
-<form th:action="@{/board/{bno}/edit(bno=${board.bno})}" method="get" onsubmit="return confirm('정말 수정하시겠습니까?');" >
-    <button type="submit">수정하기</button>
-</form>
-
-<h2>댓글</h2>
-
-<!-- 댓글 작성 -->
-<form th:action="@{/comment/add}" method="post" id="commentWriteForm">
-    <input type="hidden" name="boardId" th:value="${board.bno}" />
-    <textarea name="content" placeholder="댓글을 입력하세요" required></textarea>
-    <button type="submit">작성</button>
-</form>
-
-<!-- 댓글 목록 -->
-<ul>
-    <li th:each="comment, stat : ${comments}" th:attr="data-id=${comment.cno}">
-        <!-- 평소 상태 -->
-        <div th:id="'viewMode-' + ${comment.cno}">
-            <p th:text="${comment.content}">댓글</p>
-            <small th:text="${comment.regdate}">작성일</small>
-            <strong th:text="${comment.writerNickname}">작성자</strong>
-
-            <form th:action="@{/comment/{cno}/delete(cno=${comment.cno})}" method="post">
-                <input type="hidden" name="boardId" th:value="${board.bno}" />
-                <button type="submit">삭제</button>
-            </form>
-            <button type="button" th:onclick="'showEditMode(' + ${comment.cno} + ')'">수정</button>
+    <main id="content-container">
+        <div th:if="${errorMessage}" class="alert alert-danger" style="color: red; font-weight: bold; margin-bottom: 20px;">
+            <p th:text="${errorMessage}"></p>
+        </div>
+        <div th:if="${alertMessage}" style="color: red; font-weight: bold; margin-bottom: 10px;">
+            <p th:text="${alertMessage}"></p>
         </div>
 
-        <!-- 수정 상태 (처음엔 숨김) -->
-        <div th:id="'editMode-' + ${comment.cno}" style="display:none;">
-            <form th:action="@{/comment/{cno}/edit(cno=${comment.cno})}" method="post">
-                <input type="hidden" name="boardId" th:value="${board.bno}" />
-                <input type="text" name="content" th:value="${comment.content}" />
-                <button type="submit">저장</button>
-                <button type="button" th:onclick="'cancelEditMode(' + ${comment.cno} + ')'">취소</button>
+        <h2 th:text="${board.title}">제목</h2>
+
+        <p><strong>내용:</strong></p>
+        <p th:text="${board.content}">내용</p>
+
+        <p class="post-meta"><strong>작성일:</strong>
+            <span th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm')}">날짜</span>
+        </p>
+
+        <p class="post-meta"><strong>조회수:</strong> <span th:text="${board.visitcount}">0</span></p>
+
+        <!-- 좋아요 버튼과 카운터 -->
+        <p class="post-meta">
+            <strong>좋아요:</strong>
+            <span id="like-count" th:text="${board.likes}">0</span>
+            <button type="button" class="btn-like" th:onclick="'likeBoard(' + ${board.bno} + ')'">좋아요</button>
+        </p>
+
+        <!-- 주제 게시판일 경우 지역 출력 -->
+        <div th:if="${board.boardType == 'TOPIC'}" class="post-meta">
+            <strong>지역:</strong> <span th:text="${board.localCate.localname}">지역명</span>
+        </div>
+
+        <!-- 목록, 삭제, 수정 버튼 -->
+        <div style="margin-top: 30px;">
+            <a class="btn btn-primary" th:href="@{${board.boardType == 'FREE'} ? '/free' : '/topic'}" style="margin-right: 10px;">목록으로</a>
+
+            <form th:action="@{/board/{bno}/delete(bno=${board.bno})}" method="post" style="display:inline-block;"
+                  onsubmit="return confirm('정말 삭제하시겠습니까?');">
+                <button type="submit" class="btn btn-danger">삭제</button>
+            </form>
+
+            <form th:action="@{/board/{bno}/edit(bno=${board.bno})}" method="get" style="display:inline-block; margin-left: 10px;"
+                  onsubmit="return confirm('정말 수정하시겠습니까?');">
+                <button type="submit" class="btn btn-warning">수정하기</button>
             </form>
         </div>
-    </li>
-</ul>
+
+        <!-- 댓글 섹션 -->
+        <section id="comments-section">
+            <h2>댓글</h2>
+
+            <!-- 댓글 작성 -->
+            <form th:action="@{/comment/add}" method="post" id="commentWriteForm">
+                <input type="hidden" name="boardId" th:value="${board.bno}" />
+                <textarea name="content" placeholder="댓글을 입력하세요" required></textarea>
+                <button type="submit">작성</button>
+            </form>
+
+            <!-- 댓글 목록 -->
+            <ul>
+                <li th:each="comment, stat : ${comments}" th:attr="data-id=${comment.cno}">
+                    <!-- 평소 상태 -->
+                    <div th:id="'viewMode-' + ${comment.cno}">
+                        <p th:text="${comment.content}">댓글</p>
+                        <small th:text="${comment.regdate}">작성일</small>
+                        <strong th:text="${comment.writerNickname}">작성자</strong>
+
+                        <form th:action="@{/comment/{cno}/delete(cno=${comment.cno})}" method="post" style="display:inline-block; margin-left: 10px;">
+                            <input type="hidden" name="boardId" th:value="${board.bno}" />
+                            <button type="submit">삭제</button>
+                        </form>
+                        <button type="button" th:onclick="'showEditMode(' + ${comment.cno} + ')'" style="margin-left: 10px;">수정</button>
+                    </div>
+
+                    <!-- 수정 상태 (처음엔 숨김) -->
+                    <div th:id="'editMode-' + ${comment.cno}" style="display:none; margin-top: 10px;">
+                        <form th:action="@{/comment/{cno}/edit(cno=${comment.cno})}" method="post">
+                            <input type="hidden" name="boardId" th:value="${board.bno}" />
+                            <input type="text" name="content" th:value="${comment.content}" />
+                            <button type="submit">저장</button>
+                            <button type="button" th:onclick="'cancelEditMode(' + ${comment.cno} + ')'">취소</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- 푸터 -->
+    <footer id="gtco-footer" role="contentinfo" style="background-image: url(/images/img_bg_1.jpg)" data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="gtco-container">
+            <div class="row row-pb-md">
+                <div class="col-md-12 text-center">
+                    <div class="gtco-widget">
+                        <h3>Get In Touch</h3>
+                        <ul class="gtco-quick-contact">
+                            <li><a href="#"><i class="icon-phone"></i> +1 234 567 890</a></li>
+                            <li><a href="#"><i class="icon-mail2"></i> info@GetTemplates.co</a></li>
+                            <li><a href="#"><i class="icon-chat"></i> Live Chat</a></li>
+                        </ul>
+                    </div>
+                    <div class="gtco-widget">
+                        <h3>Get Social</h3>
+                        <ul class="gtco-social-icons">
+                            <li><a href="#"><i class="icon-twitter"></i></a></li>
+                            <li><a href="#"><i class="icon-facebook"></i></a></li>
+                            <li><a href="#"><i class="icon-linkedin"></i></a></li>
+                            <li><a href="#"><i class="icon-dribbble"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-12 text-center copyright">
+                    <p><small class="block">&copy; 2025 주제게시판 All Rights Reserved.</small>
+                        <small class="block">Designed by <a href="http://gettemplates.co/" target="_blank">GetTemplates.co</a>, Images: <a href="http://unsplash.com/" target="_blank">Unsplash</a></small></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- JS -->
+<script src="/js/jquery.min.js"></script>
+<script src="/js/jquery.easing.1.3.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.waypoints.min.js"></script>
+<script src="/js/owl.carousel.min.js"></script>
+<script src="/js/jquery.countTo.js"></script>
+<script src="/js/jquery.stellar.min.js"></script>
+<script src="/js/jquery.magnific-popup.min.js"></script>
+<script src="/js/magnific-popup-options.js"></script>
+<script src="/js/moment.min.js"></script>
+<script src="/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/js/main.js"></script>
 
 <script>
     function showEditMode(cno) {
         document.getElementById('viewMode-' + cno).style.display = 'none';
         document.getElementById('editMode-' + cno).style.display = 'block';
-        document.getElementById('commentWriteForm').style.display = 'none';  // 댓글 작성 폼 숨김
+        document.getElementById('commentWriteForm').style.display = 'none';
     }
 
     function cancelEditMode(cno) {
         document.getElementById('editMode-' + cno).style.display = 'none';
         document.getElementById('viewMode-' + cno).style.display = 'block';
-        document.getElementById('commentWriteForm').style.display = 'block'; // 댓글 작성 폼 다시 보임
+        document.getElementById('commentWriteForm').style.display = 'block';
     }
-</script>
-<script>
+
     function likeBoard(bno) {
         fetch(`/board/${bno}/like`, {
             method: 'POST'
@@ -107,5 +324,6 @@
             .catch(error => console.error("좋아요 처리 중 오류:", error));
     }
 </script>
+
 </body>
 </html>

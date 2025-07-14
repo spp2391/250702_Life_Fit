@@ -38,59 +38,6 @@ public class BoardService {
         return boardRepository.save(board);
     }//게시글 저장
 
-
-       /* @Transactional
-        public Board save(BoardDTO dto, User user) {
-            LocalCate localCate = null;
-
-            // boardType을 문자열 그대로 사용
-            String boardType = dto.getBoardType();
-
-            if ("TOPIC".equals(boardType)) {
-                localCate = localCateRepository.findById(dto.getLocalCateId())
-                        .orElseThrow(() -> new IllegalArgumentException("해당 지역이 존재하지 않습니다."));
-            }
-
-            Board board = Board.builder()
-                    .title(dto.getTitle())
-                    .content(dto.getContent())
-                    .boardType(boardType)  // String 필드에 바로 저장
-                    .localCate(localCate)
-                    .visitcount(0)
-                    .likes(0)
-                    .regdate(LocalDateTime.now())
-                    .moddate(LocalDateTime.now())
-                    .build();
-
-            return boardRepository.save(board);
-        }*/
-
-   /* @Transactional
-    public Board save(BoardDTO dto, User user) {
-        LocalCate localCate = null;
-
-        // boardType을 문자열 그대로 사용
-        String boardType = dto.getBoardType();
-
-        if ("TOPIC".equals(boardType)) {
-            localCate = localCateRepository.findById(dto.getLocalCateId())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 지역이 존재하지 않습니다."));
-        }
-
-        Board board = Board.builder()
-                .title(dto.getTitle())
-                .content(dto.getContent())
-                .boardType(boardType)
-                .localCate(localCate)
-                .visitcount(0)
-                .likes(0)
-                .regdate(LocalDateTime.now())
-                .moddate(LocalDateTime.now())
-                .writer(user)  // 작성자 추가
-                .build();
-
-        return boardRepository.save(board);
-    }*/
    @Transactional
    public Board save(BoardDTO dto, User userDetails) {  // userDetails는 @AuthenticationPrincipal로 받은 사용자 정보
        // 1. UserDetails에서 email 혹은 userId 꺼내기 (user 객체 구조에 따라 조정 필요)

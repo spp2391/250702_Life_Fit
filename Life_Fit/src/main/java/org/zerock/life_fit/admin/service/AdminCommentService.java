@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.zerock.life_fit.admin.dto.CommentDTO;
 import org.zerock.life_fit.admin.repository.AdminCommentRepository;
-import org.zerock.life_fit.comment.Repository.CommentRepository;
 import org.zerock.life_fit.comment.domain.Comment;
 
 import java.util.List;
@@ -12,12 +11,12 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService {
+public class AdminCommentService {
 
-    private final AdminCommentRepository commentRepository;
+    private final AdminCommentRepository adminCommentRepository;
 
     public List<CommentDTO> getCommentsByPost(Long bno) {
-        return commentRepository.findByBno(bno).stream()
+        return adminCommentRepository.findByBno(bno).stream()
                 .map(c -> new CommentDTO(
                         c.getCno(),
                         c.getContent(),
@@ -28,13 +27,13 @@ public class CommentService {
     }
 
     public void deleteComment(Long cno) {
-        commentRepository.deleteById(cno);
+        adminCommentRepository.deleteById(cno);
     }
 
     public void updateComment(Long cno, String newContent) {
-        Comment comment = commentRepository.findById(cno)
+        Comment comment = adminCommentRepository.findById(cno)
                 .orElseThrow(() -> new RuntimeException("❌ 댓글이 존재하지 않습니다"));
         comment.setContent(newContent);
-        commentRepository.save(comment);
+        adminCommentRepository.save(comment);
     }
 }
