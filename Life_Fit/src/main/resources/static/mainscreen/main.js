@@ -261,7 +261,7 @@ async function categorySearch(keyword, category, area) {
     var addressType = "address";
     // TODO: 카테고리를 기반으로 장소를 검색.
     if (category === "지하철") {
-        searchResult = searchSubway();
+        searchResult = await searchSubway();
     } else if (category === "버스") {
         addressType = "latLng";
         searchResult = searchBus();
@@ -278,7 +278,7 @@ async function categorySearch(keyword, category, area) {
             searchResult = searchResult.concat(await searchSchool(key));
         }
     } else if (category === "치안시설") {
-        searchResult = searchSecurity();
+        searchResult = await searchSecurity();
     } else if (category === "CCTV") {
         addressType = "latLng";
         searchResult = searchCCTV();
@@ -319,10 +319,22 @@ async function categorySearch(keyword, category, area) {
     // TODO: 주소를 사용하는 결과의 경우 각 결과를 주소로 필터링, 그 후 각 결과를 검색하여 푸시 및 마커 표기.
     else if (addressType === "address") {
         // 주소 기준으로 필터링.
-        for (var i = 0; i < searchResult.length; i++) {
-            if (searchResult[i].address_name.includes(area) && searchResult[i].address_name.includes("부산")) {
-                filteredResult.push(searchResult[i]);
-                // console.log(searchResult[i]);
+        if (["초등학교", "중학교", "고등학교", "학교", "치안시설"].includes(category)) {
+            for (var i = 0; i < searchResult.length; i++) {
+                if ((searchResult[i].address_name.includes(area) && area !== "서구")
+                        || (!searchResult[i].address_name.includes("강서구") && searchResult[i].address_name.includes("서구") && area === "서구")) {
+                    filteredResult.push(searchResult[i]);
+                    // console.log(searchResult[i]);
+                }
+            }
+        } else {
+            for (var i = 0; i < searchResult.length; i++) {
+                if ((searchResult[i].address_name.includes(area) && area !== "서구")
+                    || (!searchResult[i].address_name.includes("강서구") && searchResult[i].address_name.includes("서구") && area === "서구")
+                    && searchResult[i].address_name.includes("부산")) {
+                    filteredResult.push(searchResult[i]);
+                    // console.log(searchResult[i]);
+                }
             }
         }
         if (!filteredResult) {
@@ -346,30 +358,49 @@ async function categorySearch(keyword, category, area) {
                     const address = searchResultIndexed.address_name;
                     const place = searchResultIndexed.place_name;
                     // 검색 성공시 결과 저장.
-                    // console.log(result);
-                    if (result.length > 1) {
-                        for (var j = 0; j < result.length; j++) {
-                            if (result[j].place_name.includes(place) || place.includes(result[j].place_name)
-                                || result[j].address_name.includes(address) || address.includes(result[j].address_name)
-                                || result[j].road_address_name.includes(address) || address.includes(result[j].road_address_name) ) {
-                                result = result[j];
-                                break;
+                    console.log(address, place, result);
+                    var resultStatus = 0;
+                    var filteredResult = [];
+                    for (var j = 0; j < result.length; j++) {
+                        if ((result[j].place_name.includes(place) || place.includes(result[j].place_name))
+                            && result[j].address_name.includes("부산")
+                            && (searchCondition === "place" || result[j].address_name.includes(address) || address.includes(result[j].address_name)
+                            || result[j].road_address_name.includes(address) || address.includes(result[j].road_address_name)) ) {
+                            // console.log(result[j].place_name, place, result[j].address_name, result[j].road_address_name, address);
+                            filteredResult.push(result[j]);
+                            resultStatus = 1;
+                        }
+                        // if ((result[j].place_name === place && result[j].address_name.includes("부산"))
+                        //     && (searchCondition === "place" || result[j].address_name.includes(address) || address.includes(result[j].address_name)
+                        //         || result[j].road_address_name.includes(address) || address.includes(result[j].road_address_name)) ) {
+                        //     // console.log(result[j].place_name, place, result[j].address_name, result[j].road_address_name, address);
+                        //     filteredResult.push(result[j]);
+                        //     resultStatus = 1;
+                        // }
+                    }
+                    console.log(filteredResult);
+                    if (resultStatus === 1) {
+                        // console.log("resultStatus 1", result);
+                        for (key of filteredResult) {
+                            if (key.address_name) {
+                                searchHistory[searchHistory.length - 1].result.push(key);
+                                setMarker(key);
                             }
                         }
-                    } else {
-                        result = result[0];
+                        finishedMark++;
+                        // console.log("finishedMark",finishedMark);
+                        // 마커 세팅 후 맵 바운드 설정.
+                        map.setBounds(bounds);
                     }
-                    if (result.address_name) {
-                        searchHistory[searchHistory.length - 1].result.push(result);
-                        setMarker(result);
-                    }
-                    finishedMark++;
-                    // console.log("finishedMark",finishedMark);
-                    // 마커 세팅 후 맵 바운드 설정.
-                    map.setBounds(bounds);
                 } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
                     // alert('검색 결과가 없습니다.');
                     console.log('검색 결과가 없습니다.', searchResultIndexed);
+
+                } else if (status === kakao.maps.services.Status.ERROR) {
+                    alert('오류가 발생했습니다.');
+                }
+                if (resultStatus === 0) {
+                    console.log("resultStatus 0;", searchResultIndexed);
                     if (searchCondition === "address") {
                         if (searchResultIndexed.address_name.indexOf("(") !== -1) {
                             searchResultIndexed.address_name = searchResultIndexed.address_name.slice(0, searchResultIndexed.address_name.indexOf("("));
@@ -386,8 +417,6 @@ async function categorySearch(keyword, category, area) {
                         console.log("재검색", searchCondition);
                         places.keywordSearch(searchResultIndexed.place_name, callback);
                     }
-                } else if (status === kakao.maps.services.Status.ERROR) {
-                    alert('오류가 발생했습니다.');
                 }
             }
             let searchCondition = "address";
