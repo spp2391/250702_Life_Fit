@@ -238,7 +238,6 @@ h1, h2, h3, h4, h5, h6, figure {
 }
 
 #gtco-header {
-  background-image: url('/images/mainslide01.jpg') ;
   background-size: cover;        /* 화면에 꽉 차게 */
   background-position: center;   /* 가운데 정렬 */
   background-repeat: no-repeat;  /* 반복 없음 */

@@ -5,6 +5,7 @@
     <title>자유게시판</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
 
@@ -18,6 +19,10 @@
     <!-- 기존 링크들 아래에 추가 -->
     <link rel="stylesheet" href="/css/custom.css">
 
+    <link rel="stylesheet" href="/css/main.css" />
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <noscript><link rel="stylesheet" href="/css/noscript.css" /></noscript>
 
     <style>
         body {
@@ -134,15 +139,15 @@
     </style>
 </head>
 <body>
-<div class="gtco-loader"></div>
+<!--<div class="gtco-loader"></div>-->
 <div id="page">
         <div class="header" th:replace="fragments/header :: header"></div>
         <!--<div class="sidebar" th:replace="fragments/sidebar :: aside"></div>-->
-        <div id="guidePanel" th:replace="fragments/guidePanel :: #guidePanel"></div>
+        <!--<div id="guidePanel" th:replace="fragments/guidePanel :: #guidePanel"></div>-->
 
 
 
-    <div style="background-color: #ffffff; padding-top: 40px; padding-bottom: 60px;">
+    <div style="background-color:#2B343D; padding-top: 40px; padding-bottom: 60px;">
         <div class="gtco-container">
             <div class="row">
                 <div class="col-md-12">
@@ -194,36 +199,7 @@
         </div>
     </div>
 
-    <footer id="gtco-footer" role="contentinfo" style="background-image: url(/images/img_bg_1.jpg)" data-stellar-background-ratio="0.5">
-        <div class="overlay"></div>
-        <div class="gtco-container">
-            <div class="row row-pb-md">
-                <div class="col-md-12 text-center">
-                    <div class="gtco-widget">
-                        <h3>Get In Touch</h3>
-                        <ul class="gtco-quick-contact">
-                            <li><a href="#"><i class="icon-phone"></i> +1 234 567 890</a></li>
-                            <li><a href="#"><i class="icon-mail2"></i> info@GetTemplates.co</a></li>
-                            <li><a href="#"><i class="icon-chat"></i> Live Chat</a></li>
-                        </ul>
-                    </div>
-                    <div class="gtco-widget">
-                        <h3>Get Social</h3>
-                        <ul class="gtco-social-icons">
-                            <li><a href="#"><i class="icon-twitter"></i></a></li>
-                            <li><a href="#"><i class="icon-facebook"></i></a></li>
-                            <li><a href="#"><i class="icon-linkedin"></i></a></li>
-                            <li><a href="#"><i class="icon-dribbble"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-12 text-center copyright">
-                    <p><small class="block">&copy; 2025 자유게시판 All Rights Reserved.</small>
-                        <small class="block">Designed by <a href="http://gettemplates.co/" target="_blank">GetTemplates.co</a>, Images: <a href="http://unsplash.com/" target="_blank">Unsplash</a></small></p>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <div class="footer" th:replace="fragments/footer :: footer"></div>
 </div>
 
 <!-- JS -->
@@ -238,6 +214,13 @@
 <script src="/js/magnific-popup-options.js"></script>
 <script src="/js/moment.min.js"></script>
 <script src="/js/bootstrap-datetimepicker.min.js"></script>
+
+
+<script src="/js/jquery.scrollex.min.js"></script>
+<script src="/js/jquery.scrolly.min.js"></script>
+<script src="/js/browser.min.js"></script>
+<script src="/js/breakpoints.min.js"></script>
+<script src="/js/util.js"></script>
 <script src="/js/main.js"></script>
 </body>
 </html>

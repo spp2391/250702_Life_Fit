@@ -1,200 +1,53 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>헤더</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Free HTML5 Website Template by GetTemplates.co" />
-    <meta name="keywords" content="free website templates, free html5, free template, free bootstrap, free website template, html5, css3, mobile first, responsive" />
-    <meta name="author" content="GetTemplates.co" />
-
-    <!-- Facebook and Twitter integration -->
-    <meta property="og:title" content="" />
-    <meta property="og:image" content="" />
-    <meta property="og:url" content="" />
-    <meta property="og:site_name" content="" />
-    <meta property="og:description" content="" />
-    <meta name="twitter:title" content="" />
-    <meta name="twitter:image" content="" />
-    <meta name="twitter:url" content="" />
-    <meta name="twitter:card" content="" />
-
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet">
-
-    <!-- Animate.css -->
-    <link rel="stylesheet" href="/css/animate.css">
-    <!-- Icomoon Icon Fonts-->
-    <link rel="stylesheet" href="/css/icomoon.css">
-    <!-- Themify Icons-->
-    <link rel="stylesheet" href="/css/themify-icons.css">
-    <!-- Bootstrap  -->
-    <link rel="stylesheet" href="/css/bootstrap.css">
-
-    <!-- Magnific Popup -->
-    <link rel="stylesheet" href="/css/magnific-popup.css">
-
-    <!-- Bootstrap DateTimePicker -->
-    <link rel="stylesheet" href="/css/bootstrap-datetimepicker.min.css">
-
-    <!-- Owl Carousel  -->
-    <link rel="stylesheet" href="/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
-
-    <!-- Theme style  -->
-    <link rel="stylesheet" href="/css/style.css">
-
-    <!-- Modernizr JS -->
-    <script src="/js/modernizr-2.6.2.min.js"></script>
-    <!-- FOR IE9 below -->
-    <!--[if lt IE 9]>
-    <script src="/js/respond.min.js"></script>
-    <![endif]-->
-
-    <style>
-        /* 드롭다운 메뉴 스타일 추가 */
-        .gtco-nav ul.menu {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            gap: 30px;
-        }
-
-        .gtco-nav ul.menu > li {
-            position: relative;
-            font-size: 1.3em;
-        }
-
-        .gtco-nav ul.menu > li > a {
-            text-decoration: none;
-            color: #333;
-            padding: 10px 15px;
-            display: inline-block;
-        }
-
-        .gtco-nav ul.menu > li:hover > a {
-            color: #007bff;
-        }
-
-        /* 서브 메뉴 기본 숨김 */
-        .gtco-nav ul.menu li ul.submenu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: #fff;
-            border: 1px solid #ddd;
-            list-style: none;
-            padding: 5px 0;
-            margin: 0;
-            min-width: 180px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-            z-index: 1000;
-        }
-
-        .gtco-nav ul.menu li ul.submenu li {
-            padding: 0;
-        }
-
-        .gtco-nav ul.menu li ul.submenu li a {
-            display: block;
-            padding: 10px 20px;
-            color: #333;
-            font-size: 1em;
-            text-decoration: none;
-            white-space: nowrap;
-        }
-
-        .gtco-nav ul.menu li ul.submenu li a:hover {
-            background-color: #f5f5f5;
-            color: #007bff;
-        }
-
-        /* 마우스 올렸을 때 서브 메뉴 보이기 */
-        .gtco-nav ul.menu > li:hover > ul.submenu {
-            display: block;
-        }
-    </style>
+    <meta charset="UTF-8" />
+    <title>LIFEFIT</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
-
-<div class="gtco-loader"></div>
-
-<div id="page">
-    <header id="gtco-header" class="gtco-cover gtco-cover-sm" role="banner">
-        <nav class="gtco-nav" role="navigation">
-            <div class="gtco-container">
-                <div class="row">
-                    <div class="col-sm-4 col-xs-12">
-                        <div id="gtco-logo"><a href="index.html">LIFEFIT <em>.</em></a></div>
-                    </div>
-                    <div class="col-xs-8 text-right menu-1">
-                        <ul class="menu">
-                            <li>
-                                <a href="#">게시판</a>
-                                <ul class="submenu">
-                                    <li><a href="/notice">공지사항</a></li>
-                                    <li><a href="/topic">주제게시판</a></li>
-                                    <li><a href="/free">자유게시판</a></li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#">도움말</a>
-                                <ul class="submenu">
-                                    <li><a href="#" onclick="openGuidePanel(); return false;">이용서비스</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="/member/login">로그인</a></li>
-                            <li><a href="/member/join">회원가입</a></li>
-                        </ul>
-                    </div>
+<!-- Header -->
+<header id="header" class="alt">
+    <nav id="nav">
+        <ul>
+            <!-- 왼쪽: MENU -->
+            <li class="special">
+                <a href="#menu" class="menuToggle"><span>MENU</span></a>
+                <div id="menu">
+                    <ul>
+                        <li><a href="/notice">공지사항</a></li>
+                        <li><a href="/topic">주제게시판</a></li>
+                        <li><a href="/free">자유게시판</a></li>
+                        <li><a href="#">도움말</a></li>
+                        <li><a href="#" onclick="openGuidePanel(); return false;">이용서비스</a></li>
+                    </ul>
                 </div>
-            </div>
-        </nav>
-    </header>
-</div>
+            </li>
 
-<div class="gototop js-top">
-    <a href="#" class="js-gotop"><i class="icon-arrow-up"></i></a>
-</div>
+            <!-- 가운데: 로고 -->
+            <li class="logo">
+                <a href="index.html" style="border-bottom: none;">
+                    <img src="/images/LIFEFIT.png" alt="LIFEFIT" style="height: 60px;">
+                </a>
+            </li>
 
-<!-- jQuery -->
-<script src="/js/jquery.min.js"></script>
-<!-- jQuery Easing -->
-<script src="/js/jquery.easing.1.3.js"></script>
-<!-- Bootstrap -->
-<script src="/js/bootstrap.min.js"></script>
-<!-- Waypoints -->
-<script src="/js/jquery.waypoints.min.js"></script>
-<!-- Carousel -->
-<script src="/js/owl.carousel.min.js"></script>
-<!-- countTo -->
-<script src="/js/jquery.countTo.js"></script>
-
-<!-- Stellar Parallax -->
-<script src="/js/jquery.stellar.min.js"></script>
-
-<!-- Magnific Popup -->
-<script src="/js/jquery.magnific-popup.min.js"></script>
-<script src="/js/magnific-popup-options.js"></script>
-
-<script src="/js/moment.min.js"></script>
-<script src="/js/bootstrap-datetimepicker.min.js"></script>
-
-<!-- Main -->
-<script src="/js/main.js"></script>
-
+            <!-- 오른쪽: 로그인/회원가입 -->
+            <li class="user-links">
+                <a href="/member/login">로그인</a>
+                <a href="/member/join">회원가입</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<!-- 필수 스크립트 -->
 <script>
     function openGuidePanel() {
-        alert('이용서비스 패널 열기 기능 실행!');
-        // 실제 기능은 여기에 구현
+        alert('이용서비스 패널 열기!');
+        // 실제 기능 연결
     }
 </script>
 
-</body>
+<!--</body>-->
 
 </html>
