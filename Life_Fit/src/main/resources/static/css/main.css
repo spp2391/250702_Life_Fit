@@ -87,7 +87,7 @@ input, select, textarea {
 	}
 
 	body {
-		background: #2e3842;
+		background: #ffffff;
 	}
 
 		body.is-preload *, body.is-preload *:before, body.is-preload *:after {
@@ -163,7 +163,7 @@ input, select, textarea {
 	}
 
 	h1, h2, h3, h4, h5, h6 {
-		color: #fff;
+		color: #5AA974;
 		font-weight: 800;
 		letter-spacing: 0.225em;
 		line-height: 1em;
@@ -3445,7 +3445,7 @@ input, select, textarea {
 		-webkit-transition: background-color 0.2s ease;
 		-ms-transition: background-color 0.2s ease;
 		transition: background-color 0.2s ease;
-		background: #2e3842;
+		background: #ffffff;
 		height: 3em;
 		left: 0;
 		line-height: 3em;
@@ -3504,9 +3504,9 @@ input, select, textarea {
 
 					#header nav > ul > li > a {
 						border: 0;
-						color: #fff;
+						color: #5a5a5d;
 						display: block;
-						font-size: 0.8em;
+
 						letter-spacing: 0.225em;
 						padding: 0 1.5em;
 						text-transform: uppercase;
@@ -3886,7 +3886,7 @@ input, select, textarea {
 
 	#footer {
 		padding: 0 ;
-		background-color: #1d242a;
+		background-color: #ffffff;
 		text-align: center;
 	}
 
@@ -3903,7 +3903,7 @@ input, select, textarea {
 				}
 
 		#footer .copyright {
-			color: rgba(255, 255, 255, 0.5);
+			color: #5aa974;
 			font-size: 0.8em;
 			letter-spacing: 0.225em;
 			list-style: none;
@@ -4014,7 +4014,7 @@ input, select, textarea {
 }
 
 #header.alt .menuToggle span {
-	color: #3D9F60;
+	color: #5A5A5D;
 	font-weight: bold;
 }
 
@@ -4043,7 +4043,7 @@ input, select, textarea {
 }
 
 #nav li.user-links a {
-	color: #3D9F60;
+	color: #5a5a5d;
 	text-decoration: none;
 	font-size: 14px;
 	font-weight: bold;

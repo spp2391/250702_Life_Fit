@@ -1,14 +1,13 @@
+<!-- fragments/header.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8" />
-    <title>LIFEFIT</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>헤더</title>
+    <link rel="stylesheet" href="/css/header.css" /> <!-- 아래 CSS 따로 분리 시 -->
 </head>
-
 <body>
-<!-- Header -->
-<header id="header" class="alt">
+<header id="header">
     <nav id="nav">
         <ul>
             <!-- 왼쪽: MENU -->
@@ -27,8 +26,8 @@
 
             <!-- 가운데: 로고 -->
             <li class="logo">
-                <a href="index.html" style="border-bottom: none;">
-                    <img src="/images/LIFEFIT.png" alt="LIFEFIT" style="height: 60px;">
+                <a href="/">
+                    <img src="/images/LIFEFIT.png" alt="로고" style="height: 60px;">
                 </a>
             </li>
 
@@ -40,14 +39,12 @@
         </ul>
     </nav>
 </header>
-<!-- 필수 스크립트 -->
+
 <script>
     function openGuidePanel() {
         alert('이용서비스 패널 열기!');
         // 실제 기능 연결
     }
 </script>
-
-<!--</body>-->
-
+</body>
 </html>

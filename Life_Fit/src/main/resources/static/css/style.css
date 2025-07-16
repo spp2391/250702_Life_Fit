@@ -599,7 +599,7 @@ h1, h2, h3, h4, h5, h6, figure {
   display: inline-block;
   zoom: 1;
   *display: inline;
-  color: #FBB448;
+  color: #3edcc4;
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -1959,5 +1959,6 @@ form label {
     font-size: 26px;
   }
 }
+
 
 /*# sourceMappingURL=style.css.map */

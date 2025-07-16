@@ -15,9 +15,9 @@
     <link rel="stylesheet" href="/css/owl.theme.default.min.css">
     <link rel="stylesheet" href="/css/animate.css">
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/sidebar.css">
+<!--    <link rel="stylesheet" href="/css/sidebar.css">-->
     <!-- 기존 링크들 아래에 추가 -->
-    <link rel="stylesheet" href="/css/custom.css">
+   <!-- <link rel="stylesheet" href="/css/custom.css">-->
 
     <link rel="stylesheet" href="/css/main.css" />
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
@@ -29,28 +29,12 @@
             font-family: 'Lato', sans-serif;
         }
 
-        .gtco-cover {
-            background-size: cover !important;
-            background-position: center center !important;
-        }
-
-        .gtco-nav {
-            background-color: rgba(0,0,0,0.5);
-            border-bottom: none;
-        }
 
         .gtco-nav a {
             color: white !important;
             font-weight: 500;
         }
 
-        .gtco-nav .btn-cta a {
-            background-color: #ffc107;
-            color: #333 !important;
-            padding: 8px 14px;
-            border-radius: 4px;
-            transition: background 0.3s;
-        }
 
         .gtco-nav .btn-cta a:hover {
             background-color: #ffb300;
@@ -68,22 +52,6 @@
             border-color: #ffb300;
         }
 
-        h1.cursive-font {
-            color: #ffb300;
-            margin-bottom: 30px;
-            font-weight: 700;
-        }
-
-        #gtco-footer {
-            position: relative;
-            min-height: 250px;
-        }
-
-        #gtco-footer .overlay {
-            position: absolute;
-            top:0; left:0; right:0; bottom:0;
-            background: rgba(0,0,0,0.4);
-        }
 
         #gtco-footer .gtco-container {
             position: relative;
@@ -139,15 +107,16 @@
     </style>
 </head>
 <body>
+<div class="header" th:replace="fragments/header :: header"></div>
 <!--<div class="gtco-loader"></div>-->
 <div id="page">
-        <div class="header" th:replace="fragments/header :: header"></div>
+
         <!--<div class="sidebar" th:replace="fragments/sidebar :: aside"></div>-->
         <!--<div id="guidePanel" th:replace="fragments/guidePanel :: #guidePanel"></div>-->
 
 
 
-    <div style="background-color:#2B343D; padding-top: 40px; padding-bottom: 60px;">
+    <div style="background-color:#ffffff; padding-top: 40px; padding-bottom: 60px;">
         <div class="gtco-container">
             <div class="row">
                 <div class="col-md-12">
