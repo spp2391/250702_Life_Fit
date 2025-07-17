@@ -1,14 +1,16 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>자유게시판</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/style.css">
+    <!-- CSS -->
+
 <!--    <link rel="stylesheet" href="/css/sidebar.css">-->
     <!-- 기존 링크들 아래에 추가 -->
    <!-- <link rel="stylesheet" href="/css/custom.css">-->
@@ -16,17 +18,147 @@
     <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="imagetoolbar" content="no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="stylesheet" href="/css/setting.css" />
+    <link rel="stylesheet" href="/css/plugin.css" />
+    <link rel="stylesheet" href="/css/templatehouse.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <style>
+        #page {
+            margin-top: 80px; /* 헤더 실제 높이에 맞게 조정 */
+        }
+        .board-container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        /* 테이블 */
+        .board-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+
+        .board-table thead th {
+            background: #a5d6a7; /* 연초록 */
+            color: #2e7d32;      /* 진한 초록 글씨 */
+            font-weight: 700;
+            padding: 12px;
+            text-align: center;
+            border-bottom: 2px solid #81c784;
+        }
+
+        .board-table tbody tr {
+            background: #fff; /* 행 배경 통일 */
+            transition: background 0.2s ease;
+        }
+
+        /* hover 효과 */
+        .board-table tbody tr:hover {
+            background: #e8f5e9; /* 파스텔 그린 */
+        }
+
+        /* 셀 스타일 */
+        .board-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: middle;
+            color : #0b0b0b;
+        }
+
+        /* 제목 링크 */
+        .board-title-link {
+            color: #388e3c;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .board-title-link:hover {
+            color: #2e7d32;
+            text-decoration: underline;
+        }
+
+        /* 타입 뱃지 */
+        .badge-type {
+            display: inline-block;
+            padding: 3px 7px;
+            font-size: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #fff;
+        }
+        .board-NOTICE .badge-type {
+            background: #43a047; /* 진초록 */
+        }
+        .board-QNA .badge-type {
+            background: #81c784; /* 연초록 */
+        }
+        .board-INFO .badge-type {
+            background: #66bb6a; /* 중간초록 */
+        }
+        .board-FREE .badge-type {
+            background: #a5d6a7; /* 가장 연한 초록 */
+            color: #2e7d32;
+        }
+
+        /* NEW 뱃지 */
+        .badge-new {
+            margin-left: 6px;
+            padding: 2px 6px;
+            font-size: 11px;
+            color: #d84315;
+            background: #ffccbc;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+    </style>
+
+    <style>
+        .board-table tbody tr,
+        .board-table tbody tr:nth-child(odd),
+        .board-table tbody tr:nth-child(even),
+        .board-table tbody td {
+            background-color: #fff !important;
+        }
+        .board-table tbody tr:hover,
+        .board-table tbody tr:hover td {
+            background-color: #e8f5e9 !important;
+        }
+    </style>
+
     <style>
         body {
             font-family: 'Lato', sans-serif;
         }
 
+        .gtco-cover {
+            background-size: cover !important;
+            background-position: center center !important;
+        }
+
+        .gtco-nav {
+            background-color: rgba(0,0,0,0.5);
+            border-bottom: none;
+        }
 
         .gtco-nav a {
             color: white !important;
             font-weight: 500;
         }
 
+        .gtco-nav .btn-cta a {
+            background-color: #ffc107;
+            color: #333 !important;
+            padding: 8px 14px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
 
         .gtco-nav .btn-cta a:hover {
             background-color: #ffb300;
@@ -44,6 +176,22 @@
             border-color: #ffb300;
         }
 
+        h1.cursive-font {
+            color: #ffb300;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        #gtco-footer {
+            position: relative;
+            min-height: 250px;
+        }
+
+        #gtco-footer .overlay {
+            position: absolute;
+            top:0; left:0; right:0; bottom:0;
+            background: rgba(0,0,0,0.4);
+        }
 
         #gtco-footer .gtco-container {
             position: relative;
@@ -62,7 +210,7 @@
             justify-content: flex-end;
             gap: 10px;
             flex-wrap: wrap;
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
         .form-inline input,
@@ -97,83 +245,45 @@
             font-weight: bold;
         }
     </style>
-
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta http-equiv="imagetoolbar" content="no" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="format-detection" content="telephone=no" />
-        <link rel="stylesheet" href="/css/setting.css" />
-        <link rel="stylesheet" href="/css/plugin.css" />
-        <link rel="stylesheet" href="/css/templatehouse.css" />
-        <link rel="stylesheet" href="/css/style.css" />
-    </head>
+</head>
 
 <body>
-<div class="header" th:replace="fragments/header :: header"></div>
-<div class="temhabank-N6" id="NTMd5l2tFS">
-        <div class="contents-container">
-            <button type="button" class="btn-open ff-ico ti-chevrons-rect-right">
-                <span class="blind">퀵 메뉴 열기</span>
-            </button>
-            <ul class="menu-list">
-                <li class="item black">
-                    <button type="button" class="btn-close ff-ico ti-chevrons-rect-left">
-                        <span>닫기</span>
-                    </button>
-                </li>
-                <li class="item primary">
-                    <a href="javascript:void(0)">
-                        <img src="/icons/ico_branch.svg" alt="영업점 조회" />
-                        <span>영업점 조회</span>
-                    </a>
-                </li>
-                <li class="item gray">
-                    <a href="javascript:void(0)">
-                        <img src="/icons/ico_security.svg" alt="보안센터" />
-                        <span>보안센터</span>
-                    </a>
-                </li>
-                <li class="item secondary">
-                    <a href="javascript:void(0)">
-                        <img src="/icons/ico_guide.svg" alt="이용안내" />
-                        <span>이용안내</span>
-                    </a>
-                </li>
-                <li class="item primary-alpha">
-                    <a href="javascript:void(0)">
-                        <strong>고객센터</strong>
-                        <span>070-8872-8874</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-<!--<div class="gtco-loader"></div>-->
+
+
 <div id="page">
-
-        <!--<div class="sidebar" th:replace="fragments/sidebar :: aside"></div>-->
-        <!--<div id="guidePanel" th:replace="fragments/guidePanel :: #guidePanel"></div>-->
-
-
-
+    <div class="header" th:replace="fragments/header :: header"></div>
     <div style="background-color:#ffffff; padding-top: 40px; padding-bottom: 60px;">
+
         <div class="gtco-container">
             <div class="row">
+
                 <div class="col-md-12">
-                    <table class="table table-hover mt-4 bg-white">
+
+
+                    <table class="table table-hover mt-4 bg-white board-table">
                         <thead>
                         <tr>
-                            <th>번호</th><th>제목</th><th>내용</th><th>작성일</th><th>타입</th><th>작성자</th>
+                            <th>번호</th><th>제목</th><th>내용</th><th>작성일</th><th>작성자</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="board : ${responseDTO.dtoList}">
+                        <tr th:each="board : ${responseDTO.dtoList}"
+                            th:classappend="' board-row board-' + ${board.boardType}"
+                            th:attr="data-type=${board.boardType}">
                             <td th:text="${board.bno}">1</td>
-                            <td><a th:href="@{/board/{bno}(bno=${board.bno})}" th:text="${board.title}">제목</a></td>
+                            <td>
+                                <a class="board-title-link"
+                                   th:href="@{/board/{bno}(bno=${board.bno})}"
+                                   th:text="${board.title}">제목</a>
+                                <!-- 새 글 표시 (예: 24시간 이내) -->
+                                <span class="badge-new"
+                                      th:if="${board.regdate != null and board.regdate.isAfter(T(java.time.LocalDateTime).now().minusHours(24))}">
+
+            </span>
+                            </td>
                             <td th:text="${board.content}">내용</td>
                             <td th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm')}">날짜</td>
-                            <td th:text="${board.boardType}">FREE</td>
+
                             <td th:text="${board.userNickname}">작성자</td>
                         </tr>
                         </tbody>
@@ -209,12 +319,13 @@
         </div>
     </div>
 
-
+    <div class="footer" th:replace="fragments/footer :: footer"></div>
 </div>
-<div class="footer" th:replace="fragments/footer :: footer"></div>
+
+<!-- JS -->
 </body>
-    <script src="/js/setting.js"></script>
-    <script src="/js/plugin.js"></script>
-    <script src="/js/templatehouse.js"></script>
-    <script src="/js/style.js"></script>
+<script src="/js/setting.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/templatehouse.js"></script>
+<script src="/js/style.js"></script>
 </html>

@@ -228,5 +228,9 @@ public String viewBoard(@PathVariable Long bno, Model model) {
             Board board = boardService.increaseLikes(bno);
             return board.getLikes();
         }
+        @GetMapping("/service")
+        public String service() {
+       return "services";
+        }
 
     }

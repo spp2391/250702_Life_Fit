@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8" />
-    <title>게시글 수정 - <span th:text="${boardDTO.title}">게시글 제목</span></title>
+    <title>게시글 수정</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Google Fonts -->
@@ -12,99 +12,132 @@
     <link rel="stylesheet" href="/css/bootstrap.css" />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/sidebar.css" />
+    <link rel="stylesheet" href="/css/main.css" />
 
     <style>
-        body {
-            font-family: 'Lato', sans-serif;
-            background-color: #fff8e1;
+        #page {
+            margin-top: 80px; /* 헤더 높이와 동일 */
         }
-        #content-container {
-            max-width: 700px;
-            margin: 40px auto 80px auto;
-            padding: 30px;
-            background: white;
+
+        .board-container {
+            max-width: 1000px; /* boardlist max-width와 동일 */
+            margin: 40px auto;
+            background: #fff;
+            padding: 40px;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
-        h1 {
-            color: #ffb300;
+
+        .board-container h1 {
+            font-size: 28px;
             font-weight: 700;
+            color: #2e7d32;
             margin-bottom: 30px;
             text-align: center;
         }
-        label {
+
+        form.write-form label {
             font-weight: 600;
-            color: #444;
+            color: #2e7d32;
+            margin-top: 15px;
+            display: block;
         }
-        input[type="text"], textarea, select {
+
+        form.write-form input[type="text"],
+        form.write-form textarea,
+        form.write-form select {
             width: 100%;
-            padding: 8px 12px;
-            margin-top: 5px;
-            margin-bottom: 20px;
+            padding: 12px;
+            margin-top: 8px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 6px;
             font-size: 16px;
-            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        form.write-form input:focus,
+        form.write-form textarea:focus,
+        form.write-form select:focus {
+            border-color: #81c784;
+            outline: none;
+        }
+
+        form.write-form textarea {
+            height: 220px;
             resize: vertical;
         }
-        button[type="submit"] {
-            background-color: #ffca28;
+
+        form.write-form button[type="submit"] {
+            margin-top: 25px;
+            width: 100%;
+            padding: 14px;
+            background-color: #a5d6a7;
             border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
+            color: #2e7d32;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: 700;
-            color: #333;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
         }
-        button[type="submit"]:hover {
-            background-color: #ffb300;
+
+        form.write-form button[type="submit"]:hover {
+            background-color: #81c784;
+            color: #fff;
         }
-        /* alertMessage 스타일 */
+
         .alert-message {
-            color: red;
+            color: #d32f2f;
             font-weight: bold;
             text-align: center;
             margin-bottom: 20px;
         }
+
+        /* 반응형 */
+        @media (max-width: 768px) {
+            .board-container {
+                margin: 30px 15px;
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
+<div id="page">
+    <div class="header" th:replace="fragments/header :: header"></div>
 
-<div class="sidebar" th:replace="fragments/sidebar :: aside"></div>
+    <div class="board-container">
+        <form class="write-form" th:action="@{/board/{bno}/edit(bno=${boardDTO.bno})}" method="post" th:object="${boardDTO}">
+            <h1>게시글 수정</h1>
 
-<main id="content-container">
-    <h1>게시글 수정</h1>
+            <div th:if="${alertMessage != null}" class="alert-message" th:text="${alertMessage}"></div>
 
-    <div th:if="${alertMessage != null}" class="alert-message" th:text="${alertMessage}"></div>
+            <label for="title">제목</label>
+            <input type="text" id="title" th:field="*{title}" required />
 
-    <form th:action="@{/board/{bno}/edit(bno=${boardDTO.bno})}" method="post" th:object="${boardDTO}">
-        <label for="title">제목:</label>
-        <input type="text" id="title" th:field="*{title}" required />
+            <label for="content">내용</label>
+            <textarea id="content" th:field="*{content}" placeholder="내용을 입력하세요" required></textarea>
 
-        <label for="content">내용:</label>
-        <textarea id="content" th:field="*{content}" rows="10" required></textarea>
+            <!-- 지역 선택 (주제 게시판일 경우) -->
+            <div th:if="${boardDTO.boardType == 'TOPIC'}">
+                <label for="localCateId">지역 선택</label>
+                <select id="localCateId" th:field="*{localCateId}">
+                    <option th:each="local : ${localList}"
+                            th:value="${local.localnum}"
+                            th:text="${local.localname}"
+                            th:selected="${local.localnum == boardDTO.localCateId}">
+                    </option>
+                </select>
+            </div>
 
-        <div th:if="${boardDTO.boardType == 'TOPIC'}">
-            <label for="localCateId">지역 선택:</label>
-            <select id="localCateId" th:field="*{localCateId}">
-                <option th:each="local : ${localList}"
-                        th:value="${local.localnum}"
-                        th:text="${local.localname}"
-                        th:selected="${local.localnum == boardDTO.localCateId}">
-                </option>
-            </select>
-        </div>
+            <input type="hidden" th:field="*{boardType}" />
 
-        <input type="hidden" th:field="*{boardType}" />
+            <button type="submit">수정 완료</button>
+        </form>
+    </div>
 
-        <button type="submit">수정 완료</button>
-    </form>
-</main>
-
-<footer style="text-align:center; margin-top: 100px; color:#999;">
-    &copy; 2025 주제게시판
-</footer>
+    <div class="footer" th:replace="fragments/footer :: footer"></div>
+</div>
 
 <script th:if="${alertMessage != null}">
     alert([[${#strings.escapeJavaScript(alertMessage)}]]);

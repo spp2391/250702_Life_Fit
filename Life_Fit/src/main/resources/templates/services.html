@@ -1,154 +1,150 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
 	<meta charset="UTF-8">
-	<title>주제게시판</title>
-	<link rel="stylesheet" href="/css/sidebar.css">
+	<title>이용 서비스</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/css/setting.css" />
+	<link rel="stylesheet" href="/css/plugin.css" />
+	<link rel="stylesheet" href="/css/templatehouse.css" />
+	<link rel="stylesheet" href="/css/style.css" />
+	<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+			integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+	/>
 	<style>
 		body {
 			font-family: 'Lato', sans-serif;
-			background-color: #fff8e1;
 			margin: 0;
-			padding: 0;
-		}
-		.container {
-			display: flex;
-		}
-		.content {
-			flex-grow: 1;
-			padding: 40px;
-		}
-		h1 {
-			font-weight: 700;
-			color: #ffb300;
-			margin-bottom: 20px;
-		}
-		table {
-			width: 100%;
-			background: white;
-			border-collapse: collapse;
-			margin-top: 20px;
-		}
-		th, td {
-			border: 1px solid #ddd;
-			padding: 10px;
-			text-align: center;
-		}
-		th {
-			background-color: #fff3cd;
-		}
-		.search-write-wrap {
-			display: flex;
-			justify-content: flex-end;
-			gap: 10px;
-			flex-wrap: wrap;
-			margin-bottom: 20px;
-		}
-		.search-write-wrap input,
-		.search-write-wrap select,
-		.search-write-wrap button,
-		.search-write-wrap a {
-			padding: 6px 12px;
-			font-size: 14px;
-		}
-		.pagination {
-			display: flex;
-			justify-content: center;
-			margin-top: 30px;
-		}
-		.pagination a {
-			margin: 0 5px;
-			text-decoration: none;
+			background-color: #f9f9f9;
 			color: #333;
 		}
-		.pagination .active {
-			font-weight: bold;
-			text-decoration: underline;
-			color: #ff5722;
+
+		#page {
+			margin-top: 80px;
+		}
+
+		.service-container {
+			max-width: 1200px;
+			margin: 0 auto;
+			padding: 40px 20px;
+			text-align: center;
+		}
+
+		.service-container h1 {
+			font-size: 36px;
+			font-weight: 700;
+			margin-bottom: 20px;
+			color: #2e7d32;
+		}
+
+		.service-container p.sub-text {
+			font-size: 18px;
+			color: #555;
+			margin-bottom: 50px;
+		}
+
+		.service-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+			gap: 30px;
+		}
+
+		.service-card {
+			background: #fff;
+			border-radius: 12px;
+			padding: 30px;
+			box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+
+		.service-card:hover {
+			transform: translateY(-8px);
+			box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+		}
+
+		.service-icon {
+			font-size: 50px;
+			color: #4caf50;
+			margin-bottom: 20px;
+		}
+
+		.service-card h3 {
+			font-size: 22px;
+			color: #333;
+			margin-bottom: 15px;
+		}
+
+		.service-card p {
+			font-size: 16px;
+			color: #666;
+			line-height: 1.6;
+		}
+
+		/* 반응형 */
+		@media (max-width: 768px) {
+			.service-container h1 {
+				font-size: 28px;
+			}
 		}
 	</style>
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-<div class="container">
-	<div class="sidebar" th:replace="fragments/sidebar :: aside"></div>
-	<div id="guidePanel" th:replace="fragments/guidePanel :: #guidePanel"></div>
 
-	<div class="content">
-		<h1>주제게시판</h1>
+<div id="page">
+	<div class="header" th:replace="fragments/header :: header"></div>
+	<div class="service-container">
+		<h1>이용 서비스</h1>
+		<p class="sub-text">편리하고 다양한 서비스를 한눈에 확인하세요</p>
 
-		<!-- 검색 및 글쓰기 -->
-		<div class="search-write-wrap">
-			<form method="get" action="/topic" class="form-inline">
-				<input type="text" name="keyword" placeholder="검색어 입력" th:value="${keyword}" />
-				<select name="searchType">
-					<option value="all" th:selected="${searchType == 'all'}">제목 + 내용</option>
-					<option value="title" th:selected="${searchType == 'title'}">제목</option>
-					<option value="content" th:selected="${searchType == 'content'}">내용</option>
-				</select>
-				<button type="submit">검색</button>
-			</form>
-			<form id="writeForm" method="get">
-				<select name="localId" id="localSelect">
-					<option value="" th:selected="${selectedLocalId == null}">모든 지역</option>
-					<option th:each="local : ${localList}"
-							th:value="${local.localnum}"
-							th:text="${local.localname}"
-							th:selected="${selectedLocalId != null and selectedLocalId == local.localnum}">
-					</option>
-				</select>
-				<button type="submit" formaction="/topic/write">글쓰기</button>
-			</form>
-		</div>
+		<div class="service-grid">
+			<!-- 서비스 1 -->
+			<div class="service-card">
+				<div class="service-icon"><i class="fas fa-calendar-alt"></i></div>
+				<h3>예약 서비스</h3>
+				<p>간단한 클릭으로 원하는 시간에 서비스를 예약하세요. 빠르고 간편합니다.</p>
+			</div>
 
-		<!-- 게시글 목록 -->
-		<table>
-			<thead>
-			<tr>
-				<th>번호</th>
-				<th>제목</th>
-				<th>내용</th>
-				<th>지역</th>
-				<th>작성일</th>
-			</tr>
-			</thead>
-			<tbody>
-			<tr th:each="board : ${responseDTO.dtoList}">
-				<td th:text="${board.bno}"></td>
-				<td><a th:href="@{/board/{bno}(bno=${board.bno})}" th:text="${board.title}"></a></td>
-				<td th:text="${board.content}"></td>
-				<td>
-					<span th:if="${board.localCateName != null}" th:text="${board.localCateName}"></span>
-					<span th:unless="${board.localCateName != null}">지역없음</span>
-				</td>
-				<td th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm')}"></td>
-			</tr>
-			</tbody>
-		</table>
+			<!-- 서비스 2 -->
+			<div class="service-card">
+				<div class="service-icon"><i class="fas fa-comments"></i></div>
+				<h3>상담 서비스</h3>
+				<p>전문 상담을 통해 맞춤형 정보를 제공받으세요. 실시간 채팅 가능!</p>
+			</div>
 
-		<!-- 페이징 -->
-		<div class="pagination">
-			<a th:if="${responseDTO.prev}" th:href="@{/topic(localId=${selectedLocalId}, page=${responseDTO.start - 1}, size=${responseDTO.size})}">Prev</a>
-			<span th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
-                <a th:href="@{/topic(localId=${selectedLocalId}, page=${i}, size=${responseDTO.size})}"
-				   th:classappend="${i == responseDTO.page} ? 'active'">[[${i}]]</a>
-            </span>
-			<a th:if="${responseDTO.next}" th:href="@{/topic(localId=${selectedLocalId}, page=${responseDTO.end + 1}, size=${responseDTO.size})}">Next</a>
+			<!-- 서비스 3 -->
+			<div class="service-card">
+				<div class="service-icon"><i class="fas fa-truck"></i></div>
+				<h3>배송 서비스</h3>
+				<p>원하는 장소까지 빠르고 안전한 배송을 보장합니다.</p>
+			</div>
+
+			<!-- 서비스 4 -->
+			<div class="service-card">
+				<div class="service-icon"><i class="fas fa-credit-card"></i></div>
+				<h3>결제 서비스</h3>
+				<p>다양한 결제 수단을 지원하며 안전한 거래 환경을 제공합니다.</p>
+			</div>
 		</div>
 	</div>
 </div>
+<!-- JS -->
+<script src="/js/setting.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/templatehouse.js"></script>
+<script src="/js/style.js"></script>
 
-<script>
-	document.addEventListener("DOMContentLoaded", function () {
-		const writeButton = document.querySelector("button[formaction='/topic/write']");
-		const select = document.getElementById("localSelect");
-		writeButton.addEventListener("click", function (e) {
-			if (!select.value) {
-				e.preventDefault();
-				alert("지역을 선택해주세요!");
-			}
-		});
-	});
-</script>
-<script src="/js/guide.js"></script>
 </body>
 </html>
