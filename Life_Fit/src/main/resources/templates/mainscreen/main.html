@@ -1,45 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Life Fit</title>
 	<link rel="stylesheet" href="/mainscreen/main.css" />
 	<style>
 	</style>
+	<link rel="stylesheet" href="/css/setting.css" />
+	<link rel="stylesheet" href="/css/plugin.css" />
+	<link rel="stylesheet" href="/css/templatehouse.css" />
+	<link rel="stylesheet" href="/css/style.css" />
+	<link rel="stylesheet" href="/css/login.css" />
 </head>
 <body>
 <div id="container">
-    <div id="header">
-		<!-- TODO: 왼쪽 기준으로 로고 삽입. 오른쪽 기준으로 메뉴 삽입. -->
-		<div id="logo" class="header-menu header-menu-1">
-			Life Fit
-		</div>
-		<div id="login" class="header-menu header-menu-2">
-			<a href="#">로그인</a>
-		</div>
-		<div id="join" class="header-menu header-menu-3">
-			<a href="#">회원가입</a>
-		</div>
-    </div>
+	<div class="header" th:replace="fragments/header :: header"></div>
 
 	<div id="content">
 		<div id="sidebar">
-			<!-- TODO: 사이드바 메뉴에 대신 아이콘 이미지를 제작해 삽입한다. 규격: 80px*80px -->
-<!--			<div id="main-sidebar-1" class="sidebar-menu" onclick="sidebarPopup(1)">-->
-<!--				카테고리-->
-<!--			</div>-->
 			<div id="main-sidebar-1" class="sidebar-menu" onclick="sidebarPopup(1)">
-				키워드 검색
+				키워드<br>검색
 			</div>
 			<div id="main-sidebar-3" class="sidebar-menu" onclick="sidebarPopup(2)">
-				카테고리 검색
+				카테고리<br>검색
 			</div>
 			<div id="main-sidebar-2" class="sidebar-menu">
-				<a href="#">커뮤니티</a>
+				<a href="#" style="color: inherit; text-decoration: none;">커뮤니티</a>
 			</div>
 		</div>
 
-<!--		<div id="popup-category" class="popup-search">-->
+
+		<!--		<div id="popup-category" class="popup-search">-->
 <!--			<form method="get">-->
 <!--				<div id="popup-category-area">-->
 <!--					<label for="popup-category-area-dropdown">지역 선택</label>-->
@@ -58,47 +51,48 @@
 <!--				</div>-->
 <!--			</form>-->
 <!--		</div>-->
-		<div id="popup-keyword" class="popup-search">
-			<form name="searchForm" onsubmit="return search(event)">
-				<div id="popup-keyword-keyword">
-					<label for="popup-keyword-keyword-search">키워드 검색</label><br>
-					<input type="search" name="keyword" id="popup-keyword-keyword-search">
-				</div>
-				<div id="popup-keyword-category">
-					카테고리 검색
-					<table id="popup-keyword-table"></table>
-				</div>
-				<div id="popup-area">
-					<label for="popup-keyword-area-dropdown">지역 선택</label>
-					<select name="area" id="popup-keyword-area-dropdown">
-						<option value="">-- 지역 선택 --</option>
-						<option value="중구">중구</option>
-						<option value="서구">서구</option>
-						<option value="동구">동구</option>
-						<option value="영도구">영도구</option>
-						<option value="부산진구">부산진구</option>
-						<option value="동래구">동래구</option>
-						<option value="남구">남구</option>
-						<option value="북구">북구</option>
-						<option value="해운대구">해운대구</option>
-						<option value="사하구">사하구</option>
-						<option value="금정구">금정구</option>
-						<option value="강서구">강서구</option>
-						<option value="연제구">연제구</option>
-						<option value="수영구">수영구</option>
-						<option value="사상구">사상구</option>
-						<option value="기장군">기장군</option>
-					</select>
-				</div>
-				<div id="popup-keyword-button">
-					<input type="reset" value="리셋">
-					<input id="keywordSearchButton" type="button" value="키워드 검색">
-					<input id="categorySearchButton" type="button" value="카테고리 검색">
-				</div>
-			</form>
-		</div>
+
 
 		<div id="map"></div>
+		<div id="popup-keyword" class="popup-search">
+		<form name="searchForm" onsubmit="return search(event)">
+			<div id="popup-keyword-keyword">
+				<label for="popup-keyword-keyword-search">키워드 검색</label><br>
+				<input type="search" name="keyword" id="popup-keyword-keyword-search">
+			</div>
+			<div id="popup-keyword-category">
+				카테고리 검색
+				<table id="popup-keyword-table"></table>
+			</div>
+			<div id="popup-area">
+				<label for="popup-keyword-area-dropdown">지역 선택</label>
+				<select name="area" id="popup-keyword-area-dropdown">
+					<option value="">-- 지역 선택 --</option>
+					<option value="중구">중구</option>
+					<option value="서구">서구</option>
+					<option value="동구">동구</option>
+					<option value="영도구">영도구</option>
+					<option value="부산진구">부산진구</option>
+					<option value="동래구">동래구</option>
+					<option value="남구">남구</option>
+					<option value="북구">북구</option>
+					<option value="해운대구">해운대구</option>
+					<option value="사하구">사하구</option>
+					<option value="금정구">금정구</option>
+					<option value="강서구">강서구</option>
+					<option value="연제구">연제구</option>
+					<option value="수영구">수영구</option>
+					<option value="사상구">사상구</option>
+					<option value="기장군">기장군</option>
+				</select>
+			</div>
+			<div id="popup-keyword-button">
+				<input type="reset" value="리셋">
+				<input id="keywordSearchButton" type="button" value="키워드 검색">
+				<input id="categorySearchButton" type="button" value="카테고리 검색">
+			</div>
+		</form>
+	</div>
 	</div>
 				<!--	<div id="popup-info" class="popup-info">-->
 <!--		<h6 id="popup-info-title"></h6>-->
@@ -106,6 +100,8 @@
 <!--		<a href="#" target="_blank" id="popup-info-url">상세보기</a>-->
 <!--	</div>-->
 </div>
+<div class="footer" th:replace="fragments/footer :: footer"></div>
+</body>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e262bfbb1608191632ecc076189ec9cc&libraries=services"></script>
 <script>
 	let container = document.getElementById('map');
@@ -121,5 +117,8 @@
 </script>
 <script type="text/javascript" src="/mainscreen/search.js"></script>
 <script type="text/javascript" src="/mainscreen/main.js"></script>
-</body>
+<script src="/js/setting.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/templatehouse.js"></script>
+<script src="/js/style.js"></script>
 </html>
