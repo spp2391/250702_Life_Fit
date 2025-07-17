@@ -1,39 +1,10 @@
 <!-- fragments/header.html -->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
 <body>
-<!--<header id="header">
-    <nav id="nav">
-        <ul>
-            &lt;!&ndash; 왼쪽: MENU &ndash;&gt;
-            <li class="special">
-                <a href="#menu" class="menuToggle"><span>MENU</span></a>
-                <div id="menu">
-                    <ul>
-                        <li><a href="/notice">공지사항</a></li>
-                        <li><a href="/topic">주제게시판</a></li>
-                        <li><a href="/topic">자유게시판</a></li>
-                        <li><a href="#">도움말</a></li>
-                        <li><a href="#" onclick="openGuidePanel(); return false;">이용서비스</a></li>
-                    </ul>
-                </div>
-            </li>
 
-            &lt;!&ndash; 가운데: 로고 &ndash;&gt;
-            <li class="logo">
-                <a href="/">
-                    <img src="/images/LIFEFIT.png" alt="로고" style="height: 60px;">
-                </a>
-            </li>
-
-            &lt;!&ndash; 오른쪽: 로그인/회원가입 &ndash;&gt;
-            <li class="user-links">
-                <a href="/member/login">로그인</a>
-                <a href="/member/join">회원가입</a>
-            </li>
-        </ul>
-    </nav>
-</header>-->
 <header class="th-layout-header">
     <div class="temhabank-N1" id="fFMd5L2SV0">
         <div class="header-container container-md">
@@ -78,6 +49,22 @@
             <div class="header-right">
                 <div class="header-utils">
                     <ul>
+                        <!-- 로그인 상태일 때 -->
+                        <li sec:authorize="isAuthenticated()" class="auth-menu">
+                            <a class="header-gnblink" th:href="@{/mypage}"><span>마이페이지</span></a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()" class="auth-menu" style="padding-right: 30px;">
+                            <a class="header-gnblink" th:href="@{/logout}"><span>로그아웃</span></a>
+                        </li>
+
+                        <!-- 비로그인 상태일 때 -->
+                        <li sec:authorize="isAnonymous()" class="auth-menu">
+                            <a class="header-gnblink" th:href="@{/login}"><span>로그인</span></a>
+                        </li>
+                        <li sec:authorize="isAnonymous()" class="auth-menu" style="padding-right: 30px;">
+                            <a class="header-gnblink" th:href="@{/signup}"><span>회원가입</span></a>
+                        </li>
+
                         <li class="allmenu">
                             <button class="btn-allmenu">
                                 <i class="ico-hamburger"></i>
@@ -154,7 +141,7 @@
                                 </li>
                             </ul>
                         </li>
-                        <li class="fullmenu-gnbitem">
+                        <!--<li class="fullmenu-gnbitem">
                             <a class="h5 fullmenu-gnblink" href="javascript:void(0)">
                                 <span>외환</span>
                             </a>
@@ -177,7 +164,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li>-->
                     </ul>
                 </div>
                 <button class="fullmenu-close">
@@ -186,7 +173,7 @@
             </div>
         </div>
     </div>
-    <div class="temhabank-N6" id="NTMd5l2tFS">
+    <!--<div class="temhabank-N6" id="NTMd5l2tFS">
         <div class="contents-container">
             <button type="button" class="btn-open ff-ico ti-chevrons-rect-right">
                 <span class="blind">퀵 메뉴 열기</span>
@@ -223,7 +210,7 @@
                 </li>
             </ul>
         </div>
-    </div>
+    </div>-->
 </header>
 
 <script>

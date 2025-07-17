@@ -18,6 +18,7 @@
   align-items: center;
   justify-content: space-between;
   min-height: 8rem;
+  border-bottom: 1px solid #cccccc;
 }
 
 .temhabank-N1 .header-top {
@@ -180,6 +181,10 @@
 
 .temhabank-N1 .header-utils>ul>li {
   margin-left: 1.2rem;
+}
+.temhabank-N1 .header-utils>ul>li>a {
+  font-size: smaller;
+  padding: 0;
 }
 
 .temhabank-N1 .header-utils>ul>li>img {

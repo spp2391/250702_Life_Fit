@@ -32,10 +32,10 @@ public class UserController {
         return "member/login";
     }
 
-    @PostMapping("/logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "/";
+        return "redirect:/member/login";
     }
 
     @GetMapping("/profile")

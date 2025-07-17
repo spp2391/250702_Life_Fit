@@ -2,120 +2,112 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8" />
-    <title>회원가입 / 로그인 / 마이페이지 테스트</title>
-    <style>
-        label { display:block; margin-top:8px; }
-        input { width: 250px; padding:4px; }
-        button { margin-top: 10px; padding: 6px 12px; }
-        #profile, #logoutBtn { display:none; margin-top: 20px; }
-    </style>
+    <title>회원가입</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/setting.css" />
+    <link rel="stylesheet" href="/css/plugin.css" />
+    <link rel="stylesheet" href="/css/templatehouse.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/login.css" />
 </head>
-<body>
+<body class="gradient-custom">
+<div class="login-container">
+    <div class="login-card">
+        <div class="logo">
+            <img src="/images/LIFEFIT.png" alt="LIFE FIT 로고" />
+        </div>
 
-<h2>회원가입</h2>
-<label>이메일: <input type="email" id="email" /></label>
-<label>비밀번호: <input type="password" id="password" /></label>
-<label>이름: <input type="text" id="username" /></label>
-<label>닉네임: <input type="text" id="nickname" /></label>
-<button onclick="register()">회원가입</button>
+        <!-- form 태그 제거 -->
+        <div class="input-group">
+            <input type="text" name="nickname" id="nickname" placeholder="닉네임" required />
+            <input type="text" name="name" id="name" placeholder="이름" required />
+            <input type="email" name="email" id="email" placeholder="이메일" required />
+            <input type="password" name="password" id="password" placeholder="비밀번호" required />
+            <input type="password" name="confirmPassword" id="confirmPassword" placeholder="비밀번호 확인" required />
+            <input type="tel" name="phoneNumber" id="phoneNumber" placeholder="휴대전화번호" required />
+            <select id="role" required>
+                <option value="">-- 역할을 선택하세요 --</option>
+                <option value="USER">일반 사용자</option>
+                <option value="ADMIN">관리자</option>
+            </select>
+        </div>
 
-<hr />
 
-<h2>로그인</h2>
-<label>이메일: <input type="email" id="loginEmail" /></label>
-<label>비밀번호: <input type="password" id="loginPassword" /></label>
-<button onclick="login()">로그인</button>
+        <div class="options">
+            <label><input type="checkbox" id="terms" required /> [필수] 약관 전체 동의</label>
+        </div>
 
-<hr />
+        <!-- onclick으로 직접 실행 -->
+        <button type="button" class="login-btn" onclick="register()">회원가입</button>
 
-<div id="profile">
-    <h2>마이페이지</h2>
-    <p><b>아이디:</b> <span id="profileUserId"></span></p>
-    <p><b>이메일:</b> <span id="profileEmail"></span></p>
-    <p><b>닉네임:</b> <span id="profileNickname"></span></p>
-    <p><b>가입일:</b> <span id="profileRegdate"></span></p>
-    <p><b>수정일:</b> <span id="profileModdate"></span></p>
-    <button id="logoutBtn" onclick="logout()">로그아웃</button>
+        <div class="helper-links">
+            <a href="/member/login">이미 계정이 있으신가요? 로그인</a>
+        </div>
+    </div>
 </div>
+
+<div class="footer" th:replace="fragments/footer :: footer"></div>
 
 <script>
     const baseUrl = '/member';
 
-    function register() {
+    async function register() {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
         const nickname = document.getElementById('nickname').value;
-        const name = document.getElementById('username').value;
+        const name = document.getElementById('name').value;
+        const phoneNumber = document.getElementById('phoneNumber').value;
+        // const role = document.getElementById('role')?.value || 'USER'; // 필요 시 기본값 지정
 
-        fetch(`/member/join`, {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({
-                email,
-                password,
-                nickname,
-                name})
-        }).then((result)=>{
-            console.log(result)
-            if(result.ok){
+        if (!document.getElementById('terms').checked) {
+            alert("약관에 동의해주세요.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert("비밀번호가 일치하지 않습니다.");
+            return;
+        }
+
+        const payload = {
+            email,
+            password,
+            nickname,
+            name,
+            phoneNumber
+            // role
+        };
+
+        try {
+            const res = await fetch(`${baseUrl}/join`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
                 alert('회원가입 성공! 자동 로그인 되었습니다.');
                 location.href = "/member/profile";
-            }else{
-                alert('이메일이 중복됩니다.');
+            } else {
+                const errorText = await res.text();
+                alert('회원가입 실패: ' + errorText);
             }
-
-        }).catch(()=>{
-            alert('회원가입 실패: ' + text);
-        });
-    }
-
-    async function login() {
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-
-        const res = await fetch(`${baseUrl}/login`, {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({email, password})
-        });
-
-        if(res.ok) {
-            alert('로그인 성공!');
-            showProfile();
-        } else {
-            const text = await res.text();
-            alert('로그인 실패: ' + text);
-        }
-    }
-
-    function showProfile() {
-
-        /*const res = await fetch(`${baseUrl}/profile`);
-        if(res.ok) {
-            const profile = await res.json();
-            document.getElementById('profileUserId').innerText = profile.userId;
-            document.getElementById('profileEmail').innerText = profile.email;
-            document.getElementById('profileNickname').innerText = profile.nickname;
-            document.getElementById('profileRegdate').innerText = new Date(profile.regdate).toLocaleString();
-            document.getElementById('profileModdate').innerText = profile.moddate ? new Date(profile.moddate).toLocaleString() : '-';
-
-            document.getElementById('profile').style.display = 'block';
-            document.getElementById('logoutBtn').style.display = 'inline-block';
-        } else {
-            alert('프로필 조회 실패. 로그인 상태인지 확인하세요.');
-        }*/
-    }
-
-    async function logout() {
-        const res = await fetch(`${baseUrl}/logout`, {method:'POST'});
-        if(res.ok) {
-            alert('로그아웃 되었습니다.');
-            document.getElementById('profile').style.display = 'none';
-        } else {
-            alert('로그아웃 실패');
+        } catch (err) {
+            alert('요청 실패: 서버와 통신할 수 없습니다.');
         }
     }
 </script>
 
+<script src="/js/setting.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/templatehouse.js"></script>
+<script src="/js/style.js"></script>
 </body>
 </html>
