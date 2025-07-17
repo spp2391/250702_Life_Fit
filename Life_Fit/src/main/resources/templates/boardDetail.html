@@ -14,12 +14,10 @@
     <link rel="stylesheet" href="/css/sidebar.css">
     <link rel="stylesheet" href="/css/main.css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" />
-
-    <!-- CSS -->
     <link rel="stylesheet" href="/css/setting.css" />
     <link rel="stylesheet" href="/css/plugin.css" />
     <link rel="stylesheet" href="/css/templatehouse.css" />
-    <link rel="stylesheet" href="/css/style.css" />
+
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -256,6 +254,17 @@
                 alert('좋아요 처리 중 오류가 발생했습니다.');
             }
         });
+    }
+        function showEditMode(cno) {
+        document.getElementById('viewMode-' + cno).style.display = 'none';
+        document.getElementById('editMode-' + cno).style.display = 'block';
+        document.getElementById('commentWriteForm').style.display = 'none';
+    }
+
+        function cancelEditMode(cno) {
+        document.getElementById('editMode-' + cno).style.display = 'none';
+        document.getElementById('viewMode-' + cno).style.display = 'block';
+        document.getElementById('commentWriteForm').style.display = 'block';
     }
 </script>
 </body>
