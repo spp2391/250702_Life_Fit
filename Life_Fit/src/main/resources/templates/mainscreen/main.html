@@ -25,92 +25,52 @@
 	<div id="content">
 		<div id="sidebar">
 			<!-- TODO: 사이드바 메뉴에 대신 아이콘 이미지를 제작해 삽입한다. 규격: 80px*80px -->
+<!--			<div id="main-sidebar-1" class="sidebar-menu" onclick="sidebarPopup(1)">-->
+<!--				카테고리-->
+<!--			</div>-->
 			<div id="main-sidebar-1" class="sidebar-menu" onclick="sidebarPopup(1)">
-				키워드
+				키워드 검색
 			</div>
-			<div id="main-sidebar-2" class="sidebar-menu" onclick="sidebarPopup(2)">
-				카테고리
+			<div id="main-sidebar-3" class="sidebar-menu" onclick="sidebarPopup(2)">
+				카테고리 검색
 			</div>
-			<div id="main-sidebar-3" class="sidebar-menu">
+			<div id="main-sidebar-2" class="sidebar-menu">
 				<a href="#">커뮤니티</a>
 			</div>
 		</div>
+
+<!--		<div id="popup-category" class="popup-search">-->
+<!--			<form method="get">-->
+<!--				<div id="popup-category-area">-->
+<!--					<label for="popup-category-area-dropdown">지역 선택</label>-->
+<!--					<select name="area" id="popup-category-area-dropdown">-->
+<!--						<option value="부산" selected>부산</option>-->
+<!--						<option value="부산진구">부산진구</option>-->
+<!--					</select>-->
+<!--				</div>-->
+<!--				<div id="popup-category-category">-->
+<!--					<table id="popup-category-table">-->
+<!--					</table>-->
+<!--				</div>-->
+<!--				<div id="popup-category-button">-->
+<!--					<input type="reset" value="리셋">-->
+<!--					<input type="button"  onclick="search()" value="검색">-->
+<!--				</div>-->
+<!--			</form>-->
+<!--		</div>-->
 		<div id="popup-keyword" class="popup-search">
-			<form onsubmit="return searchKeyword(event)">
-				<div id="popup-keyword-option">
+			<form name="searchForm" onsubmit="return search(event)">
+				<div id="popup-keyword-keyword">
 					<label for="popup-keyword-keyword-search">키워드 검색</label><br>
 					<input type="search" name="keyword" id="popup-keyword-keyword-search">
 				</div>
-				<div id="popup-keyword-button">
-					<input type="reset" value="리셋">
-					<input type="submit" value="검색">
-				</div>
-			</form>
-		</div>
-		<div id="popup-category" class="popup-search">
-			<form onsubmit="return searchCategory(event)">
-				<div id="popup-category-option">
+				<div id="popup-keyword-category">
 					카테고리 검색
-					<table id="popup-category-table">
-						<tr>
-							<td>
-								<input type="radio" id="popup-category-table-option1" name="category" value="지하철">
-								<label for="popup-category-table-option1">지하철</label>
-							</td>
-							<td>
-								<input type="radio" id="popup-category-table-option2" name="category" value="버스">
-								<label for="popup-category-table-option2">버스</label>
-							</td>
-							<td>
-								<input type="radio" id="popup-category-table-option3" name="category" value="병원약국">
-								<label for="popup-category-table-option3">병원/약국</label>
-							</td>
-<!--							<td>-->
-<!--								<input type="radio" id="popup-category-table-option4" name="category" value="어린이집">-->
-<!--								<label for="popup-category-table-option4">어린이집</label>-->
-<!--							</td>-->
-						</tr>
-						<tr>
-							<td>
-								<input type="radio" id="popup-category-table-option5" name="category" value="초등학교">
-								<label for="popup-category-table-option5">초등학교</label>
-							</td>
-							<td>
-								<input type="radio" id="popup-category-table-option6" name="category" value="중학교">
-								<label for="popup-category-table-option6">중학교</label>
-							</td>
-							<td>
-								<input type="radio" id="popup-category-table-option7" name="category" value="고등학교">
-								<label for="popup-category-table-option7">고등학교</label>
-							</td>
-							<td>
-								<input type="radio" id="popup-category-table-option8" name="category" value="학교">
-								<label for="popup-category-table-option8">학교</label>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<input type="radio" id="popup-category-table-option9" name="category" value="치안시설">
-								<label for="popup-category-table-option9">치안시설</label>
-							</td>
-<!--							<td>-->
-<!--								<input type="radio" id="popup-category-table-option10" name="category" value="CCTV">-->
-<!--								<label for="popup-category-table-option10">CCTV</label>-->
-<!--							</td>-->
-							<td>
-<!--								<input type="radio" id="popup-category-table-option11" name="category" value="치안">-->
-<!--								<label for="popup-category-table-option11">치안</label>-->
-							</td>
-							<td>
-<!--								<input type="radio" id="popup-category-table-option12" name="category" value="치안">-->
-<!--								<label for="popup-category-table-option12">치안</label>-->
-							</td>
-						</tr>
-					</table>
+					<table id="popup-keyword-table"></table>
 				</div>
-				<div>
-					<label for="popup-category-area-dropdown">지역 선택</label>
-					<select name="area" id="popup-category-area-dropdown">
+				<div id="popup-area">
+					<label for="popup-keyword-area-dropdown">지역 선택</label>
+					<select name="area" id="popup-keyword-area-dropdown">
 						<option value="">-- 지역 선택 --</option>
 						<option value="중구">중구</option>
 						<option value="서구">서구</option>
@@ -130,9 +90,10 @@
 						<option value="기장군">기장군</option>
 					</select>
 				</div>
-				<div id="popup-category-button">
+				<div id="popup-keyword-button">
 					<input type="reset" value="리셋">
-					<input type="submit" value="검색">
+					<input id="keywordSearchButton" type="button" value="키워드 검색">
+					<input id="categorySearchButton" type="button" value="카테고리 검색">
 				</div>
 			</form>
 		</div>
@@ -145,19 +106,20 @@
 <!--		<a href="#" target="_blank" id="popup-info-url">상세보기</a>-->
 <!--	</div>-->
 </div>
-
-
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e262bfbb1608191632ecc076189ec9cc&libraries=services"></script>
-<script type="text/javascript" src="/mainscreen/search.js"></script>
-<script type="text/javascript" src="/mainscreen/main.js"></script>
 <script>
-	var container = document.getElementById('map');
-	var options = {
+	let container = document.getElementById('map');
+	const options = {
 		center: new kakao.maps.LatLng(35.1379222, 129.05562775),
 		level: 9
 	};
-
 	var map = new kakao.maps.Map(container, options);
+	//
+	// const header = document.getElementById('header');
+	//
+	// fetch("/mainscreen/header.html").then((response) => {response.text()}).then((data) => {header.innerHTML = data})
 </script>
+<script type="text/javascript" src="/mainscreen/search.js"></script>
+<script type="text/javascript" src="/mainscreen/main.js"></script>
 </body>
 </html>
