@@ -22,7 +22,7 @@ public class NoticeBoardController {
     @GetMapping
     public String list(Model model) {
         model.addAttribute("noticeList", noticeBoardService.getList());
-        return "notice_list"; // notice_list.html
+        return "noticelist"; // notice_list.html
 }
 
 // 글쓰기 페이지 이동

@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>주제게시판</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <title>자유게시판</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.css">
-    <link rel="stylesheet" href="/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="/css/animate.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/main.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/css/setting.css" />
+    <link rel="stylesheet" href="/css/plugin.css" />
+    <link rel="stylesheet" href="/css/templatehouse.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+            integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
 
     <style>
         #page {
-            margin-top: 80px; /* 헤더 높이에 맞춤 */
+            margin-top: 80px; /* 헤더 실제 높이에 맞게 조정 */
         }
         .board-container {
             background: #fff;
@@ -32,33 +34,40 @@
             margin: 40px auto;
         }
 
-        /* 테이블 스타일 */
+        /* 테이블 */
         .board-table {
             width: 100%;
             border-collapse: collapse;
             background: #fff;
         }
+
         .board-table thead th {
             background: #a5d6a7; /* 연초록 */
-            color: #2e7d32;      /* 진한 초록 */
+            color: #2e7d32;      /* 진한 초록 글씨 */
             font-weight: 700;
             padding: 12px;
             text-align: center;
             border-bottom: 2px solid #81c784;
         }
+
         .board-table tbody tr {
-            background: #fff;
+            background: #fff; /* 행 배경 통일 */
             transition: background 0.2s ease;
         }
+
+        /* hover 효과 */
         .board-table tbody tr:hover {
-            background: #e8f5e9;
+            background: #e8f5e9; /* 파스텔 그린 */
         }
+
+        /* 셀 스타일 */
         .board-table td {
             padding: 10px 12px;
             border-bottom: 1px solid #ddd;
             vertical-align: middle;
             color : #0b0b0b;
         }
+
         /* 제목 링크 */
         .board-title-link {
             color: #388e3c;
@@ -69,6 +78,7 @@
             color: #2e7d32;
             text-decoration: underline;
         }
+
         /* NEW 뱃지 */
         .badge-new {
             margin-left: 6px;
@@ -88,16 +98,19 @@
             flex-wrap: wrap;
             margin-top: 20px;
         }
+
         .form-inline input,
         .form-inline select {
             margin-right: 5px;
         }
+
         /* 페이징 */
         .board-pagination {
             display: flex;
             justify-content: center;
             margin-top: 40px;
         }
+
         .board-pagination a {
             margin: 0 5px;
             padding: 6px 12px;
@@ -108,41 +121,24 @@
             background-color: #fff;
             transition: background-color 0.3s;
         }
+
         .board-pagination a:hover {
             background-color: #f1f1f1;
         }
+
         .board-pagination .active {
             background-color: #ffca28;
             color: #000;
             font-weight: bold;
         }
-        #localSelect {
-            width: 180px;
-            background-color: #a5d6a7; /* 연초록 배경 */
-            color: #2e7d32; /* 진한 초록 글자 */
-            font-weight: 600;
-            padding: 6px 12px;
-            border: 2px solid #81c784; /* 연한 초록 테두리 */
-            border-radius: 6px;
-            outline: none;
-            transition: background-color 0.3s, border-color 0.3s;
-            cursor: pointer;
-        }
-
-        #localSelect:hover, #localSelect:focus {
-            background-color: #81c784; /* 조금 더 진한 초록 배경 */
-            border-color: #388e3c; /* 진한 초록 테두리 */
-            color: #fff;
-        }
     </style>
 </head>
+
 <body>
 <div id="page">
     <div class="header" th:replace="fragments/header :: header"></div>
 
-    <div class="board-container">
-
-        <!-- 지역 선택 -->
+    <div style="background-color:#ffffff; padding-top: 40px; padding-bottom: 60px;">
         <form id="localForm" method="get" action="/topic" class="mb-3">
             <label for="localSelect">지역 선택:</label>
             <select name="localId" id="localSelect" onchange="document.getElementById('localForm').submit()">
@@ -154,91 +150,75 @@
                 </option>
             </select>
         </form>
+            <!-- 게시글 테이블 -->
+            <table class="table table-hover mt-4 bg-white board-table">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>내용</th>
+                    <th>작성일</th>
+                    <th>작성자</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="board : ${responseDTO.dtoList}"
+                    th:classappend="' board-row board-' + ${board.boardType}"
+                    th:attr="data-type=${board.boardType}">
+                    <td th:text="${board.bno}">1</td>
+                    <td>
+                        <a class="board-title-link"
+                           th:href="@{/board/{bno}(bno=${board.bno})}"
+                           th:text="${board.title}">제목</a>
+                        <span class="badge-new"
+                              th:if="${board.regdate != null and board.regdate.isAfter(T(java.time.LocalDateTime).now().minusHours(24))}">
+                            NEW
+                        </span>
+                    </td>
+                    <td th:text="${board.content}">내용</td>
+                    <td th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm')}">날짜</td>
+                    <td th:text="${board.userNickname}">작성자</td>
+                </tr>
+                </tbody>
+            </table>
 
-        <!-- 게시글 테이블 -->
-        <table class="table table-hover mt-4 bg-white board-table">
-            <thead>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>내용</th>
-                <th>작성일</th>
-                <th>지역</th>
-                <th>작성자</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="board : ${responseDTO.dtoList}"
-                th:classappend="' board-row board-' + ${board.boardType}"
-                th:attr="data-type=${board.boardType}">
-                <td th:text="${board.bno}">1</td>
-                <td>
-                    <a class="board-title-link" th:href="@{/board/{bno}(bno=${board.bno})}" th:text="${board.title}">제목</a>
-                    <span class="badge-new"
-                          th:if="${board.regdate != null and board.regdate.isAfter(T(java.time.LocalDateTime).now().minusHours(24))}">
-                        NEW
-                    </span>
-                </td>
-                <td th:text="${board.content}">내용</td>
-                <td th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm')}">날짜</td>
-                <td>
-                    <span th:if="${board.localCateName != null}" th:text="${board.localCateName}"></span>
-                    <span th:unless="${board.localCateName != null}">지역없음</span>
-                </td>
-                <td th:text="${board.userNickname}">작성자</td>
-            </tr>
-            </tbody>
-        </table>
+            <!-- 검색 및 글쓰기 -->
+            <div class="search-write-wrap">
+                <form method="get" action="/free" class="form-inline d-flex align-items-center">
+                    <input type="text" name="keyword" placeholder="검색어 입력" class="form-control" th:value="${keyword}" />
+                    <select name="searchType" class="form-control">
+                        <option value="all" th:selected="${searchType == 'all'}">제목+내용</option>
+                        <option value="title" th:selected="${searchType == 'title'}">제목</option>
+                        <option value="content" th:selected="${searchType == 'content'}">내용</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">검색</button>
+                </form>
+                <a th:href="@{/write}" class="btn btn-primary">글쓰기</a>
+            </div>
 
-        <!-- 검색 및 글쓰기 -->
-        <div class="search-write-wrap">
-            <form method="get" action="/topic" class="form-inline d-flex align-items-center">
-                <input type="text" name="keyword" placeholder="검색어 입력" class="form-control" th:value="${keyword}" />
-                <select name="searchType" class="form-control" th:value="${searchType}">
-                    <option value="all" th:selected="${searchType == 'all'}">제목+내용</option>
-                    <option value="title" th:selected="${searchType == 'title'}">제목</option>
-                    <option value="content" th:selected="${searchType == 'content'}">내용</option>
-                </select>
-                <button type="submit" class="btn btn-primary">검색</button>
-            </form>
-            <a th:href="@{/topic/write(localId=${selectedLocalId})}" class="btn btn-primary">글쓰기</a>
+            <!-- 페이징 -->
+            <div class="board-pagination">
+                <a th:if="${responseDTO.prev}"
+                   th:href="@{${requestURI}(page=${responseDTO.start - 1}, size=${responseDTO.size}, keyword=${keyword}, searchType=${searchType})}">이전</a>
+                <span th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                    <a th:href="@{${requestURI}(page=${i}, size=${responseDTO.size}, keyword=${keyword}, searchType=${searchType})}"
+                       th:classappend="${i == responseDTO.page} ? 'active'">[[${i}]]</a>
+                </span>
+                <a th:if="${responseDTO.next}"
+                   th:href="@{${requestURI}(page=${responseDTO.end + 1}, size=${responseDTO.size}, keyword=${keyword}, searchType=${searchType})}">다음</a>
+
+
         </div>
-
-        <!-- 페이징 -->
-        <div class="board-pagination">
-            <a th:if="${responseDTO.prev}"
-               th:href="@{/topic(localId=${selectedLocalId}, page=${responseDTO.start - 1}, size=${responseDTO.size}, keyword=${keyword}, searchType=${searchType})}">이전</a>
-            <span th:each="i : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
-                <a th:href="@{/topic(localId=${selectedLocalId}, page=${i}, size=${responseDTO.size}, keyword=${keyword}, searchType=${searchType})}"
-                   th:classappend="${i == responseDTO.page} ? 'active'">[[${i}]]</a>
-            </span>
-            <a th:if="${responseDTO.next}"
-               th:href="@{/topic(localId=${selectedLocalId}, page=${responseDTO.end + 1}, size=${responseDTO.size}, keyword=${keyword}, searchType=${searchType})}">다음</a>
-        </div>
-
     </div>
 
     <div class="footer" th:replace="fragments/footer :: footer"></div>
 </div>
 
 <!-- JS -->
-<script src="/js/jquery.min.js"></script>
-<script src="/js/jquery.easing.1.3.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.waypoints.min.js"></script>
-<script src="/js/owl.carousel.min.js"></script>
-<script src="/js/jquery.countTo.js"></script>
-<script src="/js/jquery.stellar.min.js"></script>
-<script src="/js/jquery.magnific-popup.min.js"></script>
-<script src="/js/magnific-popup-options.js"></script>
-<script src="/js/moment.min.js"></script>
-<script src="/js/bootstrap-datetimepicker.min.js"></script>
-<script src="/js/jquery.scrollex.min.js"></script>
-<script src="/js/jquery.scrolly.min.js"></script>
-<script src="/js/browser.min.js"></script>
-<script src="/js/breakpoints.min.js"></script>
-<script src="/js/util.js"></script>
-<script src="/js/main.js"></script>
+<script src="/js/setting.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/templatehouse.js"></script>
+<script src="/js/style.js"></script>
 
 </body>
 </html>

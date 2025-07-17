@@ -18,7 +18,8 @@
         #page {
             margin-top: 80px; /* 헤더 높이와 동일 */
         }
-        .write-container {
+
+        .board-container {
             max-width: 1000px; /* boardlist max-width와 동일 */
             margin: 40px auto;
             background: #fff;
@@ -27,7 +28,7 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
 
-        .write-container h1 {
+        .board-container h1 {
             font-size: 28px;
             font-weight: 700;
             color: #2e7d32;
@@ -35,16 +36,16 @@
             text-align: center;
         }
 
-        .write-form label {
+        form.write-form label {
             font-weight: 600;
             color: #2e7d32;
             margin-top: 15px;
             display: block;
         }
 
-        .write-form input[type="text"],
-        .write-form textarea,
-        .write-form select {
+        form.write-form input[type="text"],
+        form.write-form textarea,
+        form.write-form select {
             width: 100%;
             padding: 12px;
             margin-top: 8px;
@@ -54,19 +55,19 @@
             transition: border-color 0.3s;
         }
 
-        .write-form input:focus,
-        .write-form textarea:focus,
-        .write-form select:focus {
+        form.write-form input:focus,
+        form.write-form textarea:focus,
+        form.write-form select:focus {
             border-color: #81c784;
             outline: none;
         }
 
-        .write-form textarea {
+        form.write-form textarea {
             height: 220px;
             resize: vertical;
         }
 
-        .write-form button[type="submit"] {
+        form.write-form button[type="submit"] {
             margin-top: 25px;
             width: 100%;
             padding: 14px;
@@ -80,7 +81,7 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        .write-form button[type="submit"]:hover {
+        form.write-form button[type="submit"]:hover {
             background-color: #81c784;
             color: #fff;
         }
@@ -94,7 +95,7 @@
 
         /* 반응형 */
         @media (max-width: 768px) {
-            .write-container {
+            .board-container {
                 margin: 30px 15px;
                 padding: 20px;
             }
@@ -105,7 +106,7 @@
 <div id="page">
     <div class="header" th:replace="fragments/header :: header"></div>
 
-    <div class="write-container">
+    <div class="board-container">
         <form class="write-form" th:action="@{/board/{bno}/edit(bno=${boardDTO.bno})}" method="post" th:object="${boardDTO}">
             <h1>게시글 수정</h1>
 
