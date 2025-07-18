@@ -220,18 +220,18 @@
                 <button type="submit">작성</button>
             </form>
 
-            <ul class="comment-list">
-                <li th:each="comment : ${comments}">
-                    <p th:text="${comment.content}">댓글 내용</p>
-                    <small th:text="${#temporals.format(comment.regdate, 'yyyy-MM-dd HH:mm')}">날짜</small>
+            <li th:each="comment, stat : ${comments}" th:attr="data-id=${comment.cno}">
+                <!-- 평소 상태 -->
+                <div th:id="'viewMode-' + ${comment.cno}">
+                    <p th:text="${comment.content}">댓글</p>
+                    <small th:text="${comment.regdate}">작성일</small>
                     <strong th:text="${comment.writerNickname}">작성자</strong>
-                    <button type="button" th:onclick="'showEditMode(' + ${comment.cno} + ')'">수정</button>
-                    <form th:action="@{/comment/{cno}/delete(cno=${comment.cno})}" method="post" style="display:inline-block;">
+
+                    <form th:action="@{/comment/{cno}/delete(cno=${comment.cno})}" method="post" style="display:inline-block; margin-left: 10px;">
                         <input type="hidden" name="boardId" th:value="${board.bno}" />
                         <button type="submit">삭제</button>
                     </form>
-                </li>
-            </ul>
+                    <button type="button" th:onclick="'showEditMode(' + ${comment.cno} + ')'" style="margin-left: 10px;">수정</button>
         </section>
     </div>
 
