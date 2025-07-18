@@ -14,12 +14,10 @@
     <link rel="stylesheet" href="/css/sidebar.css">
     <link rel="stylesheet" href="/css/main.css" />
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" />
-
-    <!-- CSS -->
     <link rel="stylesheet" href="/css/setting.css" />
     <link rel="stylesheet" href="/css/plugin.css" />
     <link rel="stylesheet" href="/css/templatehouse.css" />
-    <link rel="stylesheet" href="/css/style.css" />
+
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -222,20 +220,35 @@
                 <button type="submit">작성</button>
             </form>
 
-            <ul class="comment-list">
-                <li th:each="comment : ${comments}">
-                    <p th:text="${comment.content}">댓글 내용</p>
-                    <small th:text="${#temporals.format(comment.regdate, 'yyyy-MM-dd HH:mm')}">날짜</small>
-                    <strong th:text="${comment.writerNickname}">작성자</strong>
-                    <button type="button" th:onclick="'showEditMode(' + ${comment.cno} + ')'">수정</button>
-                    <form th:action="@{/comment/{cno}/delete(cno=${comment.cno})}" method="post" style="display:inline-block;">
-                        <input type="hidden" name="boardId" th:value="${board.bno}" />
-                        <button type="submit">삭제</button>
-                    </form>
+            <ul>
+                <li th:each="comment, stat : ${comments}" th:attr="data-id=${comment.cno}">
+                    <!-- 평소 상태 -->
+                    <div th:id="'viewMode-' + ${comment.cno}">
+                        <p th:text="${comment.content}">댓글</p>
+                        <small th:text="${comment.regdate}">작성일</small>
+                        <strong th:text="${comment.writerNickname}">작성자</strong>
+
+                        <form th:action="@{/comment/{cno}/delete(cno=${comment.cno})}" method="post" style="display:inline-block; margin-left: 10px;">
+                            <input type="hidden" name="boardId" th:value="${board.bno}" />
+                            <button type="submit">삭제</button>
+                        </form>
+                        <button type="button" th:onclick="'showEditMode(' + ${comment.cno} + ')'" style="margin-left: 10px;">수정</button>
+                    </div>
+
+                    <!-- 수정 상태 (처음엔 숨김) -->
+                    <div th:id="'editMode-' + ${comment.cno}" style="display:none; margin-top: 10px;">
+                        <form th:action="@{/comment/{cno}/edit(cno=${comment.cno})}" method="post">
+                            <input type="hidden" name="boardId" th:value="${board.bno}" />
+                            <input type="text" name="content" th:value="${comment.content}" />
+                            <button type="submit">저장</button>
+                            <button type="button" th:onclick="'cancelEditMode(' + ${comment.cno} + ')'">취소</button>
+                        </form>
+                    </div>
                 </li>
             </ul>
         </section>
     </div>
+
 
     <div class="footer" th:replace="fragments/footer :: footer"></div>
 </div>
@@ -256,6 +269,17 @@
                 alert('좋아요 처리 중 오류가 발생했습니다.');
             }
         });
+    }
+        function showEditMode(cno) {
+        document.getElementById('viewMode-' + cno).style.display = 'none';
+        document.getElementById('editMode-' + cno).style.display = 'block';
+        document.getElementById('commentWriteForm').style.display = 'none';
+    }
+
+        function cancelEditMode(cno) {
+        document.getElementById('editMode-' + cno).style.display = 'none';
+        document.getElementById('viewMode-' + cno).style.display = 'block';
+        document.getElementById('commentWriteForm').style.display = 'block';
     }
 </script>
 </body>

@@ -1,0 +1,462 @@
+/*
+!*
+!*
+.container {
+    display: flex;
+}
+
+!* ✅ 사이드바 스타일 *!
+.side-bar {
+    width: 200px;
+    min-height: 100vh;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+!* ✅ 콘텐츠 영역 *!
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-left: 200px; !* 사이드바 너비만큼 확보 *!
+}
+
+!* ✅ 메뉴 스타일 (기본 제공 예시) *!
+.side-bar ul {
+    list-style: none;
+    padding: 0;
+}
+.side-bar ul li {
+    margin-bottom: 10px;
+}
+.side-bar ul li ul {
+    display: none;
+}
+.side-bar ul li:hover ul {
+    display: block;
+}
+.side-bar a {
+    color: white;
+    text-decoration: none;
+}
+.guide-panel {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+    transition: right 0.3s ease-in-out;
+    z-index: 9999;
+    padding: 20px;
+}
+.guide-panel.open {
+    right: 0;
+}
+.guide-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.guide-panel-body {
+    margin-top: 20px;
+}
+*!
+.container {
+    display: flex;
+    height: 100vh; !* 화면 전체 높이 *!
+}
+
+!* 사이드바 *!
+.side-bar {
+    width: 200px;
+    min-height: 100vh;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+!* 가이드 패널 *!
+.guide-panel {
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+    padding: 20px;
+    box-sizing: border-box;
+
+    !* 기본은 안보이게 *!
+    display: none;
+}
+
+!* 가이드 패널 열었을 때 보이기 *!
+.guide-panel.open {
+    display: block;
+}
+
+!* 콘텐츠 영역 *!
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+*!
+!*
+.container {
+    display: flex;
+}
+
+!* ✅ 사이드바 스타일 *!
+.side-bar {
+    width: 200px;
+    min-height: 100vh;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+!* ✅ 콘텐츠 영역 *!
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-left: 200px; !* 사이드바 너비만큼 확보 *!
+}
+
+!* ✅ 메뉴 스타일 (기본 제공 예시) *!
+.side-bar ul {
+    list-style: none;
+    padding: 0;
+}
+.side-bar ul li {
+    margin-bottom: 10px;
+}
+.side-bar ul li ul {
+    display: none;
+}
+.side-bar ul li:hover ul {
+    display: block;
+}
+.side-bar a {
+    color: white;
+    text-decoration: none;
+}
+.guide-panel {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+    transition: right 0.3s ease-in-out;
+    z-index: 9999;
+    padding: 20px;
+}
+.guide-panel.open {
+    right: 0;
+}
+.guide-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.guide-panel-body {
+    margin-top: 20px;
+}
+*!
+!*
+.container {
+    display: flex;
+    height: 100vh; !* 화면 전체 높이 *!
+}
+
+!* 사이드바 *!
+.side-bar {
+    width: 200px;
+    min-height: 100vh;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+!* 가이드 패널 *!
+.guide-panel {
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+    padding: 20px;
+    box-sizing: border-box;
+
+    !* 기본은 안보이게 *!
+    display: none;
+}
+
+!* 가이드 패널 열었을 때 보이기 *!
+.guide-panel.open {
+    display: block;
+}
+
+!* 콘텐츠 영역 *!
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}*!
+!*
+.container {
+    display: flex;
+}
+
+!* ✅ 사이드바 스타일 *!
+.side-bar {
+    width: 200px;
+    min-height: 100vh;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+!* ✅ 콘텐츠 영역 *!
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-left: 200px; !* 사이드바 너비만큼 확보 *!
+}
+
+!* ✅ 메뉴 스타일 (기본 제공 예시) *!
+.side-bar ul {
+    list-style: none;
+    padding: 0;
+}
+.side-bar ul li {
+    margin-bottom: 10px;
+}
+.side-bar ul li ul {
+    display: none;
+}
+.side-bar ul li:hover ul {
+    display: block;
+}
+.side-bar a {
+    color: white;
+    text-decoration: none;
+}
+.guide-panel {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+    transition: right 0.3s ease-in-out;
+    z-index: 9999;
+    padding: 20px;
+}
+.guide-panel.open {
+    right: 0;
+}
+.guide-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.guide-panel-body {
+    margin-top: 20px;
+}
+*!
+!*
+.container {
+    display: flex;
+    height: 100vh; !* 화면 전체 높이 *!
+}
+
+!* 사이드바 *!
+.side-bar {
+    width: 200px;
+    min-height: 100vh;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+!* 가이드 패널 *!
+.guide-panel {
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+    padding: 20px;
+    box-sizing: border-box;
+
+    !* 기본은 안보이게 *!
+    display: none;
+}
+
+!* 가이드 패널 열었을 때 보이기 *!
+.guide-panel.open {
+    display: block;
+}
+
+!* 콘텐츠 영역 *!
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+ *!
+.container {
+    display: flex;
+    height: 100vh; !* 화면 전체 높이 *!
+}
+
+!* 사이드바 *!
+.side-bar {
+    width: 200px;
+    min-height: 100vh;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+!* 가이드 패널 *!
+.guide-panel {
+    width: 1200px;
+    background-color: #fff;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.2);
+    padding: 20px;
+    box-sizing: border-box;
+
+    !* 기본은 안보이게 *!
+    display: none;
+}
+
+!* 가이드 패널 열었을 때 보이기 *!
+.guide-panel.open {
+    display: block;
+}
+
+!* 콘텐츠 영역 *!
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.side-bar {
+    background-color: #333; !* 기존 어두운 배경 *!
+    color: #eee; !* 기본 글자색도 밝게 *!
+}
+
+.side-bar ul li {
+    margin-bottom: 10px;
+}
+
+.side-bar ul ul {
+    display: none;
+    padding-left: 15px;
+    list-style-type: disc;
+}
+
+.side-bar ul li:hover > ul {
+    display: block;
+}
+
+.side-bar ul li > a {
+    color: #f0f0f0;
+    text-decoration: none;
+    padding: 8px 12px;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.side-bar ul li > a:hover {
+    background-color: #555;
+    color: #fff;
+}
+*/
+/* 컨테이너는 플렉스 박스 */
+.container {
+    display: flex;
+    height: 100vh; /* 화면 전체 높이 */
+}
+
+/* 사이드바는 고정 너비, 전체 높이 */
+.side-bar {
+    width: 200px;
+    background-color: #333;
+    color: #eee;
+    padding: 20px;
+    box-sizing: border-box;
+    /* flex 아이템으로 자동 위치 지정됨 */
+}
+
+/* 콘텐츠는 나머지 공간 전부 차지 */
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* 사이드바 메뉴 스타일 */
+.side-bar ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.side-bar ul li {
+    margin-bottom: 10px;
+}
+
+.side-bar ul ul {
+    display: none;
+    padding-left: 15px;
+    list-style-type: disc;
+}
+
+.side-bar ul li:hover > ul {
+    display: block;
+}
+
+.side-bar ul li > a {
+    color: #f0f0f0;
+    text-decoration: none;
+    padding: 8px 12px;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.side-bar ul li > a:hover {
+    background-color: #555;
+    color: #fff;
+}
+
+/* 가이드 패널 (사이드바랑 별개라면 position: fixed 추천) */
+.guide-panel {
+    position: fixed; /* 화면 오른쪽 고정 */
+    top: 0;
+    right: -400px; /* 숨겨진 상태 */
+    width: 400px;
+    height: 100vh;
+    background-color: #fff;
+    box-shadow: -2px 0 8px rgba(0,0,0,0.2);
+    transition: right 0.3s ease-in-out;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.guide-panel.open {
+    right: 0; /* 보이게 */
+}
+

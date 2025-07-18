@@ -193,7 +193,9 @@
                     </select>
                     <button type="submit" class="btn btn-primary">검색</button>
                 </form>
-                <a th:href="@{/topic/write}" class="btn btn-primary">글쓰기</a>
+               <!-- <a th:href="@{/topic/write}" class="btn btn-primary">글쓰기</a>-->
+                <a th:href="@{/topic/write(localId=${selectedLocalId})}" class="btn btn-primary">글쓰기</a>
+
             </div>
 
             <!-- 페이징 -->
