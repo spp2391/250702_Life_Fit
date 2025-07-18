@@ -55,13 +55,13 @@
 
 		<div id="map"></div>
 		<div id="popup-keyword" class="popup-search">
-		<form name="searchForm" onsubmit="return search(event)">
+		<form name="searchForm" onsubmit="return search(event)" onreset="clearForm(event)">
 			<div id="popup-keyword-keyword">
 				<label for="popup-keyword-keyword-search">키워드 검색</label><br>
 				<input type="search" name="keyword" id="popup-keyword-keyword-search">
 			</div>
 			<div id="popup-keyword-category">
-				카테고리 검색
+				<span>카테고리 검색</span>
 				<table id="popup-keyword-table"></table>
 			</div>
 			<div id="popup-area">
@@ -87,6 +87,9 @@
 				</select>
 			</div>
 			<div id="popup-keyword-button">
+<!--				<div id="searchReset" onclick="document.getElementById(searchForm).reset();">리셋</div>-->
+<!--				<div id="keywordSearchButton" onclick="">키워드 검색</div>-->
+<!--				<div id="categorySearchButton" onclick="document.getElementById(searchForm).submit();">카테고리 검색</div>-->
 				<input type="reset" value="리셋">
 				<input id="keywordSearchButton" type="button" value="키워드 검색">
 				<input id="categorySearchButton" type="button" value="카테고리 검색">
@@ -117,8 +120,8 @@
 </script>
 <script type="text/javascript" src="/mainscreen/search.js"></script>
 <script type="text/javascript" src="/mainscreen/main.js"></script>
-<script src="/js/setting.js"></script>
-<script src="/js/plugin.js"></script>
-<script src="/js/templatehouse.js"></script>
-<script src="/js/style.js"></script>
+<!--<script src="/js/setting.js"></script>-->
+<!--<script src="/js/plugin.js"></script>-->
+<!--<script src="/js/templatehouse.js"></script>-->
+<!--<script src="/js/style.js"></script>-->
 </html>

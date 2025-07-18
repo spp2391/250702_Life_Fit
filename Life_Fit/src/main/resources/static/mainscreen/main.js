@@ -17,8 +17,8 @@ function sidebarPopup(status) {
     }
     // 키워드검색
     if (status === 1) {
-        keywordSidebar.style.background="#ddd";
-        categorySidebar.style.background="none";
+        // keywordSidebar.style.background="#ddd";
+        // categorySidebar.style.background="none";
         popupKeyword.style.display="block";
         popupArea.style.display="none";
         keywordSearchButton.style.display="inline-block";
@@ -26,8 +26,8 @@ function sidebarPopup(status) {
         sidebarStatus = 1;
     //카테고리 검색
     } else if (status === 2) {
-        keywordSidebar.style.background="none";
-        categorySidebar.style.background="#ddd";
+        // keywordSidebar.style.background="none";
+        // categorySidebar.style.background="#ddd";
         popupKeyword.style.display="none";
         popupArea.style.display="block";
         keywordSearchButton.style.display="none";
@@ -40,9 +40,9 @@ function sidebarPopup(status) {
 }
 // 카카오 카테고리 종류
 const categoryTypes = {
-    MT1: "대형마트",CS2: "편의점",PS3: "어린이집, 유치원",
+    MT1: "대형마트",CS2: "편의점",PS3: "어린이집</br>유치원",
     SC4: "학교",AC5: "학원",PK6: "주차장",
-    OL7: "주유소, 충전소",SW8: "지하철역",BK9: "은행",
+    OL7: "주유소</br>충전소",SW8: "지하철역",BK9: "은행",
     CT1: "문화시설",AG2: "중개업소",PO3: "공공기관",
     AT4: "관광명소",AD5: "숙박",FD6: "음식점",
     CE7: "카페",HP8: "병원",PM9: "약국"
@@ -58,18 +58,39 @@ function setCategoryTable(status){
     let index = 0;
         Object.entries(data).forEach(([key, value]) => {
             if(index===0){ str += "<tr>";}
-            str += "<td>";
-            str += `<input type="radio" id="popup-keyword-category-option-${key}" name="category" value="${key}"/>`
-            str += `<label for="popup-keyword-category-option-${key}">${value}</label>`
+            str += "<td >";
+            str += `<label for="popup-keyword-category-option-${key}">${value}<input onclick='selectCategory(event)' type="radio" id="popup-keyword-category-option-${key}" name="category" value="${key}"/></label>`
             str += "</td>";
             index++;
-            if(index>=3){
+            if(index>=5){
                 index = 0;
                 str += "</tr>";
             }
         });
     categoryTable.innerHTML = str;
 }
+// 카테고리 검색에서 선택 시 색상 변경.
+function selectCategory(e) {
+    e.stopPropagation();
+    let allCategoryBox = document.querySelectorAll("#popup-keyword-table label");
+    allCategoryBox.forEach((item) => {
+        item.style.backgroundColor="white";
+        item.style.color = "black";
+    })
+    let categoryBox = e.target;
+    categoryBox.parentNode.style.backgroundColor="#007BFF";
+    categoryBox.parentNode.style.color = "white";
+    console.log(categoryBox.id, "clicked");
+}
+// 폼 리셋 시 모든 색상 원상복구
+function clearForm(e) {
+    let allCategoryBox = document.querySelectorAll("#popup-keyword-table label");
+    allCategoryBox.forEach((item) => {
+        item.style.backgroundColor="white";
+        item.style.color = "black";
+    })
+}
+// 카카오API 검색의 콜백 함수
 var callback = function (result, status) {
     if (status === kakao.maps.services.Status.OK) {
         // 검색 성공시 결과 저장.
