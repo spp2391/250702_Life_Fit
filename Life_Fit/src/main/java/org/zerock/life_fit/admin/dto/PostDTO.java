@@ -21,4 +21,5 @@ public class PostDTO {
     private LocalDateTime regdate;
     private LocalDateTime moddate;
     private int visitcount;
+    private String email;
 }

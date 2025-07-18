@@ -60,7 +60,7 @@
         <td th:text="${post.title}"></td>
         <td th:text="${post.content}"></td>
         <td th:text="${post.nickname}"></td>
-        <td th:text="${post.userId}"></td>
+        <td th:text="${post.email}"></td>
         <td th:text="${#temporals.format(post.regdate, 'yyyy-MM-dd HH:mm')}"></td>
         <td>
             <button type="button"
@@ -142,7 +142,7 @@
           <tbody>
             ${data.map(comment => `
               <tr>
-                <td>${comment.writer}</td>
+                <td>${comment.writerNickname}</td>
                 <td style="white-space:pre-line;">${comment.content}</td>
                 <td>${new Date(comment.regdate).toLocaleString()}</td>
                 <td><button onclick="deleteComment(${comment.cno}, ${bno})">삭제</button></td>

@@ -21,7 +21,8 @@ public class AdminCommentService {
                         c.getCno(),
                         c.getContent(),
                         c.getRegdate(),
-                        c.getBoard().getBno()
+                        c.getBoard().getBno(),
+                        c.getWriter().getNickname()
                 ))
                 .collect(Collectors.toList());
     }
