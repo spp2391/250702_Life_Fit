@@ -30,14 +30,7 @@
         #page {
             margin-top: 80px; /* 헤더 실제 높이에 맞게 조정 */
         }
-        .board-container {
-            background: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            max-width: 1000px;
-            margin: 40px auto;
-        }
+
 
         /* 테이블 */
         .board-table {
@@ -47,12 +40,12 @@
         }
 
         .board-table thead th {
-            background: #a5d6a7; /* 연초록 */
-            color: #2e7d32;      /* 진한 초록 글씨 */
+            background:#161617; /* 연초록 */
+            color: #ffffff;      /* 진한 초록 글씨 */
             font-weight: 700;
             padding: 12px;
             text-align: center;
-            border-bottom: 2px solid #81c784;
+            border-bottom: 2px solid #CCCCCC;
         }
 
         .board-table tbody tr {
@@ -75,7 +68,7 @@
 
         /* 제목 링크 */
         .board-title-link {
-            color: #388e3c;
+            color: #161617;
             font-weight: 600;
             text-decoration: none;
         }
@@ -108,15 +101,7 @@
         }
 
         /* NEW 뱃지 */
-        .badge-new {
-            margin-left: 6px;
-            padding: 2px 6px;
-            font-size: 11px;
-            color: #d84315;
-            background: #ffccbc;
-            border-radius: 8px;
-            font-weight: bold;
-        }
+        /**/
     </style>
 
     <style>
@@ -133,6 +118,17 @@
     </style>
 
     <style>
+        .gtco-container {
+            max-width: 1400px;  /* 전체 화면에서 조금 좁게 */
+            margin: 0 auto;     /* 중앙 정렬 */
+            padding: 0 15px;    /* 좌우 여백 */
+        }
+
+        /* 테이블 여백 조정 */
+        .board-table {
+            width: 100%;
+            table-layout: fixed; /* 제목이 너무 길 때 줄바꿈 */
+        }
         body {
             font-family: 'Lato', sans-serif;
         }
@@ -153,7 +149,7 @@
         }
 
         .gtco-nav .btn-cta a {
-            background-color: #ffc107;
+            background-color: #007AFF;
             color: #333 !important;
             padding: 8px 14px;
             border-radius: 4px;
@@ -161,23 +157,25 @@
         }
 
         .gtco-nav .btn-cta a:hover {
-            background-color: #ffb300;
+            background-color: #007AFF;
         }
 
         .btn.btn-primary {
-            background-color: #ffca28;
-            border-color: #ffca28;
-            color: #333;
-            font-weight: 500;
+            background-color: #007AFF;
+            border-color: #007AFF;
+            color: white;
+            font-weight: 500 ;
+            border-radius: 4px;
+
         }
 
         .btn.btn-primary:hover {
-            background-color: #ffb300;
-            border-color: #ffb300;
+            background-color: #007AFF;
+            border-color: #007AFF;
         }
 
         h1.cursive-font {
-            color: #ffb300;
+            color: #007AFF;
             margin-bottom: 30px;
             font-weight: 700;
         }
@@ -202,7 +200,7 @@
         }
 
         #gtco-footer a {
-            color: #ffc107;
+            color: #007AFF;
         }
 
         .search-write-wrap {
@@ -240,8 +238,8 @@
         }
 
         .board-pagination .active {
-            background-color: #ffca28;
-            color: #000;
+            background-color: #007AFF;
+            color: white;
             font-weight: bold;
         }
     </style>
