@@ -7,7 +7,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- CSS -->
   <link rel="stylesheet" href="/css/setting.css" />
@@ -25,31 +25,31 @@
     <div class="header" th:replace="fragments/header :: header"></div>
 
     <div class="login-container">
-      <!-- 로그인 카드 -->
       <div class="login-card">
-
         <!-- 로고 -->
         <div class="logo">
           <img src="/images/LIFEFIT.png" alt="LIFE FIT 로고" />
         </div>
 
+        <!-- 로그인 폼 -->
         <form action="/member/login" method="POST">
           <input type="hidden" th:name="${_csrf?.parameterName}" th:value="${_csrf?.token}" />
 
-          <!-- 탭 메뉴 -->
           <div class="tab-menu">
-            <button type="button" class="active"><!--아이디/비밀번호를 입력해주세요.--></button>
+            <button type="reset" class="active">아이디/패스워드를 다시 입력해주세요.</button>
           </div>
 
           <!-- 입력창 -->
           <div class="input-group">
-            <input type="text" name="username" placeholder="아이디 또는 이메일" required />
+            <input type="text" id="username" name="username" placeholder="아이디 또는 이메일" required />
             <input type="password" name="password" placeholder="비밀번호" required />
           </div>
 
           <!-- 옵션 -->
           <div class="options">
-            <label><input type="checkbox" name="remember-me" /> 로그인 상태 유지</label>
+            <label>
+              <input type="checkbox" id="save-id" name="saveId" /> 아이디 저장
+            </label>
             <span class="security">IP보안 <span class="on">ON</span></span>
           </div>
 
@@ -59,9 +59,8 @@
           <!-- 구분선 -->
           <div class="divider">간편 로그인을 원하시면</div>
 
-          <!-- 패스키 버튼 -->
+          <!-- 소셜 로그인 -->
           <button type="button" class="kakao-btn">카카오 로그인</button>
-
           <button type="button" class="naver-btn">네이버 로그인</button>
         </form>
 
@@ -78,8 +77,50 @@
 
 <script src="/js/setting.js"></script>
 <script src="/js/plugin.js"></script>
-
 <script src="/js/templatehouse.js"></script>
 <script src="/js/style.js"></script>
+
+<!-- 아이디 저장용 쿠키 처리 -->
+<script>
+  window.onload = function () {
+    const savedId = getCookie("savedId");
+    if (savedId) {
+      document.getElementById("username").value = savedId;
+      document.getElementById("save-id").checked = true;
+    }
+  };
+
+  document.querySelector("form").addEventListener("submit", function () {
+    const idInput = document.getElementById("username");
+    const saveIdChecked = document.getElementById("save-id").checked;
+
+    if (saveIdChecked) {
+      setCookie("savedId", idInput.value, 7); // 7일간 저장
+    } else {
+      deleteCookie("savedId");
+    }
+  });
+
+  function setCookie(name, value, days) {
+    const expires = new Date();
+    expires.setDate(expires.getDate() + days);
+    document.cookie = name + "=" + encodeURIComponent(value) + "; path=/; expires=" + expires.toUTCString();
+  }
+
+  function getCookie(name) {
+    const nameEQ = name + "=";
+    const ca = document.cookie.split(";");
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === " ") c = c.substring(1);
+      if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length));
+    }
+    return null;
+  }
+
+  function deleteCookie(name) {
+    setCookie(name, "", -1);
+  }
+</script>
 </body>
 </html>

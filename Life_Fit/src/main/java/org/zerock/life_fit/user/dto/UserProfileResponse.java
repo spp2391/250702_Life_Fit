@@ -15,6 +15,7 @@ public class UserProfileResponse {
     private java.time.LocalDateTime regdate;
     private java.time.LocalDateTime moddate;
     private String name;
+    private String phoneNumber;
 
     public static UserProfileResponse fromEntity(User user) {
         return UserProfileResponse.builder()
@@ -23,6 +24,7 @@ public class UserProfileResponse {
                 .nickname(user.getNickname())
                 .regdate(user.getRegdate())
                 .moddate(user.getModdate())
+                .phoneNumber(user.getPhoneNumber())
                 .name(user.getName())
                 .build();
     }

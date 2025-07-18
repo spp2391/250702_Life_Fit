@@ -19,25 +19,25 @@ public interface AdminUserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT * FROM `user` " +
             "WHERE (:email IS NULL OR :email = '' OR email LIKE %:email%) " +
             "AND (:nickname IS NULL OR :nickname = '' OR nickname LIKE %:nickname%) " +
-            "AND (:role IS NULL OR :role = '' OR role = :role)",
+            "AND (:user_role IS NULL OR :user_role = '' OR user_role = :user_role)",
             nativeQuery = true)
     List<User> searchUsers(
             @Param("email") String email,
             @Param("nickname") String nickname,
-            @Param("role") String role
+            @Param("user_role") String user_role
     );
 
     // 이름 + 역할 검색 (페이징 포함, native 쿼리)
     @Query(value = "SELECT * FROM `user` " +
             "WHERE (:name IS NULL OR :name = '' OR name LIKE %:name%) " +
-            "AND (:role IS NULL OR :role = '' OR role = :role)",
+            "AND (:user_role IS NULL OR :user_role = '' OR user_role = :user_role)",
             countQuery = "SELECT COUNT(*) FROM `user` " +
                     "WHERE (:name IS NULL OR :name = '' OR name LIKE %:name%) " +
-                    "AND (:role IS NULL OR :role = '' OR role = :role)",
+                    "AND (:user_role IS NULL OR :user_role = '' OR user_role = :user_role)",
             nativeQuery = true)
     Page<User> searchUsersWithPaging(
             @Param("name") String name,
-            @Param("role") String role,
+            @Param("user_role") String user_role,
             Pageable pageable
     );
 }
