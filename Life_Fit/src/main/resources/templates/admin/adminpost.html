@@ -142,7 +142,7 @@
           <tbody>
             ${data.map(comment => `
               <tr>
-                <td>${comment.writer}</td>
+                <td>${comment.boardId}</td>
                 <td style="white-space:pre-line;">${comment.content}</td>
                 <td>${new Date(comment.regdate).toLocaleString()}</td>
                 <td><button onclick="deleteComment(${comment.cno}, ${bno})">삭제</button></td>
