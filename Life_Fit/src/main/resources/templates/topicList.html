@@ -24,6 +24,13 @@
   <style>
       #page {
           margin-top: 80px; /* 헤더 높이에 맞춤 */
+
+      }
+      .gtco-container {
+         /* 좌우 여백 */
+          max-width: 1400px;  /* 전체 화면에서 조금 좁게 */
+          margin: 0 auto;     /* 중앙 정렬 */
+          padding: 0 15px;
       }
 
       /* 테이블 */
@@ -31,6 +38,7 @@
           width: 100%;
           border-collapse: collapse;
           background: #fff;
+          text-align: center;
       }
 
       .board-table thead th {
@@ -67,8 +75,8 @@
           font-weight: 600;
           text-decoration: none;
       }
-      .board-title-link:hover {
-          color: #2e7d32;
+      .board-title- link:hover {
+          color: #007AFF;
           text-decoration: underline;
       }
 
@@ -134,17 +142,21 @@
           border-radius: 10px;
           box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       }
+        #localForm{
+          font : bold 15px sans-serif;
+      }
 
   </style>
 </head>
 
 <body>
+<div class="header" th:replace="fragments/header :: header"></div>
 <div id="page">
-    <div class="header" th:replace="fragments/header :: header"></div>
 
+    <div class="gtco-container">
     <div style="background-color:#ffffff; padding-top: 40px; padding-bottom: 60px;">
         <form id="localForm" method="get" action="/topic" class="mb-3">
-            <label for="localSelect">지역 선택:</label>
+            <label for="localSelect" >지역 선택:</label>
             <select name="localId" id="localSelect" onchange="document.getElementById('localForm').submit()">
                 <option value="" th:selected="${selectedLocalId == null}">모든 지역</option>
                 <option th:each="local : ${localList}"
@@ -154,6 +166,7 @@
                 </option>
             </select>
         </form>
+
             <!-- 게시글 테이블 -->
             <table class="table table-hover mt-4 bg-white board-table">
                 <thead>
@@ -161,6 +174,7 @@
                     <th>번호</th>
                     <th>제목</th>
                     <th>내용</th>
+                    <th>지역</th>
                     <th>작성일</th>
                     <th>작성자</th>
                 </tr>
@@ -174,12 +188,12 @@
                         <a class="board-title-link"
                            th:href="@{/board/{bno}(bno=${board.bno})}"
                            th:text="${board.title}">제목</a>
-                        <span class="badge-new"
-                              th:if="${board.regdate != null and board.regdate.isAfter(T(java.time.LocalDateTime).now().minusHours(24))}">
-                            NEW
-                        </span>
                     </td>
                     <td th:text="${board.content}">내용</td>
+                    <td>
+                        <span th:if="${board.localCateName != null}" th:text="${board.localCateName}"></span>
+                        <span th:unless="${board.localCateName != null}">지역없음</span>
+                    </td>
                     <td th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm')}">날짜</td>
                     <td th:text="${board.userNickname}">작성자</td>
                 </tr>
@@ -216,7 +230,7 @@
 
         </div>
     </div>
-
+</div>
     <div class="footer" th:replace="fragments/footer :: footer"></div>
 </div>
 

@@ -73,7 +73,7 @@
             text-decoration: none;
         }
         .board-title-link:hover {
-            color: #2e7d32;
+            color: #007AFF;
             text-decoration: underline;
         }
 
@@ -128,6 +128,7 @@
         .board-table {
             width: 100%;
             table-layout: fixed; /* 제목이 너무 길 때 줄바꿈 */
+            text-align: center;
         }
         body {
             font-family: 'Lato', sans-serif;
@@ -246,10 +247,10 @@
 </head>
 
 <body>
-
+<div class="header" th:replace="fragments/header :: header"></div>
 
 <div id="page">
-    <div class="header" th:replace="fragments/header :: header"></div>
+
     <div style="background-color:#ffffff; padding-top: 40px; padding-bottom: 60px;">
 
         <div class="gtco-container">
@@ -274,10 +275,7 @@
                                    th:href="@{/board/{bno}(bno=${board.bno})}"
                                    th:text="${board.title}">제목</a>
                                 <!-- 새 글 표시 (예: 24시간 이내) -->
-                                <span class="badge-new"
-                                      th:if="${board.regdate != null and board.regdate.isAfter(T(java.time.LocalDateTime).now().minusHours(24))}">
 
-            </span>
                             </td>
                             <td th:text="${board.content}">내용</td>
                             <td th:text="${#temporals.format(board.regdate, 'yyyy-MM-dd HH:mm')}">날짜</td>

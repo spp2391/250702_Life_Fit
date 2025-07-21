@@ -43,14 +43,14 @@
         .write-container h1 {
             font-size: 28px;
             font-weight: 700;
-            color: #2e7d32;
+            color: black;
             margin-bottom: 30px;
             text-align: center;
         }
 
         .write-form label {
             font-weight: 600;
-            color: #2e7d32;
+            color: #007AFF;
             margin-top: 15px;
             display: block;
         }
@@ -68,7 +68,7 @@
 
         .write-form input:focus,
         .write-form textarea:focus {
-            border-color: #81c784;
+            border-color: black;
             outline: none;
         }
 
@@ -81,9 +81,9 @@
             margin-top: 25px;
             width: 100%;
             padding: 14px;
-            background-color: #a5d6a7;
+            background-color: #007AFF;
             border: none;
-            color: #2e7d32;
+            color: white;
             font-weight: bold;
             font-size: 18px;
             border-radius: 6px;
@@ -92,14 +92,15 @@
         }
 
         .write-form button:hover {
-            background-color: #81c784;
-            color: #fff;
+            background-color: black;
+            color: white;
         }
     </style>
 </head>
 <body>
+<div class="header" th:replace="fragments/header :: header"></div>
 <div id="page">
-    <div class="header" th:replace="fragments/header :: header"></div>
+
 
     <div class="write-container">
         <form class="write-form" th:action="@{/write}" method="post" th:object="${boardDTO}">

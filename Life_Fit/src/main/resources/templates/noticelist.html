@@ -7,15 +7,25 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" />
 
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
-
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/setting.css" />
+    <link rel="stylesheet" href="/css/plugin.css" />
+    <link rel="stylesheet" href="/css/templatehouse.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+            integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
     <style>
         body {
             font-family: 'Lato', sans-serif;
             margin: 0;
-            background: #f9f9f9;
+            background-color: #f9f9f9;
             color: #333;
         }
 
@@ -24,186 +34,141 @@
         }
 
         .notice-container {
-            max-width: 1100px;
-            margin: 40px auto;
-            background: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
         }
 
         .notice-container h1 {
-            font-size: 32px;
-            color: #2e7d32;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .sub-text {
-            text-align: center;
-            color: #666;
+            font-size: 36px;
+            font-weight: 700;
             margin-bottom: 30px;
-            font-size: 18px;
+            text-align: center;
+            color: #007AFF;
         }
 
-        /* 검색 영역 */
-        .notice-search {
+        .notice-list {
             display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-bottom: 20px;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .notice-search input[type="text"] {
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 14px;
+        .notice-item {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .notice-search button {
-            background: #a5d6a7;
-            border: none;
-            padding: 8px 16px;
-            color: #2e7d32;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .notice-search button:hover {
-            background: #81c784;
-            color: #fff;
-        }
-
-        /* 공지 리스트 */
-        .notice-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        .notice-table thead th {
-            background: #a5d6a7;
-            color: #2e7d32;
-            padding: 12px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .notice-table tbody td {
-            padding: 14px 12px;
-            border-bottom: 1px solid #ddd;
-            font-size: 15px;
-            text-align: center;
+        .notice-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
         }
 
         .notice-title {
-            text-align: left;
-        }
-
-        .notice-title a {
-            color: #388e3c;
+            font-size: 22px;
             font-weight: 600;
-            text-decoration: none;
-        }
-
-        .notice-title a:hover {
-            text-decoration: underline;
-        }
-
-        /* 중요 공지 강조 */
-        .important {
-            background: #f1f8e9;
-            font-weight: bold;
-            color: #33691e;
-        }
-
-        /* 페이징 */
-        .notice-pagination {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .notice-pagination a {
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            text-decoration: none;
+            margin-bottom: 10px;
             color: #333;
-            background: #fff;
         }
 
-        .notice-pagination a:hover {
-            background: #81c784;
-            color: #fff;
+        .notice-date {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
         }
 
-        .notice-pagination .active {
-            background: #ffca28;
-            color: #000;
-            font-weight: bold;
+        .notice-content {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* 검색 */
+        .search-box {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .search-box input {
+            padding: 10px 15px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
         }
 
         @media (max-width: 768px) {
-            .notice-search {
-                flex-direction: column;
-                align-items: stretch;
+            .notice-container h1 {
+                font-size: 28px;
+            }
+
+            .search-box input {
+                width: 200px;
             }
         }
     </style>
 </head>
 <body>
+<div class="header" th:replace="fragments/header :: header"></div>
 <div id="page">
     <div class="notice-container">
         <h1>공지사항</h1>
-        <p class="sub-text">최신 공지사항을 확인하세요</p>
 
-        <!-- 검색 -->
-        <div class="notice-search">
-            <input type="text" placeholder="검색어 입력">
-            <button><i class="fas fa-search"></i> 검색</button>
+        <!-- 검색창 -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="공지사항 검색...">
         </div>
 
-        <!-- 공지 리스트 -->
-        <table class="notice-table">
-            <thead>
-            <tr>
-                <th>번호</th>
-                <th class="notice-title">제목</th>
-                <th>작성일</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr class="important">
-                <td>공지</td>
-                <td class="notice-title"><a href="#">사이트 점검 안내 (중요)</a></td>
-                <td>2025-07-17</td>
-            </tr>
-            <tr>
-                <td>10</td>
-                <td class="notice-title"><a href="#">여름 시즌 이벤트 소식</a></td>
-                <td>2025-07-15</td>
-            </tr>
-            <tr>
-                <td>9</td>
-                <td class="notice-title"><a href="#">이용약관 개정 안내</a></td>
-                <td>2025-07-10</td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="notice-list" id="noticeList">
+            <!-- 공지 1 -->
+            <div class="notice-item">
+                <div class="notice-title">[점검] 시스템 점검 안내</div>
+                <div class="notice-date">2025-07-20</div>
+                <div class="notice-content">
+                    7월 25일 새벽 1시부터 3시까지 서버 점검이 진행됩니다. 이용에 불편을 드려 죄송합니다.
+                </div>
+            </div>
 
-        <!-- 페이징 -->
-        <div class="notice-pagination">
-            <a href="#">이전</a>
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#">다음</a>
+            <!-- 공지 2 -->
+            <div class="notice-item">
+                <div class="notice-title">신규 서비스 오픈</div>
+                <div class="notice-date">2025-07-15</div>
+                <div class="notice-content">
+                    새로운 지역 맞춤형 추천 서비스가 추가되었습니다. 자세한 내용은 이용 가이드를 참고하세요.
+                </div>
+            </div>
+
+            <!-- 공지 3 -->
+            <div class="notice-item">
+                <div class="notice-title">여름 이벤트 안내</div>
+                <div class="notice-date">2025-07-10</div>
+                <div class="notice-content">
+                    7월 한 달간 여름맞이 특별 이벤트가 진행됩니다. 경품 및 다양한 혜택을 확인해 보세요.
+                </div>
+            </div>
         </div>
     </div>
+    <div class="footer" th:replace="fragments/footer :: footer"></div>
 </div>
+
+<script>
+    // 검색 기능 (JS)
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        const keyword = this.value.toLowerCase();
+        const notices = document.querySelectorAll(".notice-item");
+
+        notices.forEach(function (item) {
+            const title = item.querySelector(".notice-title").innerText.toLowerCase();
+            const content = item.querySelector(".notice-content").innerText.toLowerCase();
+            if (title.includes(keyword) || content.includes(keyword)) {
+                item.style.display = "block";
+            } else {
+                item.style.display = "none";
+            }
+        });
+    });
+</script>
 </body>
 </html>

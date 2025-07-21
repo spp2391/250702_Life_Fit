@@ -7,14 +7,28 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" />
+    < <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.css" />
+    <link rel="stylesheet" href="/css/setting.css" />
+    <link rel="stylesheet" href="/css/plugin.css" />
+    <link rel="stylesheet" href="/css/templatehouse.css" />
     <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="/css/sidebar.css" />
-    <link rel="stylesheet" href="/css/main.css" />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+            integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
 
     <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
         #page {
             margin-top: 80px; /* 헤더 높이와 동일 */
         }
@@ -31,14 +45,14 @@
         .board-container h1 {
             font-size: 28px;
             font-weight: 700;
-            color: #2e7d32;
+            color: black;
             margin-bottom: 30px;
             text-align: center;
         }
 
         form.write-form label {
             font-weight: 600;
-            color: #2e7d32;
+            color: #007AFF;
             margin-top: 15px;
             display: block;
         }
@@ -58,7 +72,7 @@
         form.write-form input:focus,
         form.write-form textarea:focus,
         form.write-form select:focus {
-            border-color: #81c784;
+            border-color: black;
             outline: none;
         }
 
@@ -71,9 +85,9 @@
             margin-top: 25px;
             width: 100%;
             padding: 14px;
-            background-color: #a5d6a7;
+            background-color: #007AFF;
             border: none;
-            color: #2e7d32;
+            color: white;
             font-weight: bold;
             font-size: 18px;
             border-radius: 6px;
@@ -82,8 +96,8 @@
         }
 
         form.write-form button[type="submit"]:hover {
-            background-color: #81c784;
-            color: #fff;
+            background-color: black;
+            color: white;
         }
 
         .alert-message {
@@ -103,9 +117,8 @@
     </style>
 </head>
 <body>
+<div class="header" th:replace="fragments/header :: header"></div>
 <div id="page">
-    <div class="header" th:replace="fragments/header :: header"></div>
-
     <div class="board-container">
         <form class="write-form" th:action="@{/board/{bno}/edit(bno=${boardDTO.bno})}" method="post" th:object="${boardDTO}">
             <h1>게시글 수정</h1>
