@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항 수정</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>공지사항 수정</h2>
+    <form th:action="@{/notice/{nbno}/edit(nbno=${notice.nbno})}" method="post">
+        <div class="form-group mt-3">
+            <label for="title">제목</label>
+            <input type="text" class="form-control" id="title" name="title" th:value="${notice.title}" required>
+        </div>
+        <div class="form-group mt-3">
+            <label for="content">내용</label>
+            <textarea class="form-control" id="content" name="content" rows="6" th:text="${notice.content}" required></textarea>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-warning">수정</button>
+            <a th:href="@{/notice/{nbno}(nbno=${notice.nbno})}" class="btn btn-secondary">취소</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>

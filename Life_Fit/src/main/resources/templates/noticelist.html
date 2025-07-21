@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>공지사항</title>
@@ -7,7 +9,6 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet" />
 
     <!-- CSS -->
     <link rel="stylesheet" href="/css/setting.css" />
@@ -85,7 +86,6 @@
             line-height: 1.5;
         }
 
-        /* 검색 */
         .search-box {
             text-align: center;
             margin-bottom: 30px;
@@ -121,32 +121,19 @@
             <input type="text" id="searchInput" placeholder="공지사항 검색...">
         </div>
 
+        <!-- 글쓰기 버튼 (관리자만 노출) -->
+        <div style="text-align: right; margin-bottom: 20px;" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a href="/notice/create" class="btn btn-primary">공지사항 글쓰기</a>
+        </div>
+
+
+        <!-- 공지사항 리스트 -->
         <div class="notice-list" id="noticeList">
-            <!-- 공지 1 -->
-            <div class="notice-item">
-                <div class="notice-title">[점검] 시스템 점검 안내</div>
-                <div class="notice-date">2025-07-20</div>
-                <div class="notice-content">
-                    7월 25일 새벽 1시부터 3시까지 서버 점검이 진행됩니다. 이용에 불편을 드려 죄송합니다.
-                </div>
-            </div>
-
-            <!-- 공지 2 -->
-            <div class="notice-item">
-                <div class="notice-title">신규 서비스 오픈</div>
-                <div class="notice-date">2025-07-15</div>
-                <div class="notice-content">
-                    새로운 지역 맞춤형 추천 서비스가 추가되었습니다. 자세한 내용은 이용 가이드를 참고하세요.
-                </div>
-            </div>
-
-            <!-- 공지 3 -->
-            <div class="notice-item">
-                <div class="notice-title">여름 이벤트 안내</div>
-                <div class="notice-date">2025-07-10</div>
-                <div class="notice-content">
-                    7월 한 달간 여름맞이 특별 이벤트가 진행됩니다. 경품 및 다양한 혜택을 확인해 보세요.
-                </div>
+            <div class="notice-item" th:each="notice : ${noticeList}">
+                <a th:href="@{'/notice/' + ${notice.nbno}}" class="notice-title"
+                   th:text="${notice.title}">공지사항 제목</a>
+                <div class="notice-date" th:text="${#temporals.format(notice.regdate, 'yyyy-MM-dd')}">날짜</div>
+                <div class="notice-content" th:text="${notice.content}">공지사항 내용</div>
             </div>
         </div>
     </div>
