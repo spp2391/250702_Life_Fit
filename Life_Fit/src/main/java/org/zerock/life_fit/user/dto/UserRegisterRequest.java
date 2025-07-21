@@ -19,4 +19,6 @@ public class UserRegisterRequest {
     private String nickname;
     @NotBlank
     private String name;
+    @NotBlank
+    private String phoneNumber;
 }

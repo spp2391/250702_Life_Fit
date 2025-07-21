@@ -39,7 +39,7 @@ public class SecurityConfig {
 
                 .formLogin(form -> form
                         .loginPage("/member/login")
-                        .defaultSuccessUrl("/admin/panel", true) // ✅ 수정됨: 로그인 성공 시 관리자 페이지로 이동
+                        .defaultSuccessUrl("/mainscreen/main", true) // ✅ 수정됨: 로그인 성공 시 관리자 페이지로 이동
                         .failureUrl("/member/login?error=true")
                         .permitAll()
                 )
