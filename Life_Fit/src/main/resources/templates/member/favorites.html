@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>즐겨찾기 목록</title>
+    <link rel="stylesheet" href="/mainscreen2/main.css" />
     <link rel="stylesheet" href="/css/setting.css" />
     <link rel="stylesheet" href="/css/plugin.css" />
     <link rel="stylesheet" href="/css/templatehouse.css" />
@@ -16,28 +17,28 @@
 <!--        <h1 class="mb-3">My Favorites</h1>-->
 <!--        <h4 class="mb-3">나의 즐겨찾기 목록을 확인하세요.</h4>-->
 <!--    </div>-->
-<header class="th-layout-header">
-    <div class="temhabank-N1" id="fFMd5L2SV0">
-        <div class="header-container container-md" style="border-bottom: none;">
-            <div class="header-center">
-                <div class="header-gnb">
-                    <ul class="header-gnblist">
-                        <li class="header-gnbitem">
-                            <a class="header-gnblink" href="/member/profile">
-                                <span>개인정보 수정 및 회원 탈퇴</span>
-                            </a>
-                        </li>
-                        <li class="header-gnbitem">
-                            <a class="header-gnblink" href="/member/favorites">
-                                <span>즐겨찾기 메뉴</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
+<!--<header class="th-layout-header">-->
+<!--    <div class="temhabank-N1" id="fFMd5L2SV0">-->
+<!--        <div class="header-container container-md" style="border-bottom: none;">-->
+<!--            <div class="header-center">-->
+<!--                <div class="header-gnb">-->
+<!--                    <ul class="header-gnblist">-->
+<!--                        <li class="header-gnbitem">-->
+<!--                            <a class="header-gnblink" href="/member/profile">-->
+<!--                                <span>개인정보 수정 및 회원 탈퇴</span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                        <li class="header-gnbitem">-->
+<!--                            <a class="header-gnblink" href="/member/favorites">-->
+<!--                                <span>즐겨찾기 메뉴</span>-->
+<!--                            </a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</header>-->
 <div class="container mt-5">
     <ul class="list-group">
         <li class="list-group-item" th:text="${favorite.num}"></li>
@@ -51,6 +52,19 @@
 </div>
 
 </body>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e262bfbb1608191632ecc076189ec9cc&libraries=services"></script>
+<script>
+    let container = document.getElementById('map');
+    const options = {
+        center: new kakao.maps.LatLng(35.1379222, 129.05562775),
+        level: 9
+    };
+    var map = new kakao.maps.Map(container, options);
+    //
+    // const header = document.getElementById('header');
+    //
+    // fetch("/mainscreen/header.html").then((response) => {response.text()}).then((data) => {header.innerHTML = data})
+</script>
 
 <script>
     document.querySelector("#delete-btn").addEventListener("click", () => {
@@ -71,4 +85,6 @@
             });
     });
 </script>
+<script type="text/javascript" src="/mainscreen/search.js"></script>
+<script type="text/javascript" src="/mainscreen/main.js"></script>
 </html>
