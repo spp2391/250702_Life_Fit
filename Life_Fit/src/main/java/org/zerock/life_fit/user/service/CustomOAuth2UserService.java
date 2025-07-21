@@ -23,24 +23,31 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        OAuth2User oauth2User = new DefaultOAuth2UserService().loadUser(userRequest);
 
-        String provider = userRequest.getClientRegistration().getRegistrationId(); // kakao
+        OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
+        OAuth2User oauth2User = delegate.loadUser(userRequest);
+
         Map<String, Object> attributes = oauth2User.getAttributes();
 
-        // 카카오 정보 파싱 예시
-        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-        String email = (String) kakaoAccount.get("email");
+        Long kakaoId = ((Number) attributes.get("id")).longValue();
 
-        // DB 저장 or 기존 유저 확인
-        User user = userRepository.findByEmail(email)
-                .orElseGet(() -> userRepository.save(User.builder()
-                        .email(email)
-                        .role("USER")
-                        .build()));
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+        Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+
+        String nickname = (String) profile.get("nickname");
+
+        User user = userRepository.findByKakaoId(kakaoId)
+                .orElseGet(() -> userRepository.save(
+                        User.builder()
+                                .kakaoId(kakaoId)
+                                .nickname(nickname)
+                                .email(null)  // 이메일은 없음
+                                .role("ROLE_USER")
+                                .build()
+                ));
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")),
+                Collections.singleton(new SimpleGrantedAuthority(user.getRole())),
                 attributes,
                 "id"
         );

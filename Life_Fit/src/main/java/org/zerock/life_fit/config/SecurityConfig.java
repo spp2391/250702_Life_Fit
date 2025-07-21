@@ -18,7 +18,7 @@ import org.zerock.life_fit.user.service.CustomOAuth2UserService;
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
-    private final CustomOAuth2UserService customOAuth2UserService;  // OAuth2UserService 주입
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -26,14 +26,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/", "/css/**", "/js/**", "/images/**",
-                                "/member/login", "/member/join",
-                                "/free", "/topic", "/board/**"
-                        ).permitAll()
+                        .requestMatchers("/", "/css/**", "/js/**", "/images/**", "/member/login", "/member/join", "/free", "/topic", "/board/**").permitAll()
                         .requestMatchers("/api/admin/**", "/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/member/profile", "/member/update", "/member/favorites", "/member/favorites/**")
-                        .authenticated()
+                        .requestMatchers("/member/profile", "/member/update", "/member/favorites", "/member/favorites/**").authenticated()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -44,9 +39,7 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/member/login")
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService)  // 커스텀 OAuth2UserService 연결
-                        )
+//                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
                         .defaultSuccessUrl("/mainscreen/main", true)
                 )
                 .logout(logout -> logout
@@ -54,7 +47,6 @@ public class SecurityConfig {
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                 );
-
         return http.build();
     }
 

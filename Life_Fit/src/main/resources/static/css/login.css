@@ -123,16 +123,19 @@ body.gradient-custom {
 }
 
 .login-btn, .kakao-btn {
-    color: #381e1f;
-    background: #feea00;;
+    display: block;
     width: 100%;
     padding: 12px 0;
+    color: #381e1f;
+    background: #feea00;
     border: none;
     border-radius: 8px;
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
     transition: 0.3s;
+    text-align: center;
+    /* align-items는 flex 컨테이너에서만 작동하므로 제거하거나 부모에 적용 */
 }
 .naver-btn {
     background: #1ccb69;
