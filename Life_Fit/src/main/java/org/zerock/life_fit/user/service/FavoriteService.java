@@ -41,7 +41,7 @@ public class FavoriteService {
         return favoriteRepository.findByUserId(userId).stream()
                 .map(entity -> {
                     FavoriteDTO dto = new FavoriteDTO();
-                    dto.setNum(entity.getNum());
+                    dto.setId(entity.getNum());
                     dto.setAddress(entity.getAddress());
                     dto.setDescription(entity.getDescription());
                     dto.setRegdate(entity.getRegdate() != null ? entity.getRegdate().format(formatter) : null);
