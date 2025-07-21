@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>마이페이지</title>
-  <link rel="stylesheet" href="/css/mypage.css">
   <!-- CSS -->
   <link rel="stylesheet" href="/css/setting.css" />
   <link rel="stylesheet" href="/css/plugin.css" />
@@ -15,10 +14,28 @@
 <div class="header" th:replace="fragments/header :: header"></div>
 
 <div class="mypage-container">
-  <!-- 📌 즐겨찾기 목록 -->
-  <section class="favorites-section">
-    <a href="favorites">즐겨찾기 목록</a>
-  </section>
+  <header class="th-layout-header">
+    <div class="temhabank-N1" id="fFMd5L2SV0">
+      <div class="header-container container-md" style="border-bottom: none;">
+        <div class="header-center">
+          <div class="header-gnb">
+            <ul class="header-gnblist">
+              <li class="header-gnbitem">
+                <a class="header-gnblink" href="/member/profile">
+                  <span>개인정보 수정 및 회원 탈퇴</span>
+                </a>
+              </li>
+              <li class="header-gnbitem">
+                <a class="header-gnblink" href="/member/favorites">
+                  <span>즐겨찾기 메뉴</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
   <div class="login-container">
 <!-- 🙍 개인정보 수정 -->
   <section class="login-card">
