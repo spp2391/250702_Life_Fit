@@ -30,6 +30,7 @@ public class UserService {
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .nickname(dto.getNickname())
                 .name(dto.getName())
+                .phoneNumber(dto.getPhoneNumber())
                 .role("USER") // ✅ 기본값 설정
                 .build();
 

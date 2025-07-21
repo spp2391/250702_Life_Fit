@@ -1,5 +1,8 @@
 package org.zerock.life_fit.user.controller;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +31,39 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String login() {
-        return "member/login";
+    public String loginPage(HttpServletRequest request, Model model) {
+        String savedId = null;
+
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie c : cookies) {
+                if ("savedId".equals(c.getName())) {
+                    savedId = c.getValue();
+                    break;
+                }
+            }
+        }
+
+        model.addAttribute("savedId", savedId);
+        return "member/login"; // login.html
+    }
+
+    @PostMapping("/member/loginProc")
+    public String loginProc(@RequestParam String username,
+                            @RequestParam(required = false) String saveId,
+                            HttpServletResponse response) {
+        if ("on".equals(saveId)) {
+            Cookie cookie = new Cookie("savedId", username);
+            cookie.setMaxAge(60 * 60 * 24 * 7); // 7일
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        } else {
+            Cookie cookie = new Cookie("savedId", null);
+            cookie.setMaxAge(0); // 삭제
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
+        return "redirect:/login"; // Spring Security 처리
     }
 
     @GetMapping("/logout")
