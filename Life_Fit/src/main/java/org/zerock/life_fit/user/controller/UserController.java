@@ -45,6 +45,8 @@ public class UserController {
         }
 
         model.addAttribute("savedId", savedId);
+        model.addAttribute("naverLoginUrl", "/oauth2/authorization/naver");
+
         return "member/login"; // login.html
     }
 

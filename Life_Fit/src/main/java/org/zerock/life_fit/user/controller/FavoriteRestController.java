@@ -16,7 +16,7 @@ import java.security.Principal;
 @RestController
 public class FavoriteRestController {
     private final FavoriteService favoriteService;
-    @RestController
+
     @GetMapping("/mainscreen/favorite")
     public void addFavorite(FavoriteDTO favoriteDTO) {
 

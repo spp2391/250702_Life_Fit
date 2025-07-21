@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.zerock.life_fit.OAuth2User.CustomOAuth2UserService;
 import org.zerock.life_fit.admin.service.CustomUserDetailsService;
 
 @Configuration
@@ -17,6 +18,7 @@ import org.zerock.life_fit.admin.service.CustomUserDetailsService;
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,6 +45,13 @@ public class SecurityConfig {
                         .failureUrl("/member/login?error=true")
                         .permitAll()
                 )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/member/login")
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)  // 추가
+                        )
+                )
+
                 .logout(logout -> logout
                         .logoutSuccessUrl("/member/login?logout")
                         .invalidateHttpSession(true)
