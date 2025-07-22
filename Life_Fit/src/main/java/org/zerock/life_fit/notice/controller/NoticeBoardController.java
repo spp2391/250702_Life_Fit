@@ -21,14 +21,14 @@ public class NoticeBoardController {
     @GetMapping
     public String list(Model model) {
         model.addAttribute("noticeList", noticeBoardService.getList());
-        return "noticelist"; // noticelist.html
+        return "board/noticelist"; // noticelist.html
     }
 
     /** 글쓰기 페이지 (ADMIN만 접근 가능) */
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/create")
     public String createForm() {
-        return "notice_create"; // notice_create.html
+        return "board/notice_create"; // notice_create.html
     }
 
     /** 글 등록 처리 (ADMIN만 가능) */
@@ -47,7 +47,7 @@ public class NoticeBoardController {
     public String detail(@PathVariable Long nbno, Model model) {
         NoticeBoardDTO dto = noticeBoardService.get(nbno);
         model.addAttribute("notice", dto);
-        return "notice_detail"; // notice_detail.html
+        return "board/notice_detail"; // notice_detail.html
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -55,7 +55,7 @@ public class NoticeBoardController {
     public String editForm(@PathVariable Long nbno, Model model) {
         NoticeBoardDTO dto = noticeBoardService.get(nbno);
         model.addAttribute("notice", dto);
-        return "notice_edit"; // notice_edit.html
+        return "board/notice_edit"; // notice_edit.html
     }
     /** 글 수정 처리 (ADMIN만 가능) */
     @PreAuthorize("hasRole('ADMIN')")

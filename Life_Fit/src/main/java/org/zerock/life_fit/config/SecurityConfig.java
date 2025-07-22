@@ -31,7 +31,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/", "/css/**", "/js/**", "/images/**",
                                 "/member/login", "/member/join",
-                                "/free", "/topic", "/board/**"
+                                "/free", "/topic", "/board/**","/comment/**"
                         ).permitAll()
                         .requestMatchers("/api/admin/**", "/admin/**").hasRole("ADMIN") // ✅ 추가
                         .requestMatchers("/member/profile", "/member/update", "/member/favorites", "/member/favorites/**")
@@ -47,6 +47,7 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/member/login")
+                        .defaultSuccessUrl("/mainscreen/main", true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)  // 추가
                         )

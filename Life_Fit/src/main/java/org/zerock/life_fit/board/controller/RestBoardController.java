@@ -39,6 +39,8 @@ public class RestBoardController {
         return null;
     }
 
+    // ... 생략
+
     @GetMapping("/free")
     public String listFreeBoards(
             @RequestParam(required = false, defaultValue = "all") String searchType,
@@ -47,8 +49,7 @@ public class RestBoardController {
             HttpServletRequest request,
             @AuthenticationPrincipal Object principal
     ) {
-        User user = extractUser(principal); // 필요시 사용
-
+        User user = extractUser(principal);
         PageResponseDTO<BoardDTO> responseDTO = pageService.getFreeBoardList(pageRequestDTO, searchType);
 
         model.addAttribute("requestURI", request.getRequestURI());
@@ -56,19 +57,19 @@ public class RestBoardController {
         model.addAttribute("keyword", pageRequestDTO.getKeyword());
         model.addAttribute("searchType", searchType);
 
-        return "boardList";
+        return "board/boardList"; // ✅ 변경
     }
 
     @GetMapping("/topic")
-    public String listTopicBoards(@RequestParam(required = false) Long localId,
-                                  @RequestParam(required = false) String keyword,
-                                  @RequestParam(required = false, defaultValue = "all") String searchType,
-                                  PageRequestDTO pageRequestDTO,
-                                  Model model, HttpServletRequest request,
-                                  @AuthenticationPrincipal Object principal) {
+    public String listTopicBoards(
+            @RequestParam(required = false) Long localId,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false, defaultValue = "all") String searchType,
+            PageRequestDTO pageRequestDTO,
+            Model model, HttpServletRequest request,
+            @AuthenticationPrincipal Object principal) {
 
         User user = extractUser(principal);
-
         pageRequestDTO.setKeyword(keyword);
 
         PageResponseDTO<BoardDTO> responseDTO = pageService.getTopicBoardList(pageRequestDTO, localId, keyword, searchType);
@@ -80,17 +81,17 @@ public class RestBoardController {
         model.addAttribute("searchType", searchType);
         model.addAttribute("requestURI", request.getRequestURI());
 
-        return "topicList"; // 주제게시판 뷰
+        return "board/topicList"; // ✅ 변경
     }
 
     @GetMapping("/write")
     public String showWriteForm(@AuthenticationPrincipal Object principal, Model model) {
         User user = extractUser(principal);
         if (user == null) {
-            return "redirect:/free"; // 비로그인 시 리다이렉트
+            return "redirect:/free";
         }
         model.addAttribute("boardDTO", new BoardDTO());
-        return "write";
+        return "board/write"; // ✅ 변경
     }
 
     @PostMapping("/write")
@@ -124,7 +125,7 @@ public class RestBoardController {
 
         model.addAttribute("boardDTO", boardDTO);
         model.addAttribute("localList", localCateService.getAllLocalCates());
-        return "topicWrite";
+        return "board/topicWrite"; // ✅ 변경
     }
 
     @PostMapping("/topic/write")
@@ -143,7 +144,7 @@ public class RestBoardController {
             model.addAttribute("errorMessage", "지역을 선택해주세요.");
             model.addAttribute("boardDTO", boardDTO);
             model.addAttribute("localList", localCateService.getAllLocalCates());
-            return "topicWrite";
+            return "board/topicWrite"; // ✅ 변경
         }
 
         boardDTO.setBoardType("TOPIC");
@@ -153,22 +154,19 @@ public class RestBoardController {
     }
 
     @GetMapping("/board/{bno}")
-
     public String viewBoard(@PathVariable Long bno, Model model,
                             @AuthenticationPrincipal Object principal) {
         User user = extractUser(principal);
-
         Board board = boardService.findById(bno);
-        model.addAttribute("board", board);
 
+        model.addAttribute("board", board);
         List<CommentResponseDTO> comments = commentService.getCommentsByBoard(bno);
         model.addAttribute("comments", comments);
 
-        // 로그인 유저 ID 넘기기 (선택사항)
         Long loginUserId = (user != null) ? user.getUserId() : null;
         model.addAttribute("loginUserId", loginUserId);
 
-        return "boardDetail";
+        return "board/boardDetail"; // ✅ 변경
     }
 
     @GetMapping("/board/{bno}/edit")
@@ -187,7 +185,7 @@ public class RestBoardController {
         BoardDTO dto = new BoardDTO(board);
         model.addAttribute("boardDTO", dto);
         model.addAttribute("localList", localCateService.getAllLocalCates());
-        return "boardEdit";
+        return "board/boardEdit"; // ✅ 변경
     }
 
     @PostMapping("/board/{bno}/edit")
@@ -205,11 +203,9 @@ public class RestBoardController {
 
         existing.setTitle(boardDTO.getTitle());
         existing.setContent(boardDTO.getContent());
+
         Long localCateId = boardDTO.getLocalCateId();
-        LocalCate localCate = null;
-        if (localCateId != null) {
-            localCate = localCateService.getLocalCateById(localCateId);
-        }
+        LocalCate localCate = (localCateId != null) ? localCateService.getLocalCateById(localCateId) : null;
         existing.setLocalCate(localCate);
 
         boardService.update(existing);
@@ -217,36 +213,9 @@ public class RestBoardController {
         return "redirect:/board/" + bno;
     }
 
-    @PostMapping("/board/{bno}/delete")
-    public String deleteBoard(@PathVariable Long bno,
-                              @AuthenticationPrincipal Object principal,
-                              RedirectAttributes redirectAttributes) {
-        User user = extractUser(principal);
-        Board board = boardService.findById(bno);
-
-        if (user == null || !board.getWriter().getUserId().equals(user.getUserId())) {
-            redirectAttributes.addFlashAttribute("alertMessage", "해당 게시글은 본인만 삭제할 수 있습니다.");
-            return "redirect:/board/" + bno;
-        }
-
-        boardService.delete(bno);
-
-        if ("TOPIC".equals(board.getBoardType())) {
-            return "redirect:/topic";
-        } else {
-            return "redirect:/free";
-        }
-    }
-
-    @ResponseBody
-    @PostMapping("/board/{bno}/like")
-    public int likeBoard(@PathVariable Long bno) {
-        Board board = boardService.increaseLikes(bno);
-        return board.getLikes();
-    }
-
     @GetMapping("/service")
     public String service() {
-        return "services";
+        return "board/services"; // ✅ 변경
     }
+
 }
