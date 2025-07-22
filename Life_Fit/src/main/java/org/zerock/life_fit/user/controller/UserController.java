@@ -6,16 +6,23 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.life_fit.admin.dto.UserDTO;
+import org.zerock.life_fit.user.domain.User;
 import org.zerock.life_fit.user.dto.FavoriteDTO;
+import org.zerock.life_fit.user.dto.UserProfileResponse;
 import org.zerock.life_fit.user.dto.UserRegisterRequest;
 import org.zerock.life_fit.user.service.FavoriteService;
 import org.zerock.life_fit.user.service.UserService;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -73,17 +80,22 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String profilePage(Principal principal, Model model) {
-        if (principal == null) {
+    public String profilePage(Principal principal, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+        String email = principal.getName();
+         if (email == null) {
             return "redirect:/member/login";
+        }else if (!email.contains("@")){
+             redirectAttributes.addFlashAttribute("message", "카카오 계정은 회원가입 해야합니다.");
+             session.invalidate();
+            return "redirect:/member/join";
+        } else {
+            String userId = principal.getName();
+            model.addAttribute("user", userService.getProfile(userId));
+            List<FavoriteDTO> favoriteList = favoriteService.getFavoritesByUserId(userId);
+            model.addAttribute("favoriteList", favoriteList);
+
+            return "member/profile";
         }
-
-        String userId = principal.getName();
-        model.addAttribute("user", userService.getProfile(userId));
-        List<FavoriteDTO> favoriteList = favoriteService.getFavoritesByUserId(userId);
-        model.addAttribute("favoriteList", favoriteList);
-
-        return "member/profile";
     }
 
     @PostMapping("/update")

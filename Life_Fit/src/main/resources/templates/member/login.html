@@ -22,7 +22,7 @@
 
 <div id="page">
   <nav class="gtco-nav" role="navigation">
-    <div class="header" th:replace="fragments/header :: header"></div>
+    <th:block th:replace="~{fragments/header :: header}"></th:block>
 
     <div class="login-container">
       <div class="login-card">
@@ -73,8 +73,7 @@
   </nav>
 </div>
 
-<div class="footer" th:replace="fragments/footer :: footer"></div>
-
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
 <script src="/js/setting.js"></script>
 <script src="/js/plugin.js"></script>
 <script src="/js/templatehouse.js"></script>

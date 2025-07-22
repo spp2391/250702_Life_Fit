@@ -24,10 +24,10 @@ public class User implements UserDetails {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", length = 100)
     private String name;
 
-    @Column(name = "email", length = 255, nullable = false, unique = true)
+    @Column(name = "email", length = 255, unique = true)
     private String email;
 
     @Column(name = "password", length = 255)

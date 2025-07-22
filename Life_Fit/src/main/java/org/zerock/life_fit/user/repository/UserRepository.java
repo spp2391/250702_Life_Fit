@@ -1,5 +1,6 @@
 package org.zerock.life_fit.user.repository;
 
+import io.micrometer.observation.ObservationFilter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.zerock.life_fit.user.domain.User;
 
