@@ -2,12 +2,11 @@ package org.zerock.life_fit.user.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.zerock.life_fit.user.domain.favorite;
+import org.zerock.life_fit.user.domain.Favorite;
 import org.zerock.life_fit.user.dto.FavoriteListViewResponse;
 import org.zerock.life_fit.user.dto.FavoriteViewResponse;
 import org.zerock.life_fit.user.service.FavoriteService;
@@ -30,7 +29,7 @@ public class FavoriteController {
     }
     @GetMapping("/favorites/{num}")
     public String getFavorite(Model model, @PathVariable Integer num) {
-        favorite favorite = favoriteService.findById(num);
+        Favorite favorite = favoriteService.findById(num);
         model.addAttribute("favorite", new FavoriteViewResponse(favorite));
         return "member/favorites";
     }

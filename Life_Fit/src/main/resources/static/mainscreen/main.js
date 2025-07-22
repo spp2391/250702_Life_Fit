@@ -142,15 +142,23 @@ document.querySelector("#categorySearchButton").addEventListener("click", functi
 
 // 상세보기 팝업 작성
 var lastSelectedIndex = -1;
+// var markerInfo = null;
+function showMarkerInfo(markerInfo, favoriteRespData) {
+    console.log('result', markerInfo);
+    let favoriteButton = "";
+    if (favoriteRespData === "Not logged in") {
+        favoriteButton = "";
+    } else if (favoriteRespData === "Favorited") {
+        favoriteButton = `<div class="close" id="addFavorites" style="color:#007BFF; background-color:#bbf;" onclick="removeFavorites()" title="즐겨찾기">★</div>`;
+    } else if (favoriteRespData === "Not Favorited") {
+        favoriteButton = `<div class="close" id="addFavorites" onclick="saveFavorites()" title="즐겨찾기">★</div>`;
+    }
 
-function showMarkerInfo(result) {
-    var markerInfo = result;
-    console.log('result', result);
     return '<div id="popup-info" class="popup-info">'
         + '<div class="place-name"><div class="title">'
         + markerInfo.place_name
         + '</div>'
-        + '<div class="close" onclick="saveFavorites()" title="즐겨찾기">★</div>'
+        + favoriteButton
         + '<div class="close" onclick="closeOverlay()" title="닫기">X</div>'
         + '</div>'
         + '<div class="address-name">'
@@ -161,6 +169,43 @@ function showMarkerInfo(result) {
         + '</div>'
         + '<div class="place-url"><a href="' + markerInfo.place_url + '">' + markerInfo.place_url + '</a></div>'
         + '</div>';
+}
+
+function saveFavorites() {
+    fetch(`/api/mainscreen/favorite`,{
+        method:'POST', // GET, POST, PUT, DELETE
+        // JSON형식의 데이터를 서버에 전송하는 설정
+        headers:{"content-Type":"application/json"},
+        // JSON.stringify(자바스크립트 객체) : 자바스크립트 객체를 JSON문자열로 변경
+        body : JSON.stringify({
+            title:document.querySelector("#popup-info .title").innerText,
+            address:document.querySelector("#popup-info .address-name").innerText,
+            description:document.querySelector("#popup-info .category-name").innerText,
+            url:document.querySelector("#popup-info .place-url").innerText
+        })
+    }).then(()=>{
+        // 즐겨찾기 설정 완료 후 즐겨찾기 버튼 변경.
+        let favoriteButton = document.querySelector("#addFavorites");
+        favoriteButton.setAttribute("style","color:#007BFF; background-color:#bbf;");
+        favoriteButton.setAttribute("onclick","removeFavorites()");
+        alert('즐겨찾기 등록 완료되었습니다.');
+    })
+}
+
+function removeFavorites() {
+    fetch(`/api/mainscreen/favorite/delete`,{
+        method:'DELETE',
+        headers:{"content-Type":"application/json"},
+        body : JSON.stringify({
+            url:document.querySelector("#popup-info .place-url").innerText,
+        })
+    }).then(()=>{
+        // 즐겨찾기 해제 완료 후 즐겨찾기 버튼 변경.
+        let favoriteButton = document.querySelector("#addFavorites");
+        favoriteButton.setAttribute("style","color:black; background-color:white;");
+        favoriteButton.setAttribute("onclick","saveFavorites()");
+        alert('즐겨찾기 제거 완료되었습니다.');
+    })
 }
 
 /*
@@ -364,38 +409,51 @@ function setMarkerHover(marker, title) {
 }
 // 마커의 클릭 이벤트 설정 (상세보기 팝업)
 function setMarkerClick(marker, result) {
+
     kakao.maps.event.addListener(marker, 'click', function () {
-        console.log('clicked', result.place_name);
-        // lastSelectedIndex의 기본값은 -1. -1일 경우에 팝업이 닫혀있으며, 다른 경우에 열림.
-        if (lastSelectedIndex === result.address_name) {
-            // 현재 열려 있는 팝업의 인덱스랑 클릭한 마커가 같으면 팝업을 닫음.
-            closeOverlay();
-            lastSelectedIndex = -1;
-        } else {
-            if (lastSelectedIndex !== -1) {
-                // 만약 마커의 값이 -1이 아니라면 팝업을 닫음.
+        // 장소의 고유 ID를 가져옴 (http://place.map.kakao.com/321220117에서 321220117)
+        const place_id = result.place_url.split("/")[3];
+        // 로그인 여부, 즐겨찾기 여부 확인.
+        fetch(`/api/mainscreen/favorites/${place_id}`,{
+            method:'GET', // GET, POST, PUT, DELETE
+        }).then(async (favoriteResp) => {
+            // favoriteRespData: Not logged in / Favorited / Not Favorited 중 하나를 저장.
+            let favoriteRespData = await favoriteResp.json();
+            favoriteRespData = favoriteRespData.data;
+            console.log('res', favoriteRespData);
+            // 클릭된 장소명을 출력.
+            console.log('clicked', result.place_name);
+            // lastSelectedIndex의 기본값은 -1. -1일 경우에 팝업이 닫혀있으며, 다른 경우에 열림.
+            if (lastSelectedIndex === result.address_name) {
+                // 현재 열려 있는 팝업의 인덱스랑 클릭한 마커가 같으면 팝업을 닫음.
                 closeOverlay();
+                lastSelectedIndex = -1;
+            } else {
+                if (lastSelectedIndex !== -1) {
+                    // 만약 마커의 값이 -1이 아니라면 팝업을 닫음.
+                    closeOverlay();
+                }
+                // 다를 경우 클릭한 마커의 값으로 팝업을 세팅함
+                // var content = '<div style="background-color: white; z-index: 10;">Hello World</div>';
+                var content = showMarkerInfo(result, favoriteRespData);
+                var position = new kakao.maps.LatLng(result.y, result.x);
+                var markerInfo = new kakao.maps.CustomOverlay({
+                    clickable: true,
+                    content: content,
+                    position: position,
+                    xAnchor: 0.5,
+                    yAnchor: 1,
+                    zIndex: 5
+                });
+                console.log('markerInfo', markerInfo);
+                console.log('marker', marker);
+                markerInfo.setMap(map);
+                var element = document.getElementById('popup-info');
+                element.parentNode.style.pointerEvents = 'none';
+                element.style.pointerEvents = 'auto';
+                lastSelectedIndex = result.address_name;
             }
-            // 다를 경우 클릭한 마커의 값으로 팝업을 세팅함
-            // var content = '<div style="background-color: white; z-index: 10;">Hello World</div>';
-            var content = showMarkerInfo(result);
-            var position = new kakao.maps.LatLng(result.y, result.x);
-            var markerInfo = new kakao.maps.CustomOverlay({
-                clickable: true,
-                content: content,
-                position: position,
-                xAnchor: 0.5,
-                yAnchor: 1,
-                zIndex: 5
-            });
-            console.log('markerInfo', markerInfo);
-            console.log('marker', marker);
-            markerInfo.setMap(map);
-            var element = document.getElementById('popup-info');
-            element.parentNode.style.pointerEvents = 'none';
-            element.style.pointerEvents = 'auto';
-            lastSelectedIndex = result.address_name;
-        }
+        })
     })
 }
 

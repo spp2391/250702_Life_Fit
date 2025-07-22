@@ -1,8 +1,11 @@
 package org.zerock.life_fit.user.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.zerock.life_fit.user.domain.favorite;
+import org.zerock.life_fit.user.domain.Favorite;
+import org.zerock.life_fit.user.dto.CheckFavoriteDTO;
+import org.zerock.life_fit.user.dto.FavoriteAddRequest;
 import org.zerock.life_fit.user.dto.FavoriteDTO;
 import org.zerock.life_fit.user.repository.FavoriteRepository;
 
@@ -15,16 +18,20 @@ import java.util.stream.Collectors;
 public class FavoriteService {
     private final FavoriteRepository favoriteRepository;
 
-    public List<favorite> findall() {
+    public void add(FavoriteAddRequest favoriteAddRequest) throws Exception {
+        favoriteRepository.save(favoriteAddRequest.toEntity());
+    }
+
+    public List<Favorite> findall() {
         return favoriteRepository.findAll();
     }
 
-    public favorite findById(int id) {
+    public Favorite findById(int id) {
         return favoriteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not Found" + id));
     }
 
     public String delete(int id, String userId) {
-        favorite favorite = favoriteRepository.findById(id).get();
+        Favorite favorite = favoriteRepository.findById(id).get();
         if(favorite.getUserId().equals(userId)) {
             favoriteRepository.deleteById(id);
             return "삭제되었습니다.";
@@ -33,7 +40,11 @@ public class FavoriteService {
         }
     }
 
+    public boolean findByUserIdAndUrl(String userId, String url) {
 
+        return favoriteRepository.existsByUserIdAndUrl(userId, url);
+
+    }
 
     public List<FavoriteDTO> getFavoritesByUserId(String userId) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -41,7 +52,7 @@ public class FavoriteService {
         return favoriteRepository.findByUserId(userId).stream()
                 .map(entity -> {
                     FavoriteDTO dto = new FavoriteDTO();
-                    dto.setId(entity.getNum());
+                    dto.setId(entity.getId());
                     dto.setAddress(entity.getAddress());
                     dto.setDescription(entity.getDescription());
                     dto.setRegdate(entity.getRegdate() != null ? entity.getRegdate().format(formatter) : null);
@@ -52,9 +63,14 @@ public class FavoriteService {
 
     // 즐겨찾기 삭제
     public void removeFavorite(int id, String userId) {
-        favorite favorite = favoriteRepository.findById(id).get();
+        Favorite favorite = favoriteRepository.findById(id).get();
         if(favorite.getUserId().equals(userId)) {
             favoriteRepository.deleteById(id);
         }
+    }
+
+    @Transactional
+    public void removeFavoriteByUrl( String userId, String url){
+        favoriteRepository.deleteByUserIdAndUrl(userId, url);
     }
 }
