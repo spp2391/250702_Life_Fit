@@ -1,48 +1,11 @@
-/*
-
 package org.zerock.life_fit.comment.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.zerock.life_fit.comment.Service.CommentService;
-import org.zerock.life_fit.comment.dto.CommentDTO;
-
-@Controller
-@RequiredArgsConstructor
-@RequestMapping("/comment")
-public class CommentController {
-    private final CommentService commentService;
-
-    @PostMapping("/add")
-    public String addComment(@ModelAttribute CommentDTO commentDTO) {
-        commentService.addComment(commentDTO);
-        return "redirect:/board/" + commentDTO.getBoardId();
-    }
-
-    @PostMapping("/{cno}/delete")
-    public String deleteComment(@PathVariable Long cno, Long boardId) {
-        commentService.deleteComment(cno);
-        return "redirect:/board/" + boardId;
-    }
-
-    @PostMapping("/{cno}/edit")
-    public String editComment(@PathVariable Long cno,
-                              @RequestParam String content,
-                              @RequestParam Long boardId) {
-        commentService.updateComment(cno, content);
-        return "redirect:/board/" + boardId;
-    }
-}
-
-*/
-package org.zerock.life_fit.comment.controller;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.life_fit.OAuth2User.CustomOAuth2User;
 import org.zerock.life_fit.comment.Service.CommentService2;
 import org.zerock.life_fit.comment.dto.CommentDTO;
 import org.zerock.life_fit.user.domain.User;
@@ -54,33 +17,39 @@ public class CommentController {
 
     private final CommentService2 commentService;
 
-    // ✅ 댓글 작성
-    @PostMapping("/add")
-    public String addComment(@ModelAttribute CommentDTO commentDTO,
-                             @AuthenticationPrincipal User user
-    , RedirectAttributes redirectAttributes) {
-
-        if (user == null) {
-            return "redirect:/member/login"; // 비로그인 접근 방지
-        }
-
-        commentService.addComment(commentDTO, user); // 작성자 전달
-        return "redirect:/board/" + commentDTO.getBoardId();
+    // principal에서 User 꺼내는 헬퍼
+    private User extractUser(Object principal) {
+        if (principal == null) return null;
+        if (principal instanceof User) return (User) principal;
+        if (principal instanceof CustomOAuth2User) return ((CustomOAuth2User) principal).getUser();
+        return null;
     }
 
-    // ✅ 댓글 삭제
-    @PostMapping("/{cno}/delete")
-    public String deleteComment(@PathVariable Long cno,
-                                @RequestParam Long boardId,
-                                @AuthenticationPrincipal User user,
-                                RedirectAttributes redirectAttributes
-                                ) {
+    @PostMapping("/add")
+    public String addComment(@ModelAttribute CommentDTO commentDTO,
+                             @AuthenticationPrincipal Object principal,
+                             RedirectAttributes redirectAttributes) {
 
+        User user = extractUser(principal);
         if (user == null) {
             return "redirect:/member/login";
         }
 
-        // 작성자 검증
+        commentService.addComment(commentDTO, user);
+        return "redirect:/board/" + commentDTO.getBoardId();
+    }
+
+    @PostMapping("/{cno}/delete")
+    public String deleteComment(@PathVariable Long cno,
+                                @RequestParam Long boardId,
+                                @AuthenticationPrincipal Object principal,
+                                RedirectAttributes redirectAttributes) {
+
+        User user = extractUser(principal);
+        if (user == null) {
+            return "redirect:/member/login";
+        }
+
         if (!commentService.isCommentOwner(cno, user)) {
             redirectAttributes.addFlashAttribute("errorMessage", "댓글은 본인만 삭제할 수 있습니다.");
             return "redirect:/board/" + boardId;
@@ -90,20 +59,18 @@ public class CommentController {
         return "redirect:/board/" + boardId;
     }
 
-
     @PostMapping("/{cno}/edit")
     public String editComment(@PathVariable Long cno,
                               @RequestParam String content,
                               @RequestParam Long boardId,
-                              @AuthenticationPrincipal User user,
-                              RedirectAttributes redirectAttributes
-                              ) {
+                              @AuthenticationPrincipal Object principal,
+                              RedirectAttributes redirectAttributes) {
 
+        User user = extractUser(principal);
         if (user == null) {
             return "redirect:/member/login";
         }
 
-        // 작성자 검증
         if (!commentService.isCommentOwner(cno, user)) {
             redirectAttributes.addFlashAttribute("errorMessage", "댓글은 본인만 수정할 수 있습니다.");
             return "redirect:/board/" + boardId;

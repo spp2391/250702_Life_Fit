@@ -1,20 +1,25 @@
 package org.zerock.life_fit.OAuth2User;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.zerock.life_fit.user.domain.User;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Collections;
 import java.util.Map;
 
-@RequiredArgsConstructor
-public class CustomOAuth2User implements OAuth2User {
+@Getter
+public class CustomOAuth2User implements OAuth2User, UserDetails {
 
-    private final User user; // 우리 DB의 User
-    private final Map<String, Object> attributes; // 네이버에서 내려오는 데이터
+    private final User user;
+    private final Map<String, Object> attributes;
+
+    public CustomOAuth2User(User user, Map<String, Object> attributes) {
+        this.user = user;
+        this.attributes = attributes;
+    }
 
     @Override
     public Map<String, Object> getAttributes() {
@@ -22,16 +27,45 @@ public class CustomOAuth2User implements OAuth2User {
     }
 
     @Override
+    public String getName() {
+        return user.getName();
+    }
+
+    // 권한 부여 (ROLE_USER 고정)
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
+        return Collections.singleton(() -> "ROLE_" + user.getRole());
+    }
+
+    // UserDetails 구현부
+    @Override
+    public String getPassword() {
+        return user.getPassword();
     }
 
     @Override
-    public String getName() {
+    public String getUsername() {
         return user.getEmail();
     }
 
-    public String getEmail() {
-        return user.getEmail();
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
+
