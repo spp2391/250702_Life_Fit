@@ -22,7 +22,7 @@
 
 <div id="page">
   <nav class="gtco-nav" role="navigation">
-    <div class="header" th:replace="fragments/header :: header"></div>
+    <th:block th:replace="~{fragments/header :: header}"></th:block>
 
     <div class="login-container">
       <div class="login-card">
@@ -60,6 +60,8 @@
           <div class="divider">간편 로그인을 원하시면</div>
 
           <!-- 소셜 로그인 -->
+          <a href="/oauth2/authorization/kakao" class="kakao-btn">카카오 로그인</a>
+          <button type="button" class="naver-btn">네이버 로그인</button>
           <button type="button" class="kakao-btn">카카오 로그인</button>
           <a th:href="@{/oauth2/authorization/naver}" class="naver-btn">네이버 로그인</a>
 
@@ -74,8 +76,7 @@
   </nav>
 </div>
 
-<div class="footer" th:replace="fragments/footer :: footer"></div>
-
+<th:block th:replace="~{fragments/footer :: footer}"></th:block>
 <script src="/js/setting.js"></script>
 <script src="/js/plugin.js"></script>
 <script src="/js/templatehouse.js"></script>

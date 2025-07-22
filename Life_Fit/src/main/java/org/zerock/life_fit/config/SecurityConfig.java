@@ -47,6 +47,11 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/member/login")
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                        .defaultSuccessUrl("/mainscreen/main", true)
+                )
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/member/login")
                         .defaultSuccessUrl("/mainscreen/main", true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)  // 추가

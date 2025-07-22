@@ -51,6 +51,11 @@
 <div class="footer" th:replace="fragments/footer :: footer"></div>
 
 <script>
+    let message = '[[${message}]]';
+    if(message.length>0){
+        alert(message);
+    }
+
     const baseUrl = '/member';
 
     async function register() {

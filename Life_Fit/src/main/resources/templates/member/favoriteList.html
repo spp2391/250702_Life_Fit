@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>블로그 글 목록</title>
+    <link rel="stylesheet" href="/mainscreen2/main.css" />
     <link rel="stylesheet" href="/css/setting.css" />
     <link rel="stylesheet" href="/css/plugin.css" />
     <link rel="stylesheet" href="/css/templatehouse.css" />
@@ -61,7 +62,7 @@
                 <img th:src="@{/images/favorite-default.png}" alt="장소 이미지" class="place-image" />
                 <div class="place-info">
                     <h4 th:text="${item.address}">주소</h4>
-                    <p th:text="${item.description}">설명</p>
+                    <p th:text="${item.discription}">설명</p>
                     <a th:href="@{/member/favorites/{num}(num=${item.num})}" class="view-link">자세히 보기</a>
                 </div>
             </div>
@@ -72,6 +73,21 @@
     <div id="map"></div>
 </div>
 </body>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e262bfbb1608191632ecc076189ec9cc&libraries=services"></script>
+<script>
+    let container = document.getElementById('map');
+    const options = {
+        center: new kakao.maps.LatLng(35.1379222, 129.05562775),
+        level: 9
+    };
+    var map = new kakao.maps.Map(container, options);
+    //
+    // const header = document.getElementById('header');
+    //
+    // fetch("/mainscreen/header.html").then((response) => {response.text()}).then((data) => {header.innerHTML = data})
+</script>
+<script type="text/javascript" src="/mainscreen/search.js"></script>
+<script type="text/javascript" src="/mainscreen/main.js"></script>
 <script src="/js/setting.js"></script>
 <script src="/js/plugin.js"></script>
 <script src="/js/templatehouse.js"></script>

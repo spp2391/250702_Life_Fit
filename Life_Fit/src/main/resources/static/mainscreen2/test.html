@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>📍 부산 지역 치안시설 목록</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
+		h2 {
+			margin-top: 20px;
+		}
+		.status {
+			margin: 10px 0;
+			font-weight: bold;
+			color: #007bff;
+		}
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-top: 10px;
+		}
+		th, td {
+			border: 1px solid #aaa;
+			padding: 8px;
+			text-align: left;
+		}
+		th {
+			background-color: #f0f0f0;
+		}
+	</style>
+</head>
+<body>
+
+<h2>📍 부산 지역 치안시설 목록</h2>
+<div class="status" id="status">데이터 로딩 중...</div>
+
+<table id="facilityTable" style="display: none;">
+	<thead>
+	<tr>
+		<th>경찰청</th>
+		<th>경찰서</th>
+		<th>시설명</th>
+		<th>도로명주소</th>
+	</tr>
+	</thead>
+	<tbody></tbody>
+</table>
+
+<script>
+	const serviceKey = 'M8WULWL5-M8WU-M8WU-M8WU-M8WULWL54M';  // 👉 본인의 서비스키 사용
+	const table = document.getElementById("facilityTable");
+	const tbody = table.querySelector("tbody");
+	const status = document.getElementById("status");
+
+	async function fetchXmlPage(pageNo) {
+		const url = `https://safemap.go.kr/openApiService/data/getSecurityFacilityData.do?serviceKey=${serviceKey}&pageNo=${pageNo}&numOfRows=100&type=xml`;
+		const res = await fetch(url);
+		const text = await res.text();
+		return new window.DOMParser().parseFromString(text, "application/xml");
+	}
+
+	function getValue(item, tag) {
+		const el = item.getElementsByTagName(tag)[0];
+		return el ? el.textContent.trim() : '-';
+	}
+
+	async function loadAllData() {
+		let page = 1;
+		let totalLoaded = 0;
+		while (true) {
+			const xml = await fetchXmlPage(page);
+			const items = xml.getElementsByTagName("item");
+			if (items.length === 0) break;
+
+			for (let item of items) {
+				const police = getValue(item, "POLICE");
+				const polcsttn = getValue(item, "POLCSTTN") || '-';
+				const fcltyNm = getValue(item, "FCLTY_NM");
+				const addr = getValue(item, "RN_ADRES");
+
+				// 부산 지역만 출력
+				if (police.includes("부산")) {
+					const row = document.createElement("tr");
+					[police, polcsttn, fcltyNm, addr].forEach(value => {
+						const td = document.createElement("td");
+						td.textContent = value;
+						row.appendChild(td);
+					});
+					tbody.appendChild(row);
+					totalLoaded++;
+				}
+			}
+			page++;
+		}
+
+		table.style.display = "table";
+		status.textContent = `✅ 총 ${page - 1} 페이지 완료. 부산 지역 치안시설 정보 로드됨.`;
+	}
+
+	loadAllData().catch(err => {
+		console.error("❌ 오류 발생:", err);
+		status.textContent = "❌ 데이터 로딩 실패 (CORS 또는 인증키 문제일 수 있음)";
+	});
+</script>
+
+</body>
+</html>

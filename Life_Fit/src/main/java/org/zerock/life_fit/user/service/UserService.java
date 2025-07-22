@@ -10,6 +10,7 @@ import org.zerock.life_fit.user.dto.UserRegisterRequest;
 import org.zerock.life_fit.user.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
