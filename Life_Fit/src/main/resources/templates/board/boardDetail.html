@@ -17,7 +17,6 @@
     <link rel="stylesheet" href="/css/setting.css" />
     <link rel="stylesheet" href="/css/plugin.css" />
     <link rel="stylesheet" href="/css/templatehouse.css" />
-
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
@@ -27,46 +26,34 @@
     />
 
     <style>
-        #page {
-            margin-top: 80px; /* 헤더 높이와 동일 */
-        }
-
+        #page { margin-top: 80px; }
         .detail-container {
-            max-width: 1000px; /* 글쓰기 페이지와 동일 */
+            max-width: 1000px;
             margin: 40px auto;
             background: #fff;
             padding: 40px;
             border-radius: 10px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
-
         .detail-container h1 {
             font-size: 28px;
             font-weight: 700;
-            color: #2e7d32;
+            color: black;
             margin-bottom: 30px;
             text-align: center;
         }
-
-        .post-meta {
-            font-size: 14px;
-            color: #333; /* ✅ 더 진한 색으로 변경 */
-            margin-bottom: 8px;
-        }
-        .post-meta strong {
-            color: #2e7d32; /* ✅ 제목 강조 */
-        }
-
+        .post-meta { font-size: 14px; color: #333; margin-bottom: 8px; }
+        .post-meta strong { color: #007AFF; }
         .post-content {
             font-size: 16px;
             line-height: 1.6;
             margin: 20px 0;
-            white-space: pre-wrap; /* 줄바꿈 유지 */
+            white-space: pre-wrap;
+            color: black;
         }
-
         .btn-like {
-            background-color: #a5d6a7;
-            color: #2e7d32;
+            background-color: #007AFF;
+            color: white;
             border: none;
             padding: 8px 16px;
             border-radius: 6px;
@@ -75,39 +62,28 @@
             transition: background-color 0.3s;
             margin-left: 10px;
         }
-
-        .btn-like:hover {
-            background-color: #81c784;
-            color: #fff;
-        }
-
+        .btn-like:hover { background-color: black; }
         .action-buttons {
             display: flex;
             justify-content: center;
             gap: 12px;
             margin-top: 25px;
         }
-
         .action-buttons .btn {
             padding: 10px 24px;
             font-weight: bold;
             border-radius: 8px;
         }
-
         /* 댓글 */
-        #comments-section {
-            margin-top: 40px;
-        }
-
+        #comments-section { margin-top: 40px; }
         #comments-section h3 {
             font-size: 20px;
             font-weight: 700;
-            color: #2e7d32;
+            color: black;
             margin-bottom: 15px;
-            border-bottom: 2px solid #81c784;
+            border-bottom: 2px solid black;
             padding-bottom: 6px;
         }
-
         #commentWriteForm textarea {
             width: 100%;
             min-height: 80px;
@@ -117,11 +93,10 @@
             resize: vertical;
             font-size: 15px;
         }
-
         #commentWriteForm button {
             margin-top: 12px;
-            background-color: #a5d6a7;
-            color: #2e7d32;
+            background-color: #007AFF;
+            color: white;
             font-weight: bold;
             padding: 10px 20px;
             border: none;
@@ -129,18 +104,8 @@
             transition: background-color 0.3s;
             cursor: pointer;
         }
-
-        #commentWriteForm button:hover {
-            background-color: #81c784;
-            color: #fff;
-        }
-
-        ul.comment-list {
-            list-style: none;
-            padding: 0;
-            margin-top: 20px;
-        }
-
+        #commentWriteForm button:hover { background-color: black; }
+        ul.comment-list { list-style: none; padding: 0; margin-top: 20px; }
         ul.comment-list li {
             padding: 15px;
             border-bottom: 1px solid #e0e0e0;
@@ -148,42 +113,24 @@
             flex-direction: column;
             gap: 6px;
         }
-
-        ul.comment-list li strong {
-            color: #2e7d32;
-        }
-
-        ul.comment-list small {
-            color: #777;
-        }
-
+        ul.comment-list li strong { color: black; }
+        ul.comment-list small { color: #777; }
         ul.comment-list button {
             background: none;
             border: none;
-            color: #388e3c;
+            color: black;
             font-weight: bold;
             cursor: pointer;
             margin-left: 10px;
             font-size: 14px;
             align-self: flex-start;
         }
-
-        ul.comment-list button:hover {
-            color: #2e7d32;
-        }
-        .post-content {
-            font-size: 16px;
-            line-height: 1.6;
-            margin: 20px 0;
-            white-space: pre-wrap; /* 줄바꿈 유지 */
-            color: #2e7d32; /* ✅ 초록색 계열로 지정 */
-        }
+        ul.comment-list button:hover { color: black; }
     </style>
 </head>
 <body>
+<div class="header" th:replace="fragments/header :: header"></div>
 <div id="page">
-    <div class="header" th:replace="fragments/header :: header"></div>
-
     <div class="detail-container">
         <h1 th:text="${board.title}">게시글 제목</h1>
 
@@ -192,26 +139,31 @@
 
         <div class="post-content" th:utext="${board.content}">게시글 내용</div>
 
-
         <p class="post-meta">
             <strong>좋아요:</strong>
             <span id="like-count" th:text="${board.likes}">0</span>
             <button type="button" class="btn-like" th:onclick="'likeBoard(' + ${board.bno} + ')'">좋아요</button>
         </p>
 
+        <!-- 수정/삭제 버튼 (작성자 본인만 보임) -->
+        <!-- 수정/삭제 버튼 (작성자 본인만 보임) -->
         <div class="action-buttons">
             <a class="btn btn-success" th:href="@{${board.boardType == 'FREE'} ? '/free' : '/topic'}">목록</a>
 
-            <form th:action="@{/board/{bno}/delete(bno=${board.bno})}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
-                <button type="submit" class="btn btn-danger">삭제</button>
-            </form>
-
-            <form th:action="@{/board/{bno}/edit(bno=${board.bno})}" method="get">
-                <button type="submit" class="btn btn-warning">수정</button>
-            </form>
+            <!-- 본인 확인: 작성자 이메일과 로그인 사용자 이메일 비교 -->
+            <div th:if="${board.writer.email} == ${#authentication.principal?.username}">
+                <form th:action="@{/board/{bno}/delete(bno=${board.bno})}" method="post"
+                      onsubmit="return confirm('정말 삭제하시겠습니까?');" style="display:inline-block;">
+                    <button type="submit" class="btn btn-danger">삭제</button>
+                </form>
+                <form th:action="@{/board/{bno}/edit(bno=${board.bno})}" method="get" style="display:inline-block;">
+                    <button type="submit" class="btn btn-warning">수정</button>
+                </form>
+            </div>
         </div>
 
-        <!-- 댓글 섹션 -->
+
+        <!-- 댓글 -->
         <section id="comments-section">
             <h3>댓글</h3>
             <form th:action="@{/comment/add}" method="post" id="commentWriteForm">
@@ -249,7 +201,6 @@
         </section>
     </div>
 
-
     <div class="footer" th:replace="fragments/footer :: footer"></div>
 </div>
 
@@ -270,17 +221,22 @@
             }
         });
     }
-        function showEditMode(cno) {
+
+    function showEditMode(cno) {
         document.getElementById('viewMode-' + cno).style.display = 'none';
         document.getElementById('editMode-' + cno).style.display = 'block';
         document.getElementById('commentWriteForm').style.display = 'none';
     }
 
-        function cancelEditMode(cno) {
+    function cancelEditMode(cno) {
         document.getElementById('editMode-' + cno).style.display = 'none';
         document.getElementById('viewMode-' + cno).style.display = 'block';
         document.getElementById('commentWriteForm').style.display = 'block';
     }
 </script>
+<script src="/js/setting.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/templatehouse.js"></script>
+<script src="/js/style.js"></script>
 </body>
 </html>

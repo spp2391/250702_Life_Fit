@@ -1,0 +1,594 @@
+[
+  {
+    "place_name": "부산광역시경찰청",
+    "address_name": "부산 연제구 중앙대로 999"
+  },
+  {
+    "place_name": "부산강서경찰서",
+    "address_name": "부산 강서구 명지국제1로 305"
+  },
+  {
+    "place_name": "부산금정경찰서",
+    "address_name": "부산 금정구 중앙대로 1819"
+  },
+  {
+    "place_name": "부산남부경찰서",
+    "address_name": "부산 남구 황령대로319번가길 81"
+  },
+  {
+    "place_name": "부산동래경찰서",
+    "address_name": "부산 동래구 명륜로 70"
+  },
+  {
+    "place_name": "부산동부경찰서",
+    "address_name": "부산 동구 중앙대로 387"
+  },
+  {
+    "place_name": "부산진경찰서",
+    "address_name": "부산 부산진구 부전로111번길 6"
+  },
+  {
+    "place_name": "부산북부경찰서",
+    "address_name": "부산 북구 화명신도시로 63"
+  },
+  {
+    "place_name": "부산사상경찰서",
+    "address_name": "부산 사상구 학감대로 264"
+  },
+  {
+    "place_name": "부산사하경찰서",
+    "address_name": "부산 사하구 을숙도대로 665"
+  },
+  {
+    "place_name": "부산서부경찰서",
+    "address_name": "부산 서구 대영로 16"
+  },
+  {
+    "place_name": "부산영도경찰서",
+    "address_name": "부산 영도구 태종로 46"
+  },
+  {
+    "place_name": "부산연제경찰서",
+    "address_name": "부산 연제구 토곡로 26"
+  },
+  {
+    "place_name": "부산중부경찰서",
+    "address_name": "부산 중구 충장대로 33"
+  },
+  {
+    "place_name": "부산해운대경찰서",
+    "address_name": "부산 해운대구 해운대로 129"
+  },
+  {
+    "place_name": "부산기장경찰서",
+    "address_name": "부산 기장군 일광면 기장대로 692"
+  },
+  {
+    "place_name": "남포지구대",
+    "address_name": "부산광역시 중구 해관로 19"
+  },
+  {
+    "place_name": "영주파출소",
+    "address_name": "부산광역시 중구 동영로 77"
+  },
+  {
+    "place_name": "부평파출소",
+    "address_name": "부산광역시 중구 보수대로44번길 27"
+  },
+  {
+    "place_name": "보수파출소",
+    "address_name": "부산광역시 중구 흑교로 77"
+  },
+  {
+    "place_name": "대청파출소",
+    "address_name": "부산광역시 중구 중구로 103-1"
+  },
+  {
+    "place_name": "내성지구대",
+    "address_name": "부산광역시 동래구 동래로 109"
+  },
+  {
+    "place_name": "충렬지구대",
+    "address_name": "부산광역시 동래구 반송로 207"
+  },
+  {
+    "place_name": "온천지구대",
+    "address_name": "부산광역시 동래구 우장춘로 16"
+  },
+  {
+    "place_name": "사직지구대",
+    "address_name": "부산광역시 동래구 중앙대로1277번길 41"
+  },
+  {
+    "place_name": "온천3파출소",
+    "address_name": "부산광역시 동래구 석사북로 93"
+  },
+  {
+    "place_name": "낙민파출소",
+    "address_name": "부산광역시 동래구 온천천로 359"
+  },
+  {
+    "place_name": "동삼지구대",
+    "address_name": "부산광역시 영도구 태종로 618 동삼지구대"
+  },
+  {
+    "place_name": "영선지구대",
+    "address_name": "부산광역시 영도구 남항시장길 328"
+  },
+  {
+    "place_name": "청학파출소",
+    "address_name": "부산광역시 영도구 태종로 395"
+  },
+  {
+    "place_name": "대교파출소",
+    "address_name": "부산광역시 영도구 태종로 81(대교동2가)"
+  },
+  {
+    "place_name": "초량지구대",
+    "address_name": "부산광역시 동구 초량상로 65번길2"
+  },
+  {
+    "place_name": "수성지구대",
+    "address_name": "부산광역시 동구 망양로 811"
+  },
+  {
+    "place_name": "자성대파출소",
+    "address_name": "부산광역시 동구 부산진성공원로 15"
+  },
+  {
+    "place_name": "좌천파출소",
+    "address_name": "부산광역시 동구 중앙대로 491-4"
+  },
+  {
+    "place_name": "범곡파출소",
+    "address_name": "부산광역시 동구 범상로 10-1"
+  },
+  {
+    "place_name": "양정지구대",
+    "address_name": "부산광역시 부산진구 동평로 342"
+  },
+  {
+    "place_name": "부전지구대",
+    "address_name": "부산광역시 부산진구 부전로 185"
+  },
+  {
+    "place_name": "서면지구대",
+    "address_name": "부산광역시 부산진구 신암로 56"
+  },
+  {
+    "place_name": "당감지구대",
+    "address_name": "부산광역시 부산진구 당감로 17-1"
+  },
+  {
+    "place_name": "성지지구대",
+    "address_name": "부산광역시 부산진구 성지로113번길 27"
+  },
+  {
+    "place_name": "가야지구대",
+    "address_name": "부산광역시 부산진구 가야공원로 10"
+  },
+  {
+    "place_name": "부암지구대",
+    "address_name": "부산광역시 부산진구 신천대로 283"
+  },
+  {
+    "place_name": "범천1파출소",
+    "address_name": "부산광역시 부산진구 중앙번영로 10"
+  },
+  {
+    "place_name": "전포파출소",
+    "address_name": "부산광역시 부산진구 전포대로 165"
+  },
+  {
+    "place_name": "개금파출소",
+    "address_name": "부산광역시 부산진구 백양대로208번길 137"
+  },
+  {
+    "place_name": "송도지구대",
+    "address_name": "부산광역시 서구 충무대로 84"
+  },
+  {
+    "place_name": "구덕지구대",
+    "address_name": "부산광역시 서구 보수대로 258-5"
+  },
+  {
+    "place_name": "충무지구대",
+    "address_name": "부산광역시 서구 임시수도기념로 36"
+  },
+  {
+    "place_name": "아미파출소",
+    "address_name": "부산광역시 서구 해돋이로 267"
+  },
+  {
+    "place_name": "문현지구대",
+    "address_name": "부산광역시 남구 전포대로 20번길 47"
+  },
+  {
+    "place_name": "용호지구대",
+    "address_name": "부산광역시 남구 분포로 1"
+  },
+  {
+    "place_name": "대연지구대",
+    "address_name": "부산광역시 남구 수영로 328"
+  },
+  {
+    "place_name": "광남지구대",
+    "address_name": "부산광역시 수영구 수영로554번길 52"
+  },
+  {
+    "place_name": "광민지구대",
+    "address_name": "부산광역시 수영구 광안해변로295번길 22"
+  },
+  {
+    "place_name": "못골파출소",
+    "address_name": "부산광역시 남구 진남로 46번길 37"
+  },
+  {
+    "place_name": "우암파출소",
+    "address_name": "부산광역시 남구 우암로 170"
+  },
+  {
+    "place_name": "용당파출소",
+    "address_name": "부산광역시 남구 신선로 318"
+  },
+  {
+    "place_name": "감만파출소",
+    "address_name": "부산광역시 남구 우암로86"
+  },
+  {
+    "place_name": "재송지구대",
+    "address_name": "부산광역시 해운대구 해운대로161번길 17"
+  },
+  {
+    "place_name": "우동지구대",
+    "address_name": "부산광역시 해운대구 해운대로 398"
+  },
+  {
+    "place_name": "중동지구대",
+    "address_name": "부산광역시 해운대구 좌동순환로433번길 32"
+  },
+  {
+    "place_name": "좌동지구대",
+    "address_name": "부산광역시 해운대구 좌동순환로 185"
+  },
+  {
+    "place_name": "반여지구대",
+    "address_name": "부산광역시 해운대구 선수촌로21번길 64"
+  },
+  {
+    "place_name": "송정파출소",
+    "address_name": "부산광역시 해운대구 송정중앙로8번길 65"
+  },
+  {
+    "place_name": "반석파출소",
+    "address_name": "부산광역시 해운대구 아랫반송로 6"
+  },
+  {
+    "place_name": "반송파출소",
+    "address_name": "부산광역시 해운대구 신반송로 177"
+  },
+  {
+    "place_name": "반여2·3파출소",
+    "address_name": "부산광역시 해운대구 재반로 197"
+  },
+  {
+    "place_name": "주례지구대",
+    "address_name": "부산광역시 사상구 주례로 141"
+  },
+  {
+    "place_name": "학장파출소",
+    "address_name": "부산광역시 사상구 학감대로 123번길 4"
+  },
+  {
+    "place_name": "감전지구대",
+    "address_name": "부산광역시 사상구 가야대로 39"
+  },
+  {
+    "place_name": "모라파출소",
+    "address_name": "부산광역시 사상구 모라로 110번길 101"
+  },
+  {
+    "place_name": "삼덕파출소",
+    "address_name": "부산광역시 사상구 삼덕로 73번길 48"
+  },
+  {
+    "place_name": "엄궁파출소",
+    "address_name": "부산광역시 사상구 낙동대로 740"
+  },
+  {
+    "place_name": "부곡지구대",
+    "address_name": "부산광역시 금정구 부곡로 136 (부곡동) 부곡지구대"
+  },
+  {
+    "place_name": "장전지구대",
+    "address_name": "부산광역시 금정구 금정로 49 (장전동) 장전지구대"
+  },
+  {
+    "place_name": "범어지구대",
+    "address_name": "부산광역시 금정구 팔송로39길 56 (남산동) 범어지구대"
+  },
+  {
+    "place_name": "서금지구대",
+    "address_name": "부산광역시 금정구 반송로 482-1 (금사동) 서금지구대"
+  },
+  {
+    "place_name": "팔송파출소",
+    "address_name": "부산광역시 금정구 중앙대로 2106 (청룡동) 팔송파출소"
+  },
+  {
+    "place_name": "괴정지구대",
+    "address_name": "부산광역시 사하구 낙동대로 264"
+  },
+  {
+    "place_name": "하단지구대",
+    "address_name": "부산광역시 사하구 하신중앙로 316"
+  },
+  {
+    "place_name": "감천지구대",
+    "address_name": "부산광역시 사하구 감천로103"
+  },
+  {
+    "place_name": "다대지구대",
+    "address_name": "부산광역시 사하구 다송로 46"
+  },
+  {
+    "place_name": "신평파출소",
+    "address_name": "부산광역시 사하구 하신중앙로 171"
+  },
+  {
+    "place_name": "장림파출소",
+    "address_name": "부산광역시 사하구 다대로 239"
+  },
+  {
+    "place_name": "토곡지구대",
+    "address_name": "부산광역시 연제구 과정로164번길 16"
+  },
+  {
+    "place_name": "연일지구대",
+    "address_name": "부산광역시 연제구 반송로 18"
+  },
+  {
+    "place_name": "거제지구대",
+    "address_name": "부산광역시 연제구 거제대로178번길 51-1"
+  },
+  {
+    "place_name": "연산파출소",
+    "address_name": "부산광역시 연제구 연수로 207-1"
+  },
+  {
+    "place_name": "망미1파출소",
+    "address_name": "부산광역시 수영구 망미로8번길 74"
+  },
+  {
+    "place_name": "수영망미2파출소",
+    "address_name": "부산광역시 수영구 수영성로 36-1 (수영동)"
+  },
+  {
+    "place_name": "가락파출소",
+    "address_name": "부산광역시 강서구 가락대로 1465"
+  },
+  {
+    "place_name": "강동파출소",
+    "address_name": "부산광역시 강서구 제도로 1191"
+  },
+  {
+    "place_name": "대저파출소",
+    "address_name": "부산광역시 강서구 대저로 284"
+  },
+  {
+    "place_name": "공항파출소",
+    "address_name": "부산광역시 강서구 공항진입로 39"
+  },
+  {
+    "place_name": "녹산파출소",
+    "address_name": "부산광역시 강서구 낙동남로604번길 2-17"
+  },
+  {
+    "place_name": "신호파출소",
+    "address_name": "부산광역시 강서구 녹산산단335로 12-22"
+  },
+  {
+    "place_name": "명지지구대",
+    "address_name": "부산광역시 강서구 명지국제2로28번길 13"
+  },
+  {
+    "place_name": "가덕도파출소",
+    "address_name": "부산광역시 강서구 동선길 134"
+  },
+  {
+    "place_name": "지사파출소",
+    "address_name": "부산광역시 강서구 과학산단2로20번길 7-20"
+  },
+  {
+    "place_name": "덕천지구대",
+    "address_name": "부산광역시 북구 금곡대로 66-8"
+  },
+  {
+    "place_name": "구포지구대",
+    "address_name": "부산광역시 북구 시랑로79번길 3"
+  },
+  {
+    "place_name": "만덕지구대",
+    "address_name": "부산광역시 북구 은행나무로36번가길 24"
+  },
+  {
+    "place_name": "화명지구대",
+    "address_name": "부산광역시 북구 용당로 6"
+  },
+  {
+    "place_name": "금곡파출소",
+    "address_name": "부산광역시 북구 금곡대로 462"
+  },
+  {
+    "place_name": "기장지구대",
+    "address_name": "부산광역시 기장군 기장읍 차성동로 94-6"
+  },
+  {
+    "place_name": "일광파출소",
+    "address_name": "부산광역시 기장군 일광면 일광로 77-15"
+  },
+  {
+    "place_name": "장안파출소",
+    "address_name": "부산광역시 기장군 장안읍 해맞이로 5"
+  },
+  {
+    "place_name": "정관지구대",
+    "address_name": "부산광역시 기장군 정관읍 용수로 17"
+  },
+  {
+    "place_name": "철마파출소",
+    "address_name": "부산광역시 기장군 철마면 철마로 473"
+  },
+  {
+    "place_name": "창선치안센터",
+    "address_name": "광복중앙로1"
+  },
+  {
+    "place_name": "명장2치안센터",
+    "address_name": "부산 동래구 명서로 111"
+  },
+  {
+    "place_name": "온천2치안센터",
+    "address_name": "부산 동래구 금강로 132-1"
+  },
+  {
+    "place_name": "사직2치안센터",
+    "address_name": "부산 동래구 사직북로63번길 22"
+  },
+  {
+    "place_name": "영선2치안센터",
+    "address_name": "부산 영도구 남항 새싹3길 2"
+  },
+  {
+    "place_name": "남항치안센터",
+    "address_name": "부산 영도구 절영로 91"
+  },
+  {
+    "place_name": "동삼3치안센터",
+    "address_name": "부산 영도구 상리로 41"
+  },
+  {
+    "place_name": "청학1치안센터",
+    "address_name": "부산 영도구 하나길 813"
+  },
+  {
+    "place_name": "봉래치안센터",
+    "address_name": "부산 영도구 봉래길 120"
+  },
+  {
+    "place_name": "초량2치안센터",
+    "address_name": "동구 중앙대로 251번길 42"
+  },
+  {
+    "place_name": "역전치안센터",
+    "address_name": "동구 중앙대로 210"
+  },
+  {
+    "place_name": "시민공원치안센터",
+    "address_name": "진구 시민공원로73"
+  },
+  {
+    "place_name": "중앙치안센터",
+    "address_name": "진구 중앙대로702번길47"
+  },
+  {
+    "place_name": "부전2치안센터",
+    "address_name": "진구 부전로33"
+  },
+  {
+    "place_name": "당감1치안센터",
+    "address_name": "진구 백양대로50"
+  },
+  {
+    "place_name": "가야1치안센터",
+    "address_name": "진구 대학로7"
+  },
+  {
+    "place_name": "서대치안센터",
+    "address_name": "부산시 서구 서대신동2가 410-2"
+  },
+  {
+    "place_name": "용호2치안센터",
+    "address_name": "남구 용주로 36"
+  },
+  {
+    "place_name": "대연1치안센터",
+    "address_name": "남구 유엔평화로13번길 63"
+  },
+  {
+    "place_name": "용호1치안센터",
+    "address_name": "남구 용호로42번길 27"
+  },
+  {
+    "place_name": "대연4치안센터",
+    "address_name": "남구 유엔로 152"
+  },
+  {
+    "place_name": "남천2치안센터",
+    "address_name": "수영구 남천동로 76"
+  },
+  {
+    "place_name": "광안1치안센터",
+    "address_name": "수영구 수영로 635"
+  },
+  {
+    "place_name": "우1치안센터",
+    "address_name": "해운대구 우동1로 56"
+  },
+  {
+    "place_name": "재송2치안센터",
+    "address_name": "해운대구 해운대로81번길 117"
+  },
+  {
+    "place_name": "중1치안센터",
+    "address_name": "해운대구 중동1로37번길 22"
+  },
+  {
+    "place_name": "좌3치안센터",
+    "address_name": "해운대구 좌동순환로 20"
+  },
+  {
+    "place_name": "삼락치안센터",
+    "address_name": "사상구 모덕로13"
+  },
+  {
+    "place_name": "괘법치안센터",
+    "address_name": "사상구 사상로 202번길 27"
+  },
+  {
+    "place_name": "덕포2치안센터",
+    "address_name": "사상구 모덕로 84"
+  },
+  {
+    "place_name": "주례1치안센터",
+    "address_name": "사상구 가야대로255번길 17-5"
+  },
+  {
+    "place_name": "구서2치안센터",
+    "address_name": "금정구 금강로565길 23 (구서동)"
+  },
+  {
+    "place_name": "괴정3치안센터",
+    "address_name": "사하구 낙동대로 188"
+  },
+  {
+    "place_name": "연산5치안센터",
+    "address_name": "연제구 월드컵대로165번길 70"
+  },
+  {
+    "place_name": "연산8치안센터",
+    "address_name": "연제구 과정로 227"
+  },
+  {
+    "place_name": "거제1치안센터",
+    "address_name": "연제구 거제대로286번길 6"
+  },
+  {
+    "place_name": "거제2치안센터",
+    "address_name": "연제구 해맞이로 103"
+  },
+  {
+    "place_name": "구포1치안센터",
+    "address_name": "부산광역시 북구 구포만세길 169"
+  }
+]

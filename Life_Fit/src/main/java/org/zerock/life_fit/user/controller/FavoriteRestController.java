@@ -19,7 +19,6 @@ import java.util.Map;
 @RestController
 public class FavoriteRestController {
     private final FavoriteService favoriteService;
-
     @PostMapping("/api/mainscreen/favorite")
     public void addFavorite(@RequestBody FavoriteAddRequest favoriteAddRequest, @AuthenticationPrincipal User user) {
         try {

@@ -80,6 +80,11 @@
 
       <button type="submit" class="login-btn">수정하기</button>
     </form>
+    <form th:action="@{/member/withdraw}" method="post" class="d-grid gap-1"
+          onsubmit="return confirm('정말 탈퇴하시겠습니까?');">
+      <input type="hidden" name="userId" th:value="${user.userId}" />
+      <button type="submit" class="btn btn-sm btn-danger">회원 탈퇴</button>
+    </form>
   </section>
 </div>
 </div>

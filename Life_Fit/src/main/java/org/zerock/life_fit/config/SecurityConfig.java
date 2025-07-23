@@ -9,7 +9,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.zerock.life_fit.OAuth2User.CustomOAuth2UserService_Naver;
+import org.zerock.life_fit.OAuth2User.MultiOAuth2UserService;
+import org.zerock.life_fit.OAuth2User.OAuth2LoginSuccessHandler;
 import org.zerock.life_fit.admin.service.CustomUserDetailsService;
+import org.zerock.life_fit.user.service.CustomOAuth2UserService_Kakao;
 
 @Configuration
 @EnableWebSecurity
@@ -17,6 +21,10 @@ import org.zerock.life_fit.admin.service.CustomUserDetailsService;
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
+    private final CustomOAuth2UserService_Kakao customOAuth2UserServiceKakao;
+    private final MultiOAuth2UserService multiOAuth2UserService;
+    private final CustomOAuth2UserService_Naver customOAuth2UserServiceNaver;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -29,7 +37,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/", "/css/**", "/js/**", "/images/**",
                                 "/member/login", "/member/join",
-                                "/free", "/topic", "/board/**"
+                                "/free", "/topic", "/board/**","/comment/**"
                         ).permitAll()
                         .requestMatchers("/api/admin/**", "/admin/**").hasRole("ADMIN") // ✅ 추가
                         .requestMatchers("/member/profile", "/member/update", "/member/favorites", "/member/favorites/**")
@@ -42,6 +50,20 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/mainscreen/main", true) // ✅ 수정됨: 로그인 성공 시 관리자 페이지로 이동
                         .failureUrl("/member/login?error=true")
                         .permitAll()
+                )
+                /*.oauth2Login(oauth2 -> oauth2
+                        .loginPage("/member/login")
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+                        .defaultSuccessUrl("/mainscreen/main", true)
+                )*/
+
+                .oauth2Login(oauth2 -> oauth2
+                        .loginPage("/member/login")
+                        .successHandler(oAuth2LoginSuccessHandler)
+//                        .defaultSuccessUrl("/mainscreen/main", true)
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(multiOAuth2UserService)
+                        )
                 )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/member/login?logout")

@@ -5,8 +5,11 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.zerock.life_fit.board.domain.Board;
+import org.zerock.life_fit.comment.domain.Comment;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -24,10 +27,10 @@ public class User implements UserDetails {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", length = 100)
     private String name;
 
-    @Column(name = "email", length = 255, nullable = false, unique = true)
+    @Column(name = "email", length = 255)
     private String email;
 
     @Column(name = "password", length = 255)
@@ -52,6 +55,17 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private boolean deleted = false;
 
+    private Long kakaoId;
+
+    // ✅ 연관 댓글 삭제
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
+    // ✅ 연관 게시글 삭제
+    @OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Board> posts = new ArrayList<>();
+
+    // ===== UserDetails 구현 =====
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role));

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항 작성</title>
+    <link rel="stylesheet" href="/css/bootstrap.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>공지사항 작성</h2>
+    <form th:action="@{/notice}" method="post">
+        <div class="form-group mt-3">
+            <label for="title">제목</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="공지사항 제목을 입력하세요" required>
+        </div>
+        <div class="form-group mt-3">
+            <label for="content">내용</label>
+            <textarea class="form-control" id="content" name="content" rows="6" placeholder="공지사항 내용을 입력하세요" required></textarea>
+        </div>
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">등록</button>
+            <a th:href="@{/notice}" class="btn btn-secondary">목록</a>
+        </div>
+    </form>
+</div>
+</body>
+<script src="/js/setting.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/templatehouse.js"></script>
+<script src="/js/style.js"></script>
+</html>

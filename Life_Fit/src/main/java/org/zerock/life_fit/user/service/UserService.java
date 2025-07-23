@@ -4,18 +4,26 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.zerock.life_fit.admin.repository.AdminUserRepository;
+import org.zerock.life_fit.board.repository.BoardRepository;
+import org.zerock.life_fit.comment.Repository.CommentRepository;
+import org.zerock.life_fit.comment.Service.CommentService2;
 import org.zerock.life_fit.user.domain.User;
 import org.zerock.life_fit.user.dto.UserProfileResponse;
 import org.zerock.life_fit.user.dto.UserRegisterRequest;
 import org.zerock.life_fit.user.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final AdminUserRepository adminUserRepository;
+    private final CommentRepository commentRepository;
+    private final BoardRepository freeBoardRepository;
 
     // 회원가입
     @Transactional
@@ -44,6 +52,12 @@ public class UserService {
                 .map(UserProfileResponse::fromEntity)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
     }
+    // 프로필 조회 (카카오 계정 기반)
+    public UserProfileResponse getKakaoProfile(Long kakaoId) {
+        return userRepository.findByKakaoId(kakaoId)
+                .map(UserProfileResponse::fromEntity)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+    }
 
     // 회원정보 수정
     @Transactional
@@ -52,6 +66,9 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
 
         user.setNickname(dto.getNickname());
+        user.setPhoneNumber(dto.getPhoneNumber());
+        user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
 
         if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(dto.getPassword()));
@@ -63,8 +80,17 @@ public class UserService {
     // 회원 탈퇴
     @Transactional
     public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
+        // 댓글 먼저 삭제
+        commentRepository.deleteByWriter_UserId(userId);
+
+        // 게시글 삭제
+
+        freeBoardRepository.deleteByWriter_UserId(userId);
+
+        adminUserRepository.deleteById(userId);
     }
+//    public void deleteUser() {
+//        adminUserRepository.deleteById(userId);
 
     // 즐겨찾기 목록 조회 (미사용)
     public List<String> getFavorites(Long userId) {

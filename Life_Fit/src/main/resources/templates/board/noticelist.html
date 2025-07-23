@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>공지사항</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/setting.css" />
+    <link rel="stylesheet" href="/css/plugin.css" />
+    <link rel="stylesheet" href="/css/templatehouse.css" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+            integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+    />
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        #page {
+            margin-top: 80px;
+        }
+
+        .notice-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .notice-container h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #007AFF;
+        }
+
+        .notice-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .notice-item {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .notice-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .notice-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .notice-date {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 10px;
+        }
+
+        .notice-content {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .search-box {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .search-box input {
+            padding: 10px 15px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .notice-container h1 {
+                font-size: 28px;
+            }
+
+            .search-box input {
+                width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="header" th:replace="fragments/header :: header"></div>
+<div id="page">
+    <div class="notice-container">
+        <h1>공지사항</h1>
+
+        <!-- 검색창 -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="공지사항 검색...">
+        </div>
+
+        <!-- 글쓰기 버튼 (관리자만 노출) -->
+        <div style="text-align: right; margin-bottom: 20px;" sec:authorize="hasRole('ROLE_ADMIN')">
+            <a href="/notice/create" class="btn btn-primary">공지사항 글쓰기</a>
+        </div>
+
+
+        <!-- 공지사항 리스트 -->
+        <div class="notice-list" id="noticeList">
+            <div class="notice-item" th:each="notice : ${noticeList}">
+                <a th:href="@{'/notice/' + ${notice.nbno}}" class="notice-title"
+                   th:text="${notice.title}">공지사항 제목</a>
+                <div class="notice-date" th:text="${#temporals.format(notice.regdate, 'yyyy-MM-dd')}">날짜</div>
+                <div class="notice-content" th:text="${notice.content}">공지사항 내용</div>
+            </div>
+        </div>
+    </div>
+    <div class="footer" th:replace="fragments/footer :: footer"></div>
+</div>
+
+<script>
+    // 검색 기능 (JS)
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        const keyword = this.value.toLowerCase();
+        const notices = document.querySelectorAll(".notice-item");
+
+        notices.forEach(function (item) {
+            const title = item.querySelector(".notice-title").innerText.toLowerCase();
+            const content = item.querySelector(".notice-content").innerText.toLowerCase();
+            if (title.includes(keyword) || content.includes(keyword)) {
+                item.style.display = "block";
+            } else {
+                item.style.display = "none";
+            }
+        });
+    });
+</script>
+<script src="/js/setting.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/templatehouse.js"></script>
+<script src="/js/style.js"></script>
+</body>
+</html>
