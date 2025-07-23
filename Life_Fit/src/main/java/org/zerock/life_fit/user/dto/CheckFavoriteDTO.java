@@ -18,12 +18,12 @@ public class CheckFavoriteDTO {
     private String description;   // 설명
     private String title; // 장소명
     private String url; // API URL
-    private String user_id; // USERID
+    private Long user_id; // USERID
     private LocalDateTime regdate;        // 등록일 (String 또는 LocalDateTime)
     public static CheckFavoriteDTO toDTO (Favorite favorite) {
         return CheckFavoriteDTO.builder()
                 .id(favorite.getId())
-                .user_id(favorite.getUserId())
+                .user_id(favorite.getUser().getUserId())
                 .url(favorite.getUrl())
                 .description(favorite.getDescription())
                 .title(favorite.getTitle())

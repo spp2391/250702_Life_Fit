@@ -16,7 +16,7 @@ public class FavoriteAddRequest {
     private String description;   // 설명
     private String title; // 장소명
     private String url; // API URL
-    private String userId; // USERID
+    private Long userId; // USERID
 
     public Favorite toEntity(User user) {
         return Favorite.builder()
@@ -24,7 +24,7 @@ public class FavoriteAddRequest {
                 .address(this.address)
                 .description(this.description)
                 .url(this.url)
-                .userId(user)
+                .user(user)
                 .build();
     }
 }

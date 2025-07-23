@@ -31,7 +31,7 @@ public class FavoriteService {
         return favoriteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not Found" + id));
     }
 
-    public String delete(int id, String userId) {
+    public String delete(int id, Long userId) {
         Favorite favorite = favoriteRepository.findById(id).get();
         if(favorite.getUser().getUserId().equals(userId)) {
             favoriteRepository.deleteById(id);
@@ -41,16 +41,16 @@ public class FavoriteService {
         }
     }
 
-    public boolean findByUserIdAndUrl(String userId, String url) {
+    public boolean findByUserIdAndUrl(User user, String url) {
 
-        return favoriteRepository.existsByUserIdAndUrl(userId, url);
+        return favoriteRepository.existsByUserAndUrl(user, url);
 
     }
 
-    public List<FavoriteDTO> getFavoritesByUserId(String userId) {
+    public List<FavoriteDTO> getFavoritesByUserId(User user) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        return favoriteRepository.findByUserId(userId).stream()
+        return favoriteRepository.findByUser(user).stream()
                 .map(entity -> {
                     FavoriteDTO dto = new FavoriteDTO();
                     dto.setId(entity.getId());
@@ -63,7 +63,7 @@ public class FavoriteService {
     }
 
     // 즐겨찾기 삭제
-    public void removeFavorite(int id, String userId) {
+    public void removeFavorite(int id, Long userId) {
         Favorite favorite = favoriteRepository.findById(id).get();
         if(favorite.getUser().getUserId().equals(userId)) {
             favoriteRepository.deleteById(id);
@@ -71,7 +71,7 @@ public class FavoriteService {
     }
 
     @Transactional
-    public void removeFavoriteByUrl( String userId, String url){
-        favoriteRepository.deleteByUserIdAndUrl(userId, url);
+    public void removeFavoriteByUrl( User user, String url){
+        favoriteRepository.deleteByUserAndUrl(user, url);
     }
 }

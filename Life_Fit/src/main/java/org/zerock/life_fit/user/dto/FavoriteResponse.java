@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 
 @Getter
 public class FavoriteResponse {
-    private final String userId;
+    private final Long userId;
     private final String address;
     private final String description;
     private final LocalDateTime regdate;
     public FavoriteResponse(Favorite favorite) {
-        this.userId = favorite.getUserId();
+        this.userId = favorite.getUser().getUserId();
         this.address = favorite.getAddress();
         this.description = favorite.getDescription();
         this.regdate = favorite.getRegdate();

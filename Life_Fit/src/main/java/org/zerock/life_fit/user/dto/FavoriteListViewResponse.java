@@ -8,12 +8,12 @@ import java.time.LocalDateTime;
 @Getter
 public class FavoriteListViewResponse {
     private final Long id;
-    private final String userId;
+    private final Long userId;
     private final String discription;
     private final String address;
     private final LocalDateTime regdate;
     public  FavoriteListViewResponse(Favorite favorite) {
-        this.userId = favorite.getUserId();
+        this.userId = favorite.getUser().getUserId();
         this.discription = favorite.getDescription();
         this.regdate = favorite.getRegdate();
         this.id = favorite.getId();
