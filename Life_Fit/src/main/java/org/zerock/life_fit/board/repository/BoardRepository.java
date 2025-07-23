@@ -12,4 +12,5 @@ public interface BoardRepository extends JpaRepository<Board,Long> {
     List<Board> findByLocalCate_LocalnumAndBoardType(Long localCateId, String boardType);
 
 
+    void deleteByWriter_UserId(Long userId);
 }

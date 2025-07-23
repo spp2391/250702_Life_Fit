@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import jakarta.websocket.Session;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.life_fit.admin.dto.UserDTO;
+import org.zerock.life_fit.admin.service.AdminUserService;
 import org.zerock.life_fit.user.domain.User;
 import org.zerock.life_fit.user.dto.FavoriteDTO;
 import org.zerock.life_fit.user.dto.UserProfileResponse;
@@ -31,6 +33,7 @@ public class UserController {
 
     private final UserService userService;
     private final FavoriteService favoriteService;
+    private final AdminUserService adminUserService;
 
     @GetMapping("/join")
     public String joinPage() {
@@ -110,11 +113,10 @@ public class UserController {
     }
 
     @PostMapping("/withdraw")
-    public String deleteUser(HttpSession session) {
-        Long userId = (Long) session.getAttribute("userId");
+    public String deleteUser(@RequestParam Long userId, HttpSession session) {
         userService.deleteUser(userId);
         session.invalidate();
-        return "redirect:/";
+        return "redirect:/member/join";
     }
 
     @GetMapping("/admin")
