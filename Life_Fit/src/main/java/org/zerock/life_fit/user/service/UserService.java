@@ -68,6 +68,7 @@ public class UserService {
         user.setNickname(dto.getNickname());
         user.setPhoneNumber(dto.getPhoneNumber());
         user.setName(dto.getName());
+        user.setEmail(dto.getEmail());
 
         if (dto.getPassword() != null && !dto.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(dto.getPassword()));

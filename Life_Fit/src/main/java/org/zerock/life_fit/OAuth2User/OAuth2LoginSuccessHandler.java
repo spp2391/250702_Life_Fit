@@ -26,6 +26,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             response.sendRedirect("/member/profile");
             return;
         }
-        response.sendRedirect("/");
+        response.sendRedirect("/mainscreen/main");
     }
 }
