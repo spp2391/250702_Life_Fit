@@ -9,9 +9,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.zerock.life_fit.OAuth2User.CustomOAuth2UserService2;
+import org.zerock.life_fit.OAuth2User.CustomOAuth2UserService_Naver;
+import org.zerock.life_fit.OAuth2User.MultiOAuth2UserService;
 import org.zerock.life_fit.admin.service.CustomUserDetailsService;
-import org.zerock.life_fit.user.service.CustomOAuth2UserService;
+import org.zerock.life_fit.user.service.CustomOAuth2UserService_Kakao;
 
 @Configuration
 @EnableWebSecurity
@@ -19,9 +20,9 @@ import org.zerock.life_fit.user.service.CustomOAuth2UserService;
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
-    private final CustomOAuth2UserService customOAuth2UserService;
-
-    private final CustomOAuth2UserService2 customOAuth2UserService2;
+    private final CustomOAuth2UserService_Kakao customOAuth2UserServiceKakao;
+    private final MultiOAuth2UserService multiOAuth2UserService;
+    private final CustomOAuth2UserService_Naver customOAuth2UserServiceNaver;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -53,14 +54,14 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
                         .defaultSuccessUrl("/mainscreen/main", true)
                 )*/
+
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/member/login")
                         .defaultSuccessUrl("/mainscreen/main", true)
                         .userInfoEndpoint(userInfo -> userInfo
-                                .userService(customOAuth2UserService2)  // 추가
+                                .userService(multiOAuth2UserService)
                         )
                 )
-
                 .logout(logout -> logout
                         .logoutSuccessUrl("/member/login?logout")
                         .invalidateHttpSession(true)

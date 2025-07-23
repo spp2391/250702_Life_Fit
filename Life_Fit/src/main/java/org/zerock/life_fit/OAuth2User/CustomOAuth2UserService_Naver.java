@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class CustomOAuth2UserService2 extends DefaultOAuth2UserService {
+public class CustomOAuth2UserService_Naver extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
 
