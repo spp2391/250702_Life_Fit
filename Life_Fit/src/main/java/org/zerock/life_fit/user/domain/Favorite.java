@@ -24,8 +24,11 @@ public class Favorite {
     private Long id;
     /*@Column(name="num", updatable=false)
     private Long num;*/
-    @Column(name="userId", nullable = false)
-    private String userId;
+//    @Column(name="userId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Column(name="address", nullable = false)
     private String address;
     @Column(name="description")
@@ -42,8 +45,8 @@ public class Favorite {
     private String title;
 
     @Builder
-    public Favorite(String userId, String address, String description, String url, String title) {
-        this.userId = userId;
+    public Favorite(User user, String address, String description, String url, String title) {
+        this.user = user;
         this.address = address;
         if(!description.isEmpty()) {
             this.description = description;

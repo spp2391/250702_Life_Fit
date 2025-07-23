@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.zerock.life_fit.user.domain.Favorite;
+import org.zerock.life_fit.user.domain.User;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,13 +18,13 @@ public class FavoriteAddRequest {
     private String url; // API URL
     private String userId; // USERID
 
-    public Favorite toEntity() {
+    public Favorite toEntity(User user) {
         return Favorite.builder()
                 .title(this.title)
                 .address(this.address)
                 .description(this.description)
                 .url(this.url)
-                .userId(this.userId)
+                .userId(user)
                 .build();
     }
 }

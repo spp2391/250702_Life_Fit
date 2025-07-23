@@ -2,7 +2,9 @@ package org.zerock.life_fit.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.zerock.life_fit.user.domain.User;
 import org.zerock.life_fit.user.dto.CheckFavoriteDTO;
 import org.zerock.life_fit.user.dto.FavoriteAddRequest;
 import org.zerock.life_fit.user.dto.FavoriteDTO;
@@ -19,10 +21,9 @@ public class FavoriteRestController {
     private final FavoriteService favoriteService;
 
     @PostMapping("/api/mainscreen/favorite")
-    public void addFavorite(@RequestBody FavoriteAddRequest favoriteAddRequest, Principal principal) {
+    public void addFavorite(@RequestBody FavoriteAddRequest favoriteAddRequest, @AuthenticationPrincipal User user) {
         try {
-            favoriteAddRequest.setUserId(principal.getName());
-            favoriteService.add(favoriteAddRequest);
+            favoriteService.add(favoriteAddRequest, user);
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
