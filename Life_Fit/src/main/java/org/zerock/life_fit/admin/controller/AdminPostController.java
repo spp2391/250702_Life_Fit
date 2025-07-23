@@ -23,25 +23,22 @@ public class AdminPostController {
     private final AdminPostService adminPostService;
     private final AdminCommentService adminCommentService;
 
-    // 기본 리디렉션
     @GetMapping
     public String redirectToHtml() {
         return "redirect:/api/admin/posts/html";
     }
 
-    // 게시글 목록 렌더링
     @GetMapping("/html")
-    public String getPostListHtml(@RequestParam(required = false) String userId,
+    public String getPostListHtml(@RequestParam(required = false) String userName,
                                   @RequestParam(defaultValue = "0") int page,
                                   @RequestParam(defaultValue = "10") int size,
                                   Model model) {
-        Page<PostDTO> postPage = adminPostService.getPosts(userId, PageRequest.of(page, size));
+        Page<PostDTO> postPage = adminPostService.getPosts(userName, PageRequest.of(page, size));
         model.addAttribute("postPage", postPage);
-        model.addAttribute("userId", userId);
+        model.addAttribute("userName", userName);
         return "admin/adminpost";
     }
 
-    // JSON 응답
     @GetMapping("/json")
     @ResponseBody
     public Page<PostDTO> getAllPosts(@RequestParam(required = false) String userId,
@@ -49,7 +46,6 @@ public class AdminPostController {
         return adminPostService.getPosts(userId, pageable);
     }
 
-    // 게시글 수정
     @PutMapping("/{bno}")
     @ResponseBody
     public ResponseEntity<String> updatePost(@PathVariable Long bno, @RequestBody PostDTO dto) {
@@ -58,14 +54,12 @@ public class AdminPostController {
         return ResponseEntity.ok("게시글 수정 완료");
     }
 
-    // 게시글 삭제
     @PostMapping("/delete/{bno}")
     public String deletePost(@PathVariable Long bno) {
         adminPostService.deletePost(bno);
         return "redirect:/api/admin/posts/html";
     }
 
-    // 댓글 목록
     @GetMapping("/{bno}/comments")
     @ResponseBody
     public ResponseEntity<List<CommentDTO>> getComments(@PathVariable Long bno) {
@@ -73,7 +67,6 @@ public class AdminPostController {
         return ResponseEntity.ok(comments);
     }
 
-    // 댓글 삭제
     @DeleteMapping("/comments/{cno}")
     @ResponseBody
     public ResponseEntity<String> deleteComment(@PathVariable Long cno) {
@@ -81,7 +74,6 @@ public class AdminPostController {
         return ResponseEntity.ok("댓글 삭제 완료");
     }
 
-    // 댓글 수정
     @PutMapping("/comments/{cno}")
     @ResponseBody
     public ResponseEntity<String> updateComment(@PathVariable Long cno, @RequestBody CommentDTO dto) {

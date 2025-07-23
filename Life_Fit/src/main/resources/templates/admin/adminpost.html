@@ -3,45 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>게시글 및 댓글 관리</title>
-    <style>
-        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-        button { cursor: pointer; }
-
-        #editModal, #postEditModal {
-            display: none;
-            position: fixed;
-            z-index: 9999;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            background: #fff;
-            padding: 20px;
-            border: 2px solid #ccc;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            width: 400px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 100px;
-            white-space: pre-line;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" defer></script>
 </head>
-<body>
-<h2> 게시글 및 댓글 관리</h2>
+<body class="container mt-5">
+<h2 class="mb-4">게시글 및 댓글 관리</h2>
 
-<!--  검색 -->
-<form method="get" th:action="@{/api/admin/posts/html}">
-    <input type="text" name="userId" placeholder="회원 ID로 검색" th:value="${userId}">
-    <button type="submit">검색</button>
+<form method="get" th:action="@{/api/admin/posts/html}" class="row g-2 mb-4">
+    <div class="col-md-6">
+        <input type="text" name="userId" class="form-control" placeholder="회원 ID로 검색" th:value="${userId}">
+    </div>
+    <div class="col-md-6">
+        <button type="submit" class="btn btn-primary">검색</button>
+    </div>
 </form>
 
-<!--  게시글 목록 -->
-<table>
-    <thead>
+<table class="table table-bordered table-hover text-center align-middle">
+    <thead class="table-light">
     <tr>
         <th>번호</th>
         <th>제목</th>
@@ -63,64 +41,84 @@
         <td th:text="${post.userId}"></td>
         <td th:text="${#temporals.format(post.regdate, 'yyyy-MM-dd HH:mm')}"></td>
         <td>
-            <button type="button"
-                    class="edit-post-btn"
-                    th:attr="data-bno=${post.bno}, data-title=${post.title}, data-content=${post.content}">
+            <button type="button" class="btn btn-sm btn-warning"
+                    th:attr="data-bno=${post.bno}, data-title=${post.title}, data-content=${post.content}"
+                    onclick="openPostEditModal(this)">
                 수정
             </button>
         </td>
         <td>
             <form th:action="@{/api/admin/posts/delete/{bno}(bno=${post.bno})}" method="post"
                   onsubmit="return confirm('정말 게시글을 삭제하시겠습니까?')">
-                <button type="submit">삭제</button>
+                <button type="submit" class="btn btn-sm btn-danger">삭제</button>
             </form>
         </td>
         <td>
-            <button type="button" th:attr="onclick='loadComments(' + ${post.bno} + ')'">댓글 보기</button>
+            <button type="button" class="btn btn-sm btn-info"
+                    th:onclick="|loadComments(${post.bno})|">
+                댓글 보기
+            </button>
         </td>
     </tr>
     </tbody>
 </table>
 
-<!-- 댓글 표시 영역 -->
-<div id="comments-section"></div>
+<div id="comments-section" class="mt-4"></div>
 
-<!-- 댓글 수정 모달 -->
-<div id="editModal">
-    <h3>댓글 수정</h3>
-    <form onsubmit="submitEditComment(event)">
-        <textarea id="editCommentContent"></textarea>
-        <input type="hidden" id="editCno">
-        <input type="hidden" id="editBno">
-        <button type="submit">저장</button>
-        <button type="button" onclick="closeEditModal()">취소</button>
-    </form>
+<!-- 댓글 수정 -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form onsubmit="submitEditComment(event)">
+                <div class="modal-header">
+                    <h5 class="modal-title">댓글 수정</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea id="editCommentContent" class="form-control mb-2" required></textarea>
+                    <input type="hidden" id="editCno">
+                    <input type="hidden" id="editBno">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">저장</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
-<!-- 게시글 수정 모달 -->
-<div id="postEditModal">
-    <h3>게시글 수정</h3>
-    <form onsubmit="submitPostEdit(event)">
-        <label>제목:</label><br>
-        <input type="text" id="editPostTitle" required><br><br>
-        <label>내용:</label><br>
-        <textarea id="editPostContent" required></textarea>
-        <input type="hidden" id="editPostBno"><br>
-        <button type="submit">저장</button>
-        <button type="button" onclick="closePostEditModal()">취소</button>
-    </form>
+<!-- 게시글 수정 -->
+<div class="modal fade" id="postEditModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form onsubmit="submitPostEdit(event)">
+                <div class="modal-header">
+                    <h5 class="modal-title">게시글 수정</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label>제목</label>
+                    <input type="text" id="editPostTitle" class="form-control mb-3" required>
+                    <label>내용</label>
+                    <textarea id="editPostContent" class="form-control" required></textarea>
+                    <input type="hidden" id="editPostBno">
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">저장</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <script>
+    let commentModal, postModal;
+
     document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".edit-post-btn").forEach(btn => {
-            btn.addEventListener("click", function () {
-                const bno = this.dataset.bno;
-                const title = this.dataset.title;
-                const content = this.dataset.content;
-                openPostEditModal(bno, title, content);
-            });
-        });
+        commentModal = new bootstrap.Modal(document.getElementById("editModal"));
+        postModal = new bootstrap.Modal(document.getElementById("postEditModal"));
     });
 
     function loadComments(bno) {
@@ -130,25 +128,25 @@
                 const section = document.getElementById("comments-section");
                 section.innerHTML = "";
                 if (!data || data.length === 0) {
-                    section.innerHTML = "<p> 댓글이 없습니다.</p>";
+                    section.innerHTML = "<p>댓글이 없습니다.</p>";
                     return;
                 }
-
                 const table = document.createElement("table");
+                table.className = "table table-bordered mt-3";
                 table.innerHTML = `
-          <thead>
-            <tr><th>작성자</th><th>내용</th><th>작성일</th><th>삭제</th><th>수정</th></tr>
-          </thead>
-          <tbody>
-            ${data.map(comment => `
-              <tr>
-                <td>${comment.boardId}</td>
-                <td style="white-space:pre-line;">${comment.content}</td>
-                <td>${new Date(comment.regdate).toLocaleString()}</td>
-                <td><button onclick="deleteComment(${comment.cno}, ${bno})">삭제</button></td>
-                <td><button onclick="openEditModal(${comment.cno}, \`${comment.content}\`, ${bno})">수정</button></td>
-              </tr>`).join('')}
-          </tbody>`;
+                    <thead class="table-light">
+                        <tr><th>작성자</th><th>내용</th><th>작성일</th><th>삭제</th><th>수정</th></tr>
+                    </thead>
+                    <tbody>
+                        ${data.map(comment => `
+                            <tr>
+                                <td>${comment.writerNickname ?? '익명'}</td>
+                                <td style="white-space:pre-line;">${comment.content}</td>
+                                <td>${new Date(comment.regdate).toLocaleString()}</td>
+                                <td><button class="btn btn-sm btn-danger" onclick="deleteComment(${comment.cno}, ${bno})">삭제</button></td>
+                                <td><button class="btn btn-sm btn-warning" onclick="openEditModal(${comment.cno}, \`${comment.content}\`, ${bno})">수정</button></td>
+                            </tr>`).join('')}
+                    </tbody>`;
                 section.appendChild(table);
             });
     }
@@ -166,11 +164,7 @@
         document.getElementById("editCno").value = cno;
         document.getElementById("editBno").value = bno;
         document.getElementById("editCommentContent").value = content;
-        document.getElementById("editModal").style.display = "block";
-    }
-
-    function closeEditModal() {
-        document.getElementById("editModal").style.display = "none";
+        commentModal.show();
     }
 
     function submitEditComment(event) {
@@ -184,21 +178,21 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ content })
         }).then(() => {
-            alert(" 댓글 수정 완료");
-            closeEditModal();
+            alert("댓글 수정 완료");
+            commentModal.hide();
             loadComments(bno);
         });
     }
 
-    function openPostEditModal(bno, title, content) {
+    function openPostEditModal(button) {
+        const bno = button.dataset.bno;
+        const title = button.dataset.title;
+        const content = button.dataset.content;
+
         document.getElementById("editPostBno").value = bno;
         document.getElementById("editPostTitle").value = title;
         document.getElementById("editPostContent").value = content;
-        document.getElementById("postEditModal").style.display = "block";
-    }
-
-    function closePostEditModal() {
-        document.getElementById("postEditModal").style.display = "none";
+        postModal.show();
     }
 
     function submitPostEdit(event) {
@@ -213,11 +207,11 @@
             body: JSON.stringify({ title, content })
         }).then(response => {
             if (response.ok) {
-                alert(" 게시글 수정 완료");
-                closePostEditModal();
+                alert("게시글 수정 완료");
+                postModal.hide();
                 location.reload();
             } else {
-                alert(" 게시글 수정 실패");
+                alert("게시글 수정 실패");
             }
         });
     }

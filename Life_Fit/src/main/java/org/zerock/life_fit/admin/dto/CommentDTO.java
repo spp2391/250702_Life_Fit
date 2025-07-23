@@ -13,4 +13,3 @@ public class CommentDTO {
     private LocalDateTime regdate;
     private Long boardId;
 }
-
