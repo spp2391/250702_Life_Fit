@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.zerock.life_fit.OAuth2User.CustomOAuth2UserService_Naver;
 import org.zerock.life_fit.OAuth2User.MultiOAuth2UserService;
+import org.zerock.life_fit.OAuth2User.OAuth2LoginSuccessHandler;
 import org.zerock.life_fit.admin.service.CustomUserDetailsService;
 import org.zerock.life_fit.user.service.CustomOAuth2UserService_Kakao;
 
@@ -23,6 +24,7 @@ public class SecurityConfig {
     private final CustomOAuth2UserService_Kakao customOAuth2UserServiceKakao;
     private final MultiOAuth2UserService multiOAuth2UserService;
     private final CustomOAuth2UserService_Naver customOAuth2UserServiceNaver;
+    private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -57,7 +59,8 @@ public class SecurityConfig {
 
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/member/login")
-                        .defaultSuccessUrl("/mainscreen/main", true)
+                        .successHandler(oAuth2LoginSuccessHandler)
+//                        .defaultSuccessUrl("/mainscreen/main", true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(multiOAuth2UserService)
                         )

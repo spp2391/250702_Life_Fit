@@ -85,14 +85,14 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String profilePage(Principal principal, Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+    public String profilePage(Principal principal, Model model, HttpSession session) {
         String email = principal.getName();
          if (email == null) {
             return "redirect:/member/login";
         }else if (!email.contains("@")){
-             redirectAttributes.addFlashAttribute("message", "카카오 계정은 회원가입 해야합니다.");
-             session.invalidate();
-            return "redirect:/member/join";
+             model.addAttribute("message", "카카오 계정은 회원가입 해야합니다.");
+            model.addAttribute("user", userService.getKakaoProfile(Long.parseLong(email)));
+            return "member/profile";
         } else {
             String userId = principal.getName();
             model.addAttribute("user", userService.getProfile(userId));

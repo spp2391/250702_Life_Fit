@@ -6,6 +6,7 @@ import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserServ
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Service;
+import org.zerock.life_fit.OAuth2User.CustomOAuth2User;
 import org.zerock.life_fit.user.domain.User;
 import org.zerock.life_fit.user.repository.UserRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -17,17 +18,15 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class CustomOAuth2UserService_Kakao implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
+public class CustomOAuth2UserService_Kakao extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
-        OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
-        OAuth2User oauth2User = delegate.loadUser(userRequest);
-
-        Map<String, Object> attributes = oauth2User.getAttributes();
+        OAuth2User oAuth2User = super.loadUser(userRequest);
+        Map<String, Object> attributes = oAuth2User.getAttributes();
 
         Long kakaoId = ((Number) attributes.get("id")).longValue();
 
@@ -41,15 +40,11 @@ public class CustomOAuth2UserService_Kakao implements OAuth2UserService<OAuth2Us
                         User.builder()
                                 .kakaoId(kakaoId)
                                 .nickname(nickname)
-                                .email(null)  // 이메일은 없음
-                                .role("ROLE_USER")
+                                .email(kakaoId.toString())  // 이메일은 없음
+                                .role("USER")
                                 .build()
                 ));
 
-        return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(user.getRole())),
-                attributes,
-                "id"
-        );
+        return new CustomOAuth2User(user, attributes);
     }
 }

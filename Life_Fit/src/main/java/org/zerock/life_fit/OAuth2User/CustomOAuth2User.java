@@ -28,7 +28,7 @@ public class CustomOAuth2User implements OAuth2User, UserDetails {
 
     @Override
     public String getName() {
-        return user.getName();
+        return user.getEmail();
     }
 
     // 권한 부여 (ROLE_USER 고정)

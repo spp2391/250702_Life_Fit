@@ -52,6 +52,12 @@ public class UserService {
                 .map(UserProfileResponse::fromEntity)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
     }
+    // 프로필 조회 (카카오 계정 기반)
+    public UserProfileResponse getKakaoProfile(Long kakaoId) {
+        return userRepository.findByKakaoId(kakaoId)
+                .map(UserProfileResponse::fromEntity)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+    }
 
     // 회원정보 수정
     @Transactional
