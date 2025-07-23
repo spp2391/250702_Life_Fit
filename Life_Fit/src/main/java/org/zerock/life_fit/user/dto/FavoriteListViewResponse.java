@@ -12,11 +12,15 @@ public class FavoriteListViewResponse {
     private final String discription;
     private final String address;
     private final LocalDateTime regdate;
+    private final LocalDateTime moddate;
+    private final String url;
     public  FavoriteListViewResponse(Favorite favorite) {
         this.userId = favorite.getUserId();
         this.discription = favorite.getDescription();
         this.regdate = favorite.getRegdate();
         this.id = favorite.getId();
         this.address = favorite.getAddress();
+        this.url = favorite.getUrl();
+        this.moddate = favorite.getModdate();
     }
 }

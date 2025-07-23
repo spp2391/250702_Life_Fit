@@ -14,11 +14,13 @@ public class FavoriteViewResponse {
     private String address;       // 프로그램 주소
     private String description;   // 설명
     private LocalDateTime regdate;
+    private String url;
     public FavoriteViewResponse(Favorite favorite) {
         this.id = favorite.getId();
         this.address = favorite.getAddress();
         this.description = favorite.getDescription();
         this.userId = favorite.getUserId();
         this.regdate = favorite.getRegdate();
+        this.url = favorite.getUrl();
     }
 }

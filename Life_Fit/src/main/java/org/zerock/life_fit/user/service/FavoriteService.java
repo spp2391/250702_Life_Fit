@@ -10,6 +10,7 @@ import org.zerock.life_fit.user.dto.FavoriteDTO;
 import org.zerock.life_fit.user.repository.FavoriteRepository;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,5 +73,9 @@ public class FavoriteService {
     @Transactional
     public void removeFavoriteByUrl( String userId, String url){
         favoriteRepository.deleteByUserIdAndUrl(userId, url);
+    }
+
+    public List<Favorite> findByUserId(String userId) {
+        return favoriteRepository.findByUserId(userId);
     }
 }

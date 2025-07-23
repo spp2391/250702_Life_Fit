@@ -11,10 +11,12 @@ public class FavoriteResponse {
     private final String address;
     private final String description;
     private final LocalDateTime regdate;
+    private final String url;
     public FavoriteResponse(Favorite favorite) {
         this.userId = favorite.getUserId();
         this.address = favorite.getAddress();
         this.description = favorite.getDescription();
         this.regdate = favorite.getRegdate();
+        this.url = favorite.getUrl();
     }
 }

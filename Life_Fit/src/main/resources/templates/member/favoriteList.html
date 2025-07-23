@@ -63,7 +63,7 @@
                 <div class="place-info">
                     <h4 th:text="${item.address}">주소</h4>
                     <p th:text="${item.discription}">설명</p>
-                    <a th:href="@{/member/favorites/{num}(num=${item.userId})}" class="view-link">자세히 보기</a>
+                    <a th:href="@{/member/favorites/{num}(num=${item.num})}" class="view-link">자세히 보기</a>
                 </div>
             </div>
         </div>

@@ -41,9 +41,9 @@
 <!--</header>-->
 <div class="container mt-5">
     <ul class="list-group">
-        <li class="list-group-item" th:text="${favorite.num}"></li>
+        <li class="list-group-item" th:text="${favorite.id}"></li>
         <li class="list-group-item" th:text="${favorite.address}"></li>
-        <li class="list-group-item" th:text="${favorite.userId}"></li>
+        <li class="list-group-item" th:text="${favorite.url}"><a th:href="${favorite.url}"></a></li>
         <li class="list-group-item" th:text="${favorite.description}"></li>
         <li class="list-group-item text-right">
             <button type="button" id="delete-btn" class="btn btn-secondary btn-sm">삭제</button>
