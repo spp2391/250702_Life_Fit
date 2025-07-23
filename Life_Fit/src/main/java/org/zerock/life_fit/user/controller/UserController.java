@@ -105,7 +105,6 @@ public class UserController {
         if (principal == null) {
             return "redirect:/member/login";
         }
-
         userService.updateUser(principal.getName(), dto);
         return "redirect:/member/profile";
     }
