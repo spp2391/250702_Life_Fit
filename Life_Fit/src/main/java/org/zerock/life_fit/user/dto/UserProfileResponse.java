@@ -3,6 +3,8 @@ package org.zerock.life_fit.user.dto;
 import lombok.*;
 import org.zerock.life_fit.user.domain.User;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,6 +18,7 @@ public class UserProfileResponse {
     private java.time.LocalDateTime moddate;
     private String name;
     private String phoneNumber;
+    List<FavoriteDTO> favoriteList;
 
     public static UserProfileResponse fromEntity(User user) {
         return UserProfileResponse.builder()
@@ -26,6 +29,15 @@ public class UserProfileResponse {
                 .moddate(user.getModdate())
                 .phoneNumber(user.getPhoneNumber())
                 .name(user.getName())
+                .favoriteList(user.getFavorites().stream().map((favorite -> FavoriteDTO.builder()
+                        .id(favorite.getId())
+                        .title(favorite.getTitle())
+                        .user_id(favorite.getUser().getUserId().toString())
+                        .description(favorite.getDescription())
+                        .address(favorite.getAddress())
+                        .regdate(favorite.getRegdate().toString())
+                        .url(favorite.getUrl())
+                        .build())).toList())
                 .build();
     }
 }

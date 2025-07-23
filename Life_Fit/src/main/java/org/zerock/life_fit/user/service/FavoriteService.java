@@ -76,7 +76,7 @@ public class FavoriteService {
         favoriteRepository.deleteByUserAndUrl(user, url);
     }
 
-    public List<Favorite> findByUserId(String userId) {
-        return favoriteRepository.findByUserId(userId);
-    }
+//    public List<Favorite> findByUserId(String userId) {
+//        return favoriteRepository.findByUserId(userId);
+//    }
 }

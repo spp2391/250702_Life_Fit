@@ -65,6 +65,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "writer", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Board> posts = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Favorite> favorites = new ArrayList<>();
+
     // ===== UserDetails 구현 =====
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

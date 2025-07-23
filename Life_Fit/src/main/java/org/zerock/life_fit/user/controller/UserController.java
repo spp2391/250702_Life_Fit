@@ -95,10 +95,9 @@ public class UserController {
             return "member/profile";
         } else {
             String userId = principal.getName();
-            model.addAttribute("user", userService.getProfile(userId));
-            List<FavoriteDTO> favoriteList = favoriteService.getFavoritesByUserId(userId);
-            model.addAttribute("favoriteList", favoriteList);
-
+            UserProfileResponse user = userService.getProfile(userId);
+            model.addAttribute("user", user);
+            model.addAttribute("favorites", user.getFavoriteList());
             return "member/profile";
         }
     }
