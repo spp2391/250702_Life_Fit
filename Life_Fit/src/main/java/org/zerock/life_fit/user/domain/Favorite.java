@@ -7,19 +7,21 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+@EntityListeners(AuditingEntityListener.class)
 @Table(name="favorite")
 @NoArgsConstructor
 @Getter
 @ToString
 @Entity
-public class favorite {
+public class Favorite {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name="id", updatable=false)
-    private int num;
+    private Long id;
     /*@Column(name="num", updatable=false)
     private Long num;*/
     @Column(name="userId", nullable = false)
@@ -40,12 +42,13 @@ public class favorite {
     private String title;
 
     @Builder
-    public favorite(String userId, String address, String description,String url, String title) {
+    public Favorite(String userId, String address, String description, String url, String title) {
         this.userId = userId;
         this.address = address;
         if(!description.isEmpty()) {
             this.description = description;
         }
+//        this.moddate = LocalDateTime.now();
         this.regdate = LocalDateTime.now();
         this.url = url;
         this.title = title;
