@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.zerock.life_fit.user.domain.Favorite;
+import org.zerock.life_fit.user.domain.User;
 import org.zerock.life_fit.user.dto.CheckFavoriteDTO;
 import org.zerock.life_fit.user.dto.FavoriteAddRequest;
 import org.zerock.life_fit.user.dto.FavoriteDTO;
@@ -19,8 +20,8 @@ import java.util.stream.Collectors;
 public class FavoriteService {
     private final FavoriteRepository favoriteRepository;
 
-    public void add(FavoriteAddRequest favoriteAddRequest) throws Exception {
-        favoriteRepository.save(favoriteAddRequest.toEntity());
+    public void add(FavoriteAddRequest favoriteAddRequest, User user) throws Exception {
+        favoriteRepository.save(favoriteAddRequest.toEntity(user));
     }
 
     public List<Favorite> findall() {
@@ -31,9 +32,9 @@ public class FavoriteService {
         return favoriteRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Not Found" + id));
     }
 
-    public String delete(int id, String userId) {
+    public String delete(int id, Long userId) {
         Favorite favorite = favoriteRepository.findById(id).get();
-        if(favorite.getUserId().equals(userId)) {
+        if(favorite.getUser().getUserId().equals(userId)) {
             favoriteRepository.deleteById(id);
             return "삭제되었습니다.";
         } else {
@@ -41,16 +42,16 @@ public class FavoriteService {
         }
     }
 
-    public boolean findByUserIdAndUrl(String userId, String url) {
+    public boolean findByUserIdAndUrl(User user, String url) {
 
-        return favoriteRepository.existsByUserIdAndUrl(userId, url);
+        return favoriteRepository.existsByUserAndUrl(user, url);
 
     }
 
-    public List<FavoriteDTO> getFavoritesByUserId(String userId) {
+    public List<FavoriteDTO> getFavoritesByUserId(User user) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-        return favoriteRepository.findByUserId(userId).stream()
+        return favoriteRepository.findByUser(user).stream()
                 .map(entity -> {
                     FavoriteDTO dto = new FavoriteDTO();
                     dto.setId(entity.getId());
@@ -63,16 +64,16 @@ public class FavoriteService {
     }
 
     // 즐겨찾기 삭제
-    public void removeFavorite(int id, String userId) {
+    public void removeFavorite(int id, Long userId) {
         Favorite favorite = favoriteRepository.findById(id).get();
-        if(favorite.getUserId().equals(userId)) {
+        if(favorite.getUser().getUserId().equals(userId)) {
             favoriteRepository.deleteById(id);
         }
     }
 
     @Transactional
-    public void removeFavoriteByUrl( String userId, String url){
-        favoriteRepository.deleteByUserIdAndUrl(userId, url);
+    public void removeFavoriteByUrl( User user, String url){
+        favoriteRepository.deleteByUserAndUrl(user, url);
     }
 
     public List<Favorite> findByUserId(String userId) {
