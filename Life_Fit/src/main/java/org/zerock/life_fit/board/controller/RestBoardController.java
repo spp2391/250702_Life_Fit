@@ -213,6 +213,34 @@ public class RestBoardController {
         return "redirect:/board/" + bno;
     }
 
+    @PostMapping("/board/{bno}/delete")
+    public String deleteBoard(@PathVariable Long bno,
+                              @AuthenticationPrincipal Object principal,
+                              RedirectAttributes redirectAttributes) {
+        User user = extractUser(principal);
+        Board board = boardService.findById(bno);
+
+        if (user == null || !board.getWriter().getUserId().equals(user.getUserId())) {
+            redirectAttributes.addFlashAttribute("alertMessage", "해당 게시글은 본인만 삭제할 수 있습니다.");
+            return "redirect:/board/" + bno;
+        }
+
+        boardService.delete(bno);
+
+        if ("TOPIC".equals(board.getBoardType())) {
+            return "redirect:/topic";
+        } else {
+            return "redirect:/free";
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("/board/{bno}/like")
+    public int likeBoard(@PathVariable Long bno) {
+        Board board = boardService.increaseLikes(bno);
+        return board.getLikes();
+    }
+
     @GetMapping("/service")
     public String service() {
         return "board/services"; // ✅ 변경
