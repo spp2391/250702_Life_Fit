@@ -9,6 +9,7 @@ import jakarta.websocket.Session;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zerock.life_fit.OAuth2User.CustomOAuth2User;
 import org.zerock.life_fit.admin.dto.UserDTO;
 import org.zerock.life_fit.admin.service.AdminUserService;
 import org.zerock.life_fit.admin.service.CustomUserDetailsService;
@@ -95,14 +97,13 @@ public class UserController {
          if (email == null) {
             return "redirect:/member/login";
         }else if (!email.contains("@")){
-             model.addAttribute("message", "카카오 계정은 회원가입 해야합니다.");
+             model.addAttribute("message", "카카오 계정은 이메일을 수정 해야합니다.");
             model.addAttribute("user", userService.getKakaoProfile(Long.parseLong(email)));
             return "member/profile";
         } else {
-            String userId = principal.getName();
-            UserProfileResponse user = userService.getProfile(userId);
-            model.addAttribute("user", user);
-            model.addAttribute("favorites", user.getFavoriteList());
+            UserProfileResponse userAndFavoriteData = userService.getProfile(email);
+            model.addAttribute("user", userAndFavoriteData);
+            model.addAttribute("favorites", userAndFavoriteData.getFavoriteList());
             return "member/profile";
         }
     }

@@ -38,7 +38,7 @@ public class FavoriteController {
         // 간편 로그인 (OAuth2)
         if (userDetails instanceof CustomOAuth2User) {
             CustomOAuth2User oauthUser = (CustomOAuth2User) userDetails;
-            userId = String.valueOf(oauthUser.getUser().getUserId()); // 또는 getEmail()
+            userId = String.valueOf(oauthUser.getUser().getEmail()); // 또는 getEmail()
         }
         // 일반 로그인
         else {

@@ -16,35 +16,36 @@
 <div class="header" th:replace="fragments/header :: header"></div>
 
 <!-- 전체 wrapper -->
+<div class="mypage-container">
+    <header class="th-layout-header">
+        <div class="temhabank-N1" id="fFMd5L2SV0">
+            <div class="header-container container-md" style="border-bottom: none;">
+                <div class="header-center">
+                    <div class="header-gnb">
+                        <ul class="header-gnblist">
+                            <li class="header-gnbitem">
+                                <a class="header-gnblink" href="/member/profile">
+                                    <span>개인정보 수정 및 회원 탈퇴</span>
+                                </a>
+                            </li>
+                            <li class="header-gnbitem">
+                                <a class="header-gnblink" href="/member/favorites">
+                                    <span>즐겨찾기 메뉴</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
 <div class="favorites-wrapper">
-
     <!-- ===== 좌측: 즐겨찾기 목록 ===== -->
-    <div class="favorites-panel">
-<!--        <header class="th-layout-header">-->
-<!--            <div class="temhabank-N1" id="fFMd5L2SV0">-->
-<!--                <div class="header-container container-md" style="border-bottom: none;">-->
-<!--                    <div class="header-center">-->
-<!--                        <div class="header-gnb">-->
-<!--                            <ul class="header-gnblist">-->
-<!--                                <li class="header-gnbitem">-->
-<!--                                    <a class="header-gnblink" href="/member/profile">-->
-<!--                                        <span>개인정보 수정 및 회원 탈퇴</span>-->
-<!--                                    </a>-->
-<!--                                </li>-->
-<!--                                <li class="header-gnbitem">-->
-<!--                                    <a class="header-gnblink" href="/member/favorites">-->
-<!--                                        <span>즐겨찾기 메뉴</span>-->
-<!--                                    </a>-->
-<!--                                </li>-->
-<!--                            </ul>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </header>-->
-
-
-
+    <div th:if="${favorites == null || favorites.size()<1}" class="favorites-nodata">
+        <h2>즐겨찾기가 없습니다.</h2>
+    </div>
+    <div class="favorites-panel"  th:if="${favorites != null and favorites.size()>0}">
         <!-- 로그인/회원가입/로그아웃 버튼 -->
         <!--<div class="auth-buttons">
             <th:block sec:authorize="isAnonymous()">
@@ -55,41 +56,64 @@
                 <button type="button" th:onclick="|location.href='@{/logout}'|" class="btn">로그아웃</button>
             </th:block>
         </div>-->
-
         <!-- 즐겨찾기 목록 출력 -->
-        <div class="favorites-list" th:if="${favorites != null}">
+        <div class="favorites-list">
             <div class="favorite-card" th:each="item : ${favorites}">
 <!--                <img th:src="@{/images/favorite-default.png}" alt="장소 이미지" class="place-image" />-->
                 <div class="place-info">
-                    <h4 th:text="${item.address}">주소</h4>
-                    <p th:text="${item.discription}">설명</p>
-                    <a th:href="@{/member/favorites/{num}(num=${item.num})}" class="view-link">자세히 보기</a>
+                    <h4 th:text="${item.title}">제목</h4>
+                    <p th:text="${item.address}">주소</p>
+                    <p th:text="${item.description}">설명</p>
+<!--                    <a th:href="@{/member/favorites/{num}(num=${item.id})}" class="view-link">자세히 보기</a>-->
+                    <button type="button" class="view-link" th:onclick="|showModal(${item.id})|">자세히 보기</button>
                 </div>
             </div>
+            <div id="map"></div>
         </div>
     </div>
 
     <!-- ===== 우측: 지도 ===== -->
-    <div id="map"></div>
+
+<!-- 모달창   -->
+    <div id="myModal" class="modal">
+        <span id="closeModal" class="close">&times;</span>
+        <h3>자세히 보기</h3>
+        <p>id</p>
+        <p>address</p>
+        <p>description</p>
+        <p><a href="#">링크</a></p>
+    </div>
 </div>
-</body>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=e262bfbb1608191632ecc076189ec9cc&libraries=services"></script>
-<script>
+<script type="text/javascript" src="/mainscreen/search.js"></script>
+<!--<script type="text/javascript" src="/mainscreen/main.js"></script>-->
+<script src="/js/setting.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/templatehouse.js"></script>
+<script src="/js/style.js"></script>
+<!--<script src="/js/main.js"></script>-->
+<script src="/favorite/favoriteList.js"></script>
+
+<script th:inline="javascript">
     let container = document.getElementById('map');
     const options = {
         center: new kakao.maps.LatLng(35.1379222, 129.05562775),
         level: 9
     };
     var map = new kakao.maps.Map(container, options);
+    var data = /*[[${favorites}]]*/ '[]';
+    console.log("data",data);
+    setMarkers(data);
+    let modal = document.querySelector("#myModal");
+
+    // document.querySelector("#closeModal").addEventListener("click", ()=>{
+    //     modal.style.display="none";
+    // })
+
     //
     // const header = document.getElementById('header');
     //
     // fetch("/mainscreen/header.html").then((response) => {response.text()}).then((data) => {header.innerHTML = data})
 </script>
-<script type="text/javascript" src="/mainscreen/search.js"></script>
-<script type="text/javascript" src="/mainscreen/main.js"></script>
-<script src="/js/setting.js"></script>
-<script src="/js/plugin.js"></script>
-<script src="/js/templatehouse.js"></script>
-<script src="/js/style.js"></script>
+</body>
 </html>

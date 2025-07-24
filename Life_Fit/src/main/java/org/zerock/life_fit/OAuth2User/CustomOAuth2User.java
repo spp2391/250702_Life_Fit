@@ -14,11 +14,14 @@ import java.util.Map;
 public class CustomOAuth2User implements OAuth2User, UserDetails {
 
     private final User user;
-    private final Map<String, Object> attributes;
+    private Map<String, Object> attributes;
 
     public CustomOAuth2User(User user, Map<String, Object> attributes) {
         this.user = user;
         this.attributes = attributes;
+    }
+    public CustomOAuth2User(User user) {
+        this.user = user;
     }
 
     @Override

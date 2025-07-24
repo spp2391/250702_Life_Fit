@@ -19,4 +19,6 @@ public class FavoriteDTO {
     private String url; // API URL
     private String user_id; // USERID
     private String regdate;        // 등록일 (String 또는 LocalDateTime)
+    private double lat;
+    private double lng;
 }

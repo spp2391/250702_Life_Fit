@@ -37,6 +37,8 @@ public class UserProfileResponse {
                         .address(favorite.getAddress())
                         .regdate(favorite.getRegdate().toString())
                         .url(favorite.getUrl())
+                        .lat(favorite.getLat())
+                        .lng(favorite.getLng())
                         .build())).toList())
                 .build();
     }

@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.zerock.life_fit.OAuth2User.CustomOAuth2User;
 import org.zerock.life_fit.user.domain.User;
 import org.zerock.life_fit.user.repository.UserRepository;
 
@@ -31,6 +32,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         System.out.println("✅ DB role 값: " + user.getRole());
         System.out.println("✅ 최종 적용 권한: ROLE_" + user.getRole());
 
-        return user;
+        return new CustomOAuth2User(user);
     }
 }
