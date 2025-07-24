@@ -15,16 +15,35 @@
     <link rel="stylesheet" href="/css/templatehouse.css" />
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/login.css" />
+
+    <!-- 추가 스타일 -->
+    <style>
+        .options label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .helper-links a {
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+        }
+
+        .helper-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body class="gradient-custom">
 <div class="header" th:replace="fragments/header :: header"></div>
+
 <div class="login-container">
     <div class="login-card">
         <div class="logo">
             <img src="/images/LIFEFIT.png" alt="LIFE FIT 로고" />
         </div>
 
-        <!-- form 태그 제거 -->
+        <!-- 입력 폼 -->
         <div class="input-group">
             <input type="text" name="nickname" id="nickname" placeholder="닉네임" required />
             <input type="text" name="name" id="name" placeholder="이름" required />
@@ -34,12 +53,10 @@
             <input type="tel" name="phoneNumber" id="phoneNumber" placeholder="휴대전화번호" required />
         </div>
 
-
         <div class="options">
             <label><input type="checkbox" id="terms" required /> [필수] 약관 전체 동의</label>
         </div>
 
-        <!-- onclick으로 직접 실행 -->
         <button type="button" class="login-btn" onclick="register()">회원가입</button>
 
         <div class="helper-links">
@@ -50,9 +67,10 @@
 
 <div class="footer" th:replace="fragments/footer :: footer"></div>
 
+<!-- 스크립트 -->
 <script>
     let message = '[[${message}]]';
-    if(message.length>0){
+    if (message.length > 0) {
         alert(message);
     }
 
@@ -65,7 +83,6 @@
         const nickname = document.getElementById('nickname').value;
         const name = document.getElementById('name').value;
         const phoneNumber = document.getElementById('phoneNumber').value;
-        // const role = document.getElementById('role')?.value || 'USER'; // 필요 시 기본값 지정
 
         if (!document.getElementById('terms').checked) {
             alert("약관에 동의해주세요.");
@@ -83,7 +100,6 @@
             nickname,
             name,
             phoneNumber
-            // role
         };
 
         try {

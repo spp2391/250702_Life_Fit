@@ -149,6 +149,7 @@ body.gradient-custom {
     cursor: pointer;
     transition: 0.3s;
     margin-top: 10px;
+    text-align: center;
 }
 
 .login-btn {
