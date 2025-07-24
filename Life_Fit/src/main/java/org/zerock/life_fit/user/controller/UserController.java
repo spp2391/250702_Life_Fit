@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.websocket.Session;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -85,8 +86,8 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public String profilePage(Principal principal, Model model, HttpSession session) {
-        String email = principal.getName();
+    public String profilePage(@AuthenticationPrincipal User user, Model model, HttpSession session) {
+        String email = user.getEmail();
          if (email == null) {
             return "redirect:/member/login";
         }else if (!email.contains("@")){
@@ -94,9 +95,9 @@ public class UserController {
             model.addAttribute("user", userService.getKakaoProfile(Long.parseLong(email)));
             return "member/profile";
         } else {
-            String userId = principal.getName();
+            String userId = email;
             model.addAttribute("user", userService.getProfile(userId));
-            List<FavoriteDTO> favoriteList = favoriteService.getFavoritesByUserId(userId);
+            List<FavoriteDTO> favoriteList = favoriteService.getFavoritesByUserId(user);
             model.addAttribute("favoriteList", favoriteList);
 
             return "member/profile";
