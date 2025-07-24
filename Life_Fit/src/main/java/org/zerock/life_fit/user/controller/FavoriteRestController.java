@@ -4,14 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.zerock.life_fit.user.domain.User;
-import org.zerock.life_fit.user.dto.CheckFavoriteDTO;
+import org.zerock.life_fit.OAuth2User.CustomOAuth2User;
 import org.zerock.life_fit.user.dto.FavoriteAddRequest;
-import org.zerock.life_fit.user.dto.FavoriteDTO;
-import org.zerock.life_fit.user.dto.FavoriteResponse;
 import org.zerock.life_fit.user.service.FavoriteService;
 
-import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,18 +16,18 @@ import java.util.Map;
 public class FavoriteRestController {
     private final FavoriteService favoriteService;
     @PostMapping("/api/mainscreen/favorite")
-    public void addFavorite(@RequestBody FavoriteAddRequest favoriteAddRequest, @AuthenticationPrincipal User user) {
+    public void addFavorite(@RequestBody FavoriteAddRequest favoriteAddRequest, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
         try {
-            favoriteService.add(favoriteAddRequest, user);
+            favoriteService.add(favoriteAddRequest, customOAuth2User.getUser());
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     }
 
     @DeleteMapping("/api/mainscreen/favorite/delete")
-    public void deleteFavorite(@RequestBody FavoriteAddRequest favoriteAddRequest, @AuthenticationPrincipal User user) {
+    public void deleteFavorite(@RequestBody FavoriteAddRequest favoriteAddRequest, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
         try {
-            favoriteService.removeFavoriteByUrl(user, favoriteAddRequest.getUrl());
+            favoriteService.removeFavoriteByUrl(customOAuth2User.getUser(), favoriteAddRequest.getUrl());
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
@@ -39,11 +35,11 @@ public class FavoriteRestController {
 
     @DeleteMapping("/member/favorites/{id}")
     public ResponseEntity<String>  deleteFavorite(
-            @PathVariable("id") Integer id, @AuthenticationPrincipal User user) {
-        if(user.getUserId() == null) {
+            @PathVariable("id") Integer id, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+        if(customOAuth2User.getUser().getUserId() == null) {
             return ResponseEntity.internalServerError().build();
         }
-        String result = favoriteService.delete(id, user.getUserId());
+        String result = favoriteService.delete(id, customOAuth2User.getUser().getUserId());
         if (result.equals("삭제되었습니다.")){
             return ResponseEntity.ok().build();
         } else {
@@ -54,15 +50,15 @@ public class FavoriteRestController {
 
     @GetMapping("/api/mainscreen/favorites/{url}")
     public ResponseEntity<Map<String, String>> checkFavorite(
-            @PathVariable("url") String url, @AuthenticationPrincipal User user) {
-        if(user == null) {
+            @PathVariable("url") String url, @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+        if(customOAuth2User.getUser() == null) {
             System.out.println("로그인되지 않은 상태.");
             Map<String, String> response = new HashMap<>();
             response.put("data", "Not logged in");
             return ResponseEntity.ok(response);
         }
         url = "http://place.map.kakao.com/"+url;
-        boolean result = favoriteService.findByUserIdAndUrl(user, url);
+        boolean result = favoriteService.findByUserIdAndUrl(customOAuth2User.getUser(), url);
         if (result) {
             Map<String, String> response = new HashMap<>();
             response.put("data", "Favorited");

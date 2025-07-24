@@ -17,6 +17,8 @@ public class FavoriteAddRequest {
     private String title; // 장소명
     private String url; // API URL
     private Long userId; // USERID
+    private double lat;
+    private double lng;
 
     public Favorite toEntity(User user) {
         return Favorite.builder()
@@ -25,6 +27,8 @@ public class FavoriteAddRequest {
                 .description(this.description)
                 .url(this.url)
                 .user(user)
+                .lat(this.lat)
+                .lng(this.lng)
                 .build();
     }
 }

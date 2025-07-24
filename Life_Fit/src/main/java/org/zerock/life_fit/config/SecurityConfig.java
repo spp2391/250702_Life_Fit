@@ -13,7 +13,7 @@ import org.zerock.life_fit.OAuth2User.CustomOAuth2UserService_Naver;
 import org.zerock.life_fit.OAuth2User.MultiOAuth2UserService;
 import org.zerock.life_fit.OAuth2User.OAuth2LoginSuccessHandler;
 import org.zerock.life_fit.admin.service.CustomUserDetailsService;
-import org.zerock.life_fit.user.service.CustomOAuth2UserService_Kakao;
+import org.zerock.life_fit.OAuth2User.CustomOAuth2UserService_Kakao;
 
 @Configuration
 @EnableWebSecurity

@@ -1,19 +1,14 @@
-package org.zerock.life_fit.user.service;
+package org.zerock.life_fit.OAuth2User;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Service;
-import org.zerock.life_fit.OAuth2User.CustomOAuth2User;
 import org.zerock.life_fit.user.domain.User;
 import org.zerock.life_fit.user.repository.UserRepository;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.Collections;
 import java.util.Map;
 
 @Service

@@ -168,7 +168,10 @@ function showMarkerInfo(markerInfo, favoriteRespData) {
         + markerInfo.category_name
         + '</div>'
         + '<div class="place-url"><a href="' + markerInfo.place_url + '">' + markerInfo.place_url + '</a></div>'
-        + '</div>';
+        + `<input type="hidden" value="${markerInfo.y}" name="lat"/>`
+        + `<input type="hidden" value="${markerInfo.x}" name="lng"/>`
+        + '</div>'
+        ;
 }
 
 function saveFavorites() {
@@ -181,7 +184,9 @@ function saveFavorites() {
             title:document.querySelector("#popup-info .title").innerText,
             address:document.querySelector("#popup-info .address-name").innerText,
             description:document.querySelector("#popup-info .category-name").innerText,
-            url:document.querySelector("#popup-info .place-url").innerText
+            url:document.querySelector("#popup-info .place-url").innerText,
+            lat:document.querySelector("#popup-info input[name='lat']").value,
+            lng:document.querySelector("#popup-info input[name='lng']").value,
         })
     }).then(()=>{
         // 즐겨찾기 설정 완료 후 즐겨찾기 버튼 변경.
