@@ -2,9 +2,11 @@ package org.zerock.life_fit.admin.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.zerock.life_fit.admin.dto.CommentDTO;
 import org.zerock.life_fit.admin.repository.AdminCommentRepository;
 import org.zerock.life_fit.comment.domain.Comment;
+
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,7 +23,8 @@ public class AdminCommentService {
                         c.getCno(),
                         c.getContent(),
                         c.getRegdate(),
-                        c.getBoard().getBno()
+                        c.getBoard().getBno(),
+                        c.getWriter().getNickname()
                 ))
                 .collect(Collectors.toList());
     }
@@ -30,10 +33,11 @@ public class AdminCommentService {
         adminCommentRepository.deleteById(cno);
     }
 
+    @Transactional // ✅ 수정 트랜잭션 보장
     public void updateComment(Long cno, String newContent) {
         Comment comment = adminCommentRepository.findById(cno)
                 .orElseThrow(() -> new RuntimeException("❌ 댓글이 존재하지 않습니다"));
         comment.setContent(newContent);
-        adminCommentRepository.save(comment);
+        // save 불필요 (JPA는 변경 감지로 자동 flush)
     }
 }
