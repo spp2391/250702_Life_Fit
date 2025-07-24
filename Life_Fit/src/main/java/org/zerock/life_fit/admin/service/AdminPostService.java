@@ -16,29 +16,33 @@ public class AdminPostService {
     private final AdminPostRepository adminPostRepository;
     private final AdminCommentRepository adminCommentRepository;
 
-    public Page<PostDTO> getPosts(String nameText, Pageable pageable) {
+    // ✅ 닉네임 기준 게시글 목록 조회
+    public Page<PostDTO> getPostsByNickname(String nickname, Pageable pageable) {
         Page<Object[]> results;
 
-        if (nameText == null || nameText.isEmpty()) {
+        if (nickname == null || nickname.isEmpty()) {
             results = adminPostRepository.findAllPosts(pageable);
         } else {
-            results = adminPostRepository.findPostsByUserName(nameText, pageable);
+            results = adminPostRepository.findPostsByNickname(nickname, pageable);
         }
 
         return results.map(this::mapToPostDTO);
     }
 
+    // 게시글 수정
     @Transactional
     public void updatePost(PostDTO dto) {
         adminPostRepository.updatePost(dto.getBno(), dto.getTitle(), dto.getContent());
     }
 
+    // 게시글 삭제 + 관련 댓글 삭제
     @Transactional
     public void deletePost(Long bno) {
         adminCommentRepository.deleteByBoardId(bno); // 댓글 먼저 삭제
         adminPostRepository.deleteByBno(bno);        // 게시글 삭제
     }
 
+    // Object[] → PostDTO 매핑
     private PostDTO mapToPostDTO(Object[] row) {
         return PostDTO.builder()
                 .bno(((Number) row[0]).longValue())

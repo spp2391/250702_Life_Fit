@@ -11,7 +11,8 @@
 
 <form method="get" th:action="@{/api/admin/posts/html}" class="row g-2 mb-4">
     <div class="col-md-6">
-        <input type="text" name="userId" class="form-control" placeholder="회원 ID로 검색" th:value="${userId}">
+        <input type="text" name="nickname" class="form-control" placeholder="닉네임으로 검색" th:value="${nickname}">
+
     </div>
     <div class="col-md-6">
         <button type="submit" class="btn btn-primary">검색</button>

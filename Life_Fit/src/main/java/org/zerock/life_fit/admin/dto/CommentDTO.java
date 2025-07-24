@@ -12,4 +12,5 @@ public class CommentDTO {
     private String content;
     private LocalDateTime regdate;
     private Long boardId;
+    private String writerNickname;
 }
