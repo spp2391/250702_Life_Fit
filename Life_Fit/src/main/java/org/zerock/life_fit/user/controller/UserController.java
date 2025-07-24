@@ -7,7 +7,10 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.websocket.Session;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.zerock.life_fit.admin.dto.UserDTO;
 import org.zerock.life_fit.admin.service.AdminUserService;
+import org.zerock.life_fit.admin.service.CustomUserDetailsService;
 import org.zerock.life_fit.user.domain.User;
 import org.zerock.life_fit.user.dto.FavoriteDTO;
 import org.zerock.life_fit.user.dto.UserProfileResponse;
@@ -34,6 +38,7 @@ public class UserController {
     private final UserService userService;
     private final FavoriteService favoriteService;
     private final AdminUserService adminUserService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @GetMapping("/join")
     public String joinPage() {
@@ -107,7 +112,12 @@ public class UserController {
         if (principal == null) {
             return "redirect:/member/login";
         }
-        userService.updateUser(principal.getName(), dto);
+        UserProfileResponse userProfileResponse = userService.updateUser(principal.getName(), dto);
+
+        UserDetails mainName = customUserDetailsService.loadUserByUsername(userProfileResponse.getEmail());
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(mainName, mainName.getPassword(), mainName.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
+
         return "redirect:/member/profile";
     }
 
