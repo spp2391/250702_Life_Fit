@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-
 <head>
     <meta charset="UTF-8">
     <title>공지사항</title>
@@ -15,13 +14,10 @@
     <link rel="stylesheet" href="/css/plugin.css" />
     <link rel="stylesheet" href="/css/templatehouse.css" />
     <link rel="stylesheet" href="/css/style.css" />
-    <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-            integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-            crossorigin="anonymous"
-            referrerpolicy="no-referrer"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
         body {
             font-family: 'Lato', sans-serif;
@@ -40,14 +36,55 @@
             padding: 40px 20px;
         }
 
+        /* 🎨 공지 제목 스타일 */
         .notice-container h1 {
             font-size: 36px;
             font-weight: 700;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #007AFF;
+        }
+        /* 🎨 공지 제목 스타일 */
+        .notice-container h2 {
+
+            font-weight: 700;
+            margin-bottom: 15px;
             text-align: center;
             color: #007AFF;
         }
 
+        /* 🖼️ 배너 이미지 */
+        .notice-banner {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .notice-banner img {
+            max-width: 600px;  /* 기존 280px에서 크게 */
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        /* 🔍 검색창 */
+        .search-box {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding: 12px 18px 12px 40px;
+            background: #fff url('https://cdn-icons-png.flaticon.com/512/54/54481.png') no-repeat 12px center / 20px 20px;
+            width: 280px;
+            border: 1.5px solid #007aff;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            box-shadow: 0 2px 6px rgba(0, 122, 255, 0.1);
+        }
+
+        /* 📝 공지 리스트 */
         .notice-list {
             display: flex;
             flex-direction: column;
@@ -55,48 +92,49 @@
         }
 
         .notice-item {
-            background: #fff;
+            background: #ffffff;
+            border: 2px solid #e0f0ff;
+            border-left: 5px solid #007aff;
             border-radius: 12px;
             padding: 20px 25px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 12px rgba(0, 122, 255, 0.08);
+            transition: all 0.3s ease;
         }
 
         .notice-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 122, 255, 0.12);
+            border-left-color: #005dc8;
         }
 
         .notice-title {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 600;
-            margin-bottom: 10px;
-            color: #333;
+            color: #007aff;
+            text-decoration: none;
+        }
+
+        .notice-title:hover {
+            text-decoration: underline;
         }
 
         .notice-date {
             font-size: 14px;
             color: #888;
-            margin-bottom: 10px;
+            margin-top: 5px;
         }
 
         .notice-content {
             font-size: 16px;
             color: #555;
             line-height: 1.5;
+            margin-top: 10px;
         }
 
-        .search-box {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .search-box input {
-            padding: 10px 15px;
-            width: 250px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 16px;
+        /* 관리자만 보이는 버튼 */
+        .admin-btn {
+            text-align: right;
+            margin-bottom: 20px;
         }
 
         @media (max-width: 768px) {
@@ -111,10 +149,21 @@
     </style>
 </head>
 <body>
+
+<!-- 공통 헤더 -->
 <div class="header" th:replace="fragments/header :: header"></div>
+
 <div id="page">
     <div class="notice-container">
+
+        <!-- 제목 -->
         <h1>공지사항</h1>
+
+        <!-- 🖼️ 배너 이미지 -->
+        <div class="notice-banner">
+            <img src="/images/notice.png" alt="공지사항 배너">
+        </div>
+
 
         <!-- 검색창 -->
         <div class="search-box">
@@ -122,12 +171,11 @@
         </div>
 
         <!-- 글쓰기 버튼 (관리자만 노출) -->
-        <div style="text-align: right; margin-bottom: 20px;" sec:authorize="hasRole('ROLE_ADMIN')">
+        <div class="admin-btn" sec:authorize="hasRole('ROLE_ADMIN')">
             <a href="/notice/create" class="btn btn-primary">공지사항 글쓰기</a>
         </div>
 
-
-        <!-- 공지사항 리스트 -->
+        <!-- 공지사항 목록 -->
         <div class="notice-list" id="noticeList">
             <div class="notice-item" th:each="notice : ${noticeList}">
                 <a th:href="@{'/notice/' + ${notice.nbno}}" class="notice-title"
@@ -136,12 +184,15 @@
                 <div class="notice-content" th:text="${notice.content}">공지사항 내용</div>
             </div>
         </div>
+
     </div>
-    <div class="footer" th:replace="fragments/footer :: footer"></div>
 </div>
 
+<!-- 공통 푸터 -->
+<div class="footer" th:replace="fragments/footer :: footer"></div>
+
+<!-- 검색 기능 -->
 <script>
-    // 검색 기능 (JS)
     document.getElementById("searchInput").addEventListener("keyup", function () {
         const keyword = this.value.toLowerCase();
         const notices = document.querySelectorAll(".notice-item");
@@ -157,6 +208,8 @@
         });
     });
 </script>
+
+<!-- JS -->
 <script src="/js/setting.js"></script>
 <script src="/js/plugin.js"></script>
 <script src="/js/templatehouse.js"></script>
