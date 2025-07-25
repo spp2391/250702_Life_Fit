@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>마이페이지</title>
+  <link rel="stylesheet" href="/css/setting.css" />
+  <link rel="stylesheet" href="/css/plugin.css" />
+  <link rel="stylesheet" href="/css/templatehouse.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/login.css" />
+  <style>
+    .btn-submit {
+      width: 100%;
+      background-color: #007bff;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+
+    .btn-submit:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-withdraw-inline {
+      width: 100%;
+      background-color: #ff4d4d;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-withdraw-inline:hover {
+      background-color: #cc0000;
+    }
+  </style>
+</head>
+
+<body class="gradient-custom">
+<div class="header" th:replace="fragments/header :: header"></div>
+
+<div class="mypage-container">
+  <header class="th-layout-header">
+    <div class="temhabank-N1" id="fFMd5L2SV0">
+      <div class="header-container container-md" style="border-bottom: none;">
+        <div class="header-center">
+          <div class="header-gnb">
+            <ul class="header-gnblist">
+              <li class="header-gnbitem">
+                <a class="header-gnblink" href="/member/profile">
+                  <span>개인정보 수정 및 회원 탈퇴</span>
+                </a>
+              </li>
+              <li class="header-gnbitem">
+                <a class="header-gnblink" href="/member/favorites">
+                  <span>즐겨찾기 메뉴</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="login-container">
+    <section class="login-card">
+      <div class="logo">
+        <img src="/images/LIFEFIT.png" alt="LIFE FIT 로고" />
+      </div>
+
+      <div class="tab-menu">
+        <button type="button" class="active">개인정보 수정</button>
+      </div>
+
+      <!-- 개인정보 수정 -->
+      <form id="updateForm" class="label-group"
+            th:action="@{/member/update}"
+            th:object="${user}"
+            method="post">
+        <input type="hidden" name="userId" th:value="${user.userId}">
+
+        <label>
+          닉네임
+          <input type="text" name="nickname" th:field="${user.nickname}" placeholder="닉네임을 입력하세요"/>
+        </label>
+        <p class="error" th:if="${#fields.hasErrors('nickname')}"
+           th:errors="${user.nickname}"></p>
+
+        <label>
+          이름
+          <input type="text" name="name" th:field="${user.name}" placeholder="이름을 입력하세요"/>
+        </label>
+
+        <label>
+          이메일
+          <input type="email" name="email" th:field="${user.email}" placeholder="이메일을 입력하세요" />
+        </label>
+
+        <label>
+          전화번호
+          <input type="text" name="phoneNumber" th:field="${user.phoneNumber}" placeholder="전화번호를 입력하세요" />
+        </label>
+
+        <label>
+          비밀번호 변경
+          <input type="password" name="password" placeholder="새 비밀번호 입력"/>
+        </label>
+
+        <button type="submit" class="btn-submit">수정하기</button>
+      </form>
+
+      <!-- 회원 탈퇴 버튼 (한 줄) -->
+      <form th:action="@{/member/withdraw}" method="post"
+            onsubmit="return confirm('정말 탈퇴하시겠습니까?');">
+        <input type="hidden" name="userId" th:value="${user.userId}" />
+        <button type="submit" class="btn-withdraw-inline">회원 탈퇴</button>
+      </form>
+    </section>
+  </div>
+</div>
+
+<div class="footer" th:replace="fragments/footer :: footer"></div>
+
+<script src="/js/setting.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/templatehouse.js"></script>
+<script src="/js/style.js"></script>
+</body>
+</html>
