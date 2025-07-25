@@ -12,56 +12,62 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @EntityListeners(AuditingEntityListener.class)
-@Table(name="favorite")
+@Table(name = "favorite")
 @NoArgsConstructor
 @Getter
 @ToString
 @Entity
 public class Favorite {
+
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id", updatable=false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false)
     private Long id;
-    /*@Column(name="num", updatable=false)
-    private Long num;*/
-//    @Column(name="userId", nullable = false)
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name="address", nullable = false)
+    @Column(name = "address", nullable = false)
     private String address;
-    @Column(name="description")
+
+    @Column(name = "description")
     private String description;
+
     @CreatedDate
-    @Column(name="regdate")
+    @Column(name = "regdate")
     private LocalDateTime regdate;
+
     @LastModifiedDate
-    @Column(name="moddate")
+    @Column(name = "moddate")
     private LocalDateTime moddate;
+
     @Column(name = "url")
     private String url;
+
     @Column(name = "title")
     private String title;
-    @Column(name="lat")
-    private double lat;
-    @Column(name="lng")
-    private double lng;
+
+    @Column(name = "lat")
+    private Double lat;
+
+    @Column(name = "lng")
+    private Double lng;
 
     @Builder
-    public Favorite(User user, String address, String description, String url, String title, double lat, double lng) {
+    public Favorite(User user, String address, String description, String url, String title, Double lat, Double lng) {
         this.user = user;
         this.address = address;
-        if(!description.isEmpty()) {
+        if (description != null && !description.isEmpty()) {
             this.description = description;
         }
-//        this.moddate = LocalDateTime.now();
         this.regdate = LocalDateTime.now();
         this.url = url;
         this.title = title;
         this.lat = lat;
         this.lng = lng;
     }
+
     public void update(String address, String description) {
         this.address = address;
         this.description = description;
