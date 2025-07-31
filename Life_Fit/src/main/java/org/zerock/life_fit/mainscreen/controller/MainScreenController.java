@@ -8,6 +8,6 @@ public class MainScreenController {
 
     @GetMapping("/mainscreen/main")
     public String mainScreen() {
-        return "/mainscreen/main";
+        return "mainscreen/main";
     }
 }
