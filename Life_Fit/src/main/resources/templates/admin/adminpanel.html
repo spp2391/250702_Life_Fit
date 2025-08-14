@@ -15,7 +15,21 @@
         body { display: flex; flex-direction: column; height: 100vh; margin: 0; }
         nav { width: 250px; background: #2c3e50; padding: 20px; color: white; }
         nav h4 { border-bottom: 1px solid #aaa; padding-bottom: 10px; margin-bottom: 20px; }
-        nav a.btn { margin-bottom: 10px; width: 100%; }
+
+        /* 사이드바 스타일 */
+        nav a.btn {
+            margin-bottom: 10px;
+            width: 100%;
+            background-color: #34495e;
+            color: white !important;
+            border: none;
+            text-align: left;
+        }
+        nav a.btn:hover {
+            background-color: #1abc9c;
+            color: white !important;
+        }
+
         main { flex-grow: 1; display: flex; }
         iframe { flex-grow: 1; border: none; }
     </style>
@@ -27,8 +41,8 @@
     <!-- 좌측 메뉴 -->
     <nav>
         <h4>관리자 메뉴</h4>
-        <a href="/api/admin/users/test?embed=true" target="contentFrame" class="btn btn-secondary">회원관리</a>
-        <a href="/api/admin/posts/html" target="contentFrame" class="btn btn-secondary">게시글/댓글 관리</a>
+        <a href="/api/admin/users/test?embed=true" target="contentFrame" class="btn">회원관리</a>
+        <a href="/api/admin/posts/html" target="contentFrame" class="btn">게시글/댓글 관리</a>
     </nav>
 
     <!-- 우측 콘텐츠 영역 -->
